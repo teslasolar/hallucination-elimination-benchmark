@@ -1,0 +1,39 @@
+{
+  "model": "GPT-5.2 (OpenAI API)",
+  "mode": "Triad Engine (cultural context injection at inference time)",
+  "judge": "structured pass/fail evaluation against ground truth",
+  "benchmark_date": "2026-02-21 10:08:25",
+  "completed": 222,
+  "passed": 222,
+  "failed": 0,
+  "raw_baseline_pct": 26.1,
+  "accuracy_pct": 100.0,
+  "improvement_pp": 73.9,
+  "categories": {
+    "ANACHRONISM_DETECTION": {
+      "passed": 47,
+      "total": 47,
+      "accuracy_pct": 100.0
+    },
+    "CHARACTER_IDENTITY": {
+      "passed": 51,
+      "total": 51,
+      "accuracy_pct": 100.0
+    },
+    "COMPLEX_SCENARIOS": {
+      "passed": 36,
+      "total": 36,
+      "accuracy_pct": 100.0
+    },
+    "CULTURAL_VALUES": {
+      "passed": 43,
+      "total": 43,
+      "accuracy_pct": 100.0
+    },
+    "DOMAIN_SPECIFIC": {
+      "passed": 45,
+      "total": 45,
+      "accuracy_pct": 100.0
+    }
+  }
+}

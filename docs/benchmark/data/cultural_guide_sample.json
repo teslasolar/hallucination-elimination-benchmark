@@ -1,0 +1,19 @@
+{
+  "overview": "Rome 110 CE sample for benchmark testing",
+  "time_period_context": {
+    "setting": "110 CE, Emperor Trajan reign",
+    "emperor": "Marcus Ulpius Traianus"
+  },
+  "anachronisms_to_avoid": {
+    "not_yet_built": ["Hadrian's Wall", "Constantinople"],
+    "not_yet_happened": ["Fall of Rome", "Christianity as state religion"],
+    "already_dead": ["Julius Caesar", "Augustus"]
+  },
+  "key_locations": [
+    {"name": "Roman Forum", "description": "Political center"},
+    {"name": "Colosseum", "description": "Gladiatorial venue"}
+  ],
+  "social_structure": {
+    "classes": ["Senators", "Equestrians", "Plebeians", "Slaves"]
+  }
+}

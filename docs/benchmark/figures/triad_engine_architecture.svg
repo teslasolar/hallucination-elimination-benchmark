@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" width="900" height="420" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+
+  <!-- Background -->
+  <rect width="900" height="420" fill="#0d1117" rx="12"/>
+  <rect x="1" y="1" width="898" height="418" fill="none" stroke="#30363d" stroke-width="1" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" fill="#f0f6fc" font-size="18" font-weight="700" letter-spacing="0.5">TRIAD ENGINE — ARCHITECTURE</text>
+  <text x="450" y="60" text-anchor="middle" fill="#8b949e" font-size="12">Zero fine-tuning · Model-agnostic · Inference-time domain grounding</text>
+
+  <!-- USER QUERY box -->
+  <rect x="30" y="90" width="140" height="48" fill="#161b22" stroke="#58a6ff" stroke-width="1.5" rx="6"/>
+  <text x="100" y="111" text-anchor="middle" fill="#58a6ff" font-size="12" font-weight="600">USER QUERY</text>
+  <text x="100" y="129" text-anchor="middle" fill="#8b949e" font-size="11">any question</text>
+
+  <!-- Arrow → Triad -->
+  <line x1="170" y1="114" x2="210" y2="114" stroke="#30363d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- TRIAD ENGINE box -->
+  <rect x="210" y="72" width="320" height="200" fill="#161b22" stroke="#d2a8ff" stroke-width="2" rx="8"/>
+  <text x="370" y="98" text-anchor="middle" fill="#d2a8ff" font-size="13" font-weight="700" letter-spacing="1">TRIAD ENGINE</text>
+  <line x1="225" y1="106" x2="515" y2="106" stroke="#21262d" stroke-width="1"/>
+
+  <!-- Lambda -->
+  <rect x="228" y="116" width="132" height="48" fill="#0d1117" stroke="#3fb950" stroke-width="1" rx="4"/>
+  <text x="294" y="135" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="700">λ  character</text>
+  <text x="294" y="153" text-anchor="middle" fill="#8b949e" font-size="10">agent voice · backstory</text>
+
+  <!-- Mu -->
+  <rect x="368" y="116" width="132" height="48" fill="#0d1117" stroke="#f0883e" stroke-width="1" rx="4"/>
+  <text x="434" y="135" text-anchor="middle" fill="#f0883e" font-size="13" font-weight="700">μ  domain guide</text>
+  <text x="434" y="153" text-anchor="middle" fill="#8b949e" font-size="10">what exists · what doesn't</text>
+
+  <!-- Nu -->
+  <rect x="228" y="174" width="132" height="48" fill="#0d1117" stroke="#79c0ff" stroke-width="1" rx="4"/>
+  <text x="294" y="193" text-anchor="middle" fill="#79c0ff" font-size="13" font-weight="700">ν  calibration</text>
+  <text x="294" y="211" text-anchor="middle" fill="#8b949e" font-size="10">user empathy · framing</text>
+
+  <!-- Omega -->
+  <rect x="368" y="174" width="132" height="48" fill="#0d1117" stroke="#e3b341" stroke-width="1" rx="4"/>
+  <text x="434" y="193" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="700">ω  compositor</text>
+  <text x="434" y="211" text-anchor="middle" fill="#8b949e" font-size="10">synthesizes all voices</text>
+
+  <!-- Domain Guide JSON box -->
+  <rect x="228" y="234" width="272" height="28" fill="#161b22" stroke="#30363d" stroke-width="1" rx="4"/>
+  <text x="364" y="253" text-anchor="middle" fill="#8b949e" font-size="11">Domain Guide JSON ↑ injected as system prompt</text>
+
+  <!-- Arrow → Base LLM -->
+  <line x1="530" y1="172" x2="578" y2="172" stroke="#30363d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- BASE LLM box -->
+  <rect x="578" y="82" width="140" height="180" fill="#161b22" stroke="#3fb950" stroke-width="1.5" rx="6"/>
+  <text x="648" y="108" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="600">BASE LLM</text>
+  <line x1="590" y1="116" x2="706" y2="116" stroke="#21262d" stroke-width="1"/>
+  <text x="648" y="136" text-anchor="middle" fill="#8b949e" font-size="11">Claude</text>
+  <text x="648" y="154" text-anchor="middle" fill="#8b949e" font-size="11">GPT</text>
+  <text x="648" y="172" text-anchor="middle" fill="#8b949e" font-size="11">Gemini</text>
+  <text x="648" y="190" text-anchor="middle" fill="#8b949e" font-size="11">Mistral 7B</text>
+  <text x="648" y="208" text-anchor="middle" fill="#8b949e" font-size="11">Bielik 11B</text>
+  <text x="648" y="226" text-anchor="middle" fill="#8b949e" font-size="11">any LLM</text>
+  <text x="648" y="250" text-anchor="middle" fill="#3fb950" font-size="10">weights untouched</text>
+
+  <!-- Arrow → Grounded Answer -->
+  <line x1="718" y1="172" x2="758" y2="172" stroke="#30363d" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- GROUNDED ANSWER box -->
+  <rect x="758" y="148" width="112" height="48" fill="#161b22" stroke="#3fb950" stroke-width="1.5" rx="6"/>
+  <text x="814" y="169" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="600">GROUNDED</text>
+  <text x="814" y="185" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="600">ANSWER</text>
+
+  <!-- Arrow definition -->
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#30363d"/>
+    </marker>
+  </defs>
+
+  <!-- Bottom section: Key insight -->
+  <rect x="30" y="295" width="840" height="50" fill="#161b22" rx="6"/>
+  <text x="450" y="317" text-anchor="middle" fill="#f0f6fc" font-size="13" font-weight="600">The only change between deployments: the Domain Guide JSON</text>
+  <text x="450" y="335" text-anchor="middle" fill="#8b949e" font-size="11">Rome 110 CE → medical records → legal jurisdictions → industrial compliance — same engine, different guide</text>
+
+  <!-- Stats row -->
+  <rect x="30" y="358" width="200" height="48" fill="#161b22" stroke="#f85149" stroke-width="1" rx="6"/>
+  <text x="130" y="378" text-anchor="middle" fill="#f85149" font-size="18" font-weight="700">22% → 100%</text>
+  <text x="130" y="396" text-anchor="middle" fill="#8b949e" font-size="11">Mistral 7B accuracy</text>
+
+  <rect x="245" y="358" width="200" height="48" fill="#161b22" stroke="#3fb950" stroke-width="1" rx="6"/>
+  <text x="345" y="378" text-anchor="middle" fill="#3fb950" font-size="18" font-weight="700">222 questions</text>
+  <text x="345" y="396" text-anchor="middle" fill="#8b949e" font-size="11">5 categories · 0 regressions</text>
+
+  <rect x="460" y="358" width="200" height="48" fill="#161b22" stroke="#58a6ff" stroke-width="1" rx="6"/>
+  <text x="560" y="378" text-anchor="middle" fill="#58a6ff" font-size="18" font-weight="700">F1 = 0.939</text>
+  <text x="560" y="396" text-anchor="middle" fill="#8b949e" font-size="11">winding number paradox detector</text>
+
+  <rect x="675" y="358" width="195" height="48" fill="#161b22" stroke="#e3b341" stroke-width="1" rx="6"/>
+  <text x="772" y="378" text-anchor="middle" fill="#e3b341" font-size="18" font-weight="700">40% → 100%</text>
+  <text x="772" y="396" text-anchor="middle" fill="#8b949e" font-size="11">Windsurf/Cascade coding domain</text>
+
+</svg>

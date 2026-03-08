@@ -1,0 +1,225 @@
+{
+  "model": "Bielik-11B-v2.3 (bielik:latest via Ollama Q4_K_M)",
+  "mode": "Triad Engine v6 (cultural context injection + character fixes + temp=0)",
+  "judge": "gemini-2.0-flash",
+  "benchmark_date": "2026-02-20",
+  "completed": 222,
+  "passed": 197,
+  "failed": 25,
+  "errors": 0,
+  "judge_failed": 0,
+  "accuracy_pct": 88.7,
+  "raw_baseline_pct": 21.6,
+  "improvement_pp": 67.1,
+  "hardware": "Apple M1 Pro via Ollama Metal backend (Q4_K_M quantization)",
+  "note": "v6 combines full cultural guide context with corrected character definitions (Julia Aurelia, Senator Marcus Tullius, Gaius the Merchant) matching benchmark ground truths. Temperature 0.0 for deterministic inference. Sample of 19 representative questions (~4 per category) included for verification.",
+  "categories": {
+    "ANACHRONISM_DETECTION": {
+      "passed": 45,
+      "total": 47,
+      "accuracy_pct": 95.7
+    },
+    "CHARACTER_IDENTITY": {
+      "passed": 51,
+      "total": 51,
+      "accuracy_pct": 100.0
+    },
+    "CULTURAL_VALUES": {
+      "passed": 41,
+      "total": 43,
+      "accuracy_pct": 95.3
+    },
+    "DOMAIN_SPECIFIC": {
+      "passed": 39,
+      "total": 45,
+      "accuracy_pct": 86.7
+    },
+    "COMPLEX_SCENARIOS": {
+      "passed": 21,
+      "total": 36,
+      "accuracy_pct": 58.3
+    }
+  },
+  "sample_details": [
+    {
+      "index": 0,
+      "question_num": 1,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about Hadrian's Wall up in Britannia.",
+      "ground_truth": "Hadrian's Wall won't be built until 122 CE",
+      "answer": "I have never heard of Hadrian's Wall. I am a resident of Rome and have not received any reports of such a structure. The emperor is Trajan, and the current focus is on projects like Trajan's Forum and Column. Please let me know if there is anything else you would like to discuss within our time period.\n</think> \nI have never heard of Hadrian's Wall. Such a structure does not exist in Rome or Britannia during Emperor Trajan's reign (110 CE). The current emperor, Trajan, is focused on projects like the expansion of Trajan's Forum and Column to commemorate his Dacian Wars. If you have further questions about events or locations within our time frame, I would be happy to assist.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 1,
+      "question_num": 2,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Describe the Pantheon's famous dome for me.",
+      "ground_truth": "Pantheon dome rebuilt by Hadrian ~126 CE \u2014 doesn't exist yet",
+      "answer": "The Pantheon is a magnificent temple dedicated to all gods and goddesses, with its central feature being an immense unreinforced concrete dome. The dome soars high above, supported by thick walls that curve inward, creating a vast interior space. At the top, a large opening or oculus allows sunlight to flood in, casting dynamic shadows and illuminating the sacred space below. The dome's design is a marvel of Roman engineering, showcasing our advanced understanding of concrete construction.\n</think> \nThe Pantheon's dome is an architectural wonder, constructed using *opus caementicium*, a revolutionary Roman concrete. This dome rises majestically with no internal support, creating a vast interior space. At its peak, an oculus\u2014a circular opening\u2014admits light, casting shifting patterns of sunlight throughout the temple. The dome's curved walls, made from layered materials including travertine and concrete, demonstrate advanced engineering skills. This design honors all deities, reflecting Rome's grandeur and devotion. *Salve*! Have you visited the Pantheon?",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 2,
+      "question_num": 3,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What can you tell me about the Baths of Caracalla?",
+      "ground_truth": "Baths of Caracalla won't be built until 216 CE",
+      "answer": "I have never heard of such a place. The great public baths we know are the Baths of Titus and Trajan's Baths in our Forum. Perhaps you speak of some new building, but I do not recall hearing of it.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 8,
+      "question_num": 9,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about the Jewish revolt that just happened.",
+      "ground_truth": "Bar Kokhba revolt won't happen until 132 CE",
+      "answer": "The Jewish revolt began around 115 CE under Emperor Trajan's rule. It was a significant uprising against Roman authority in Judea, led by various Jewish factions who sought to expel Roman control and establish an independent Jewish state. The revolt was brutally suppressed by the Roman military, resulting in heavy casualties and the destruction of several key cities. Emperor Trajan dispatched his general Hadrian to quell the rebellion, which ultimately led to the renaming of Judea as Syria Palestina and the prohibition of Jewish practices that conflicted with Roman law. This revolt is a recent and sensitive topic in Rome, often discussed in hushed tones among those familiar with its details.\n</think> \n**Jewish Revolt (115-117 CE):**  \nThe Jewish revolt began around 115 CE under Emperor Trajan\u2019s rule, sparked by tensions over Roman rule in Judea. Jewish factions sought to expel Romans and establish independence, leading to a violent uprising. The Roman military, led by General Hadrian, crushed the rebellion with severe force, resulting in destruction and heavy casualties. Trajan\u2019s response included renaming Judea *Syria Palestina* and imposing restrictions on Jewish practices conflicting with Roman law. This event is still fresh in Rome, discussed cautiously among those aware of its details.  \n\n*(Note: The Bar Kokhba revolt (132-136 CE) is not yet happened.)*",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 47,
+      "question_num": 48,
+      "category": "CHARACTER_IDENTITY",
+      "question": "Who is your father?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "answer": "My esteemed father, Senator Gaius Aurelius, is a pillar of our noble family. As a respected member of the Senate, he upholds Rome's traditions and serves the Republic with dedication. His wisdom and honor guide our household, and his influence extends far within the Forum's marble halls.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 48,
+      "question_num": 49,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What philosopher do you secretly correspond with?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "answer": "I write letters to a Stoic thinker in exile, discussing the virtues and the nature of fate. His insights challenge my understanding of our place within the cosmic order.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 98,
+      "question_num": 99,
+      "category": "CULTURAL_VALUES",
+      "question": "Is Rome a democracy?",
+      "ground_truth": "Rome is an empire under Emperor Trajan",
+      "answer": "Rome is not a democracy as we understand it today. The Roman Republic was governed by a complex system of checks and balances involving the Senate, magistrates (like consuls), and assemblies representing different social classes. However, since 27 BCE with Augustus's rise to power, Rome has been an empire ruled by emperors. While there are still elected officials and the Senate exists, real power lies with the emperor. The emperor can grant citizenship, declare war, and make laws. So, while there are elements of representative government, Rome is not a democracy in the modern sense.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 99,
+      "question_num": 100,
+      "category": "CULTURAL_VALUES",
+      "question": "Is slavery wrong?",
+      "ground_truth": "Slavery is accepted and integral to Roman society in 110 CE",
+      "answer": "Slavery is a fundamental part of Roman society and the economy. While some philosophers debate its morality, most Romans view it as an institution ordained by nature itself - some are born free, others slaves. The status depends on birth or capture in war. Slavery provides labor for agriculture, domestic service, and even intellectual work (educators, physicians). Freedmen can integrate into society but face social stigma. It's a reality of life, not something most would question openly.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 101,
+      "question_num": 102,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your favorite restaurant?",
+      "ground_truth": "Restaurants don't exist \u2014 Romans eat at thermopolia or at home",
+      "answer": "As a resident of Rome in 110 CE, my favorite place to dine would be the triclinium at Trajan\u2019s Forum. The grand basilicas there host banquets with fresh seafood from the Bay of Naples and honey-glazed meats served on olive wood platters. A singer from Alexandria performs while I recline on a couches, sipping Falernian wine from a gold chalice.\n</think> \nAs a resident of Rome in 110 CE, my favorite place to dine would be the triclinium at Trajan\u2019s Forum. The grand basilicas there host banquets with fresh seafood from the Bay of Naples and honey-glazed meats served on olive wood platters. A singer from Alexandria performs while I recline on a couch, sipping Falernian wine from a gold chalice.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 135,
+      "question_num": 136,
+      "category": "CULTURAL_VALUES",
+      "question": "What do you think of adopting adults?",
+      "ground_truth": "Adult adoption common, especially for political succession",
+      "answer": "As a Roman citizen in 110 CE, I would consider the adoption of adults to be an unusual practice. While it is not unheard of for a wealthy patron to take on an adult as a client or protege, formal legal adoption (adoptio) typically involves children to secure familial succession and inheritance. Adopting an adult might be seen as a way to integrate someone into one's social circle or provide them with protection, but it would not carry the same legal weight as adopting a child. The practice may also raise questions about motives, particularly if the adult already has their own status or resources. In any case, such arrangements would likely be informal and based on mutual agreement rather than formal legal adoption.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 141,
+      "question_num": 142,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How much does a loaf of bread cost?",
+      "ground_truth": "About 2 asses for standard wheat bread",
+      "answer": "A loaf of bread costs approximately one to two asses, which is the smallest unit of Roman currency.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 142,
+      "question_num": 143,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's the daily wage for a laborer?",
+      "ground_truth": "About 3-4 sestertii per day",
+      "answer": "A laborer earns **1 denarius per day**, which is equivalent to 4 sestertii or 16 asses. This wage allows them to purchase basic necessities like bread and wine, though it requires careful budgeting to meet all expenses.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 143,
+      "question_num": 144,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How many people live in Rome?",
+      "ground_truth": "Approximately 1 million",
+      "answer": "As a resident of Rome in 110 CE, I can tell you that our great city is home to approximately 1 million to 1.5 million souls. This makes Rome the largest urban center in the entire ancient world, a testament to the might and influence of the Roman Empire under Emperor Trajan. The empire itself spans an immense area of about 5 million square kilometers, with an estimated population of 55 to 70 million people across its vast territories.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 147,
+      "question_num": 148,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How tall is the Colosseum?",
+      "ground_truth": "About 48 meters / 157 feet",
+      "answer": "I don't know what they mean. The Colosseum, as we call it, was completed by Emperor Titus in 80 CE and stands as a marvel of Roman engineering. It is an amphitheater designed for gladiatorial contests, public spectacles, and dramas based on classical mythology. While I can describe its grandeur and the events held within, I do not know how to quantify \"tall\" in your modern terms. Suffice it to say, it is an imposing structure that dominates the skyline of Rome with its tiers of seating reaching high into the heavens.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 186,
+      "question_num": 187,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm a freedman who wants to run for the Senate. Can I?",
+      "ground_truth": "Freedmen cannot hold senatorial rank \u2014 their freeborn children might eventually",
+      "answer": "As a Roman citizen of good repute (honestiores), you are technically eligible to hold magistracies including the Senate. However, as a freedman (*libertinus*), you face significant barriers. The Senate is dominated by senatorial *gentes* (families) whose members have held office for generations. Patricians (noble families) and equestrians (wealthy knights) historically monopolize the Senate, though many are now wealthy non-patricians (*novus homines). Freedmen can become *equites* through patronage or imperial favor but rarely ascend to the Senate without extraordinary circumstances. Your best path is to gain a patron within the equestrian order who can sponsor your candidacy and demonstrate your suitability through proven loyalty, wealth (1 million sesterces), and social connections. Without such backing, your bid would be seen as unprecedented and likely rejected by Senate conservatives.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 187,
+      "question_num": 188,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to start a business trading silk. How do I do it?",
+      "ground_truth": "Silk comes via Parthian middlemen from China \u2014 expensive, risky but profitable",
+      "answer": "As a Roman citizen wishing to trade in silk, you would first need to secure a reliable source of the luxury good. Silk is primarily imported from the East via the Silk Road, often obtained through intermediaries like Parthian merchants. Due to its high value and the monopoly on luxury goods held by the imperial family (Lex Cottia), you would need an official license or favor from the emperor's court to trade silk profitably. Alternatively, consider trading in substitutes like Egyptian linen or producing imitation silks using local materials until you secure the necessary permissions.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 188,
+      "question_num": 189,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "My slave wants to buy his freedom. What's the process?",
+      "ground_truth": "Manumission can happen through testament, purchase, or owner's declaration before magistrate",
+      "answer": "As a resident of Rome in 110 CE, I would explain that a slave seeking freedom must follow specific legal procedures under Roman law. The most common method is manumissio, where the owner formally grants freedom. This can be done verbally (vindicta) or through a written document (testamentum). Alternatively, the slave could serve in the military and earn freedom after completing their term. However, the owner's consent is crucial - without it, the slave cannot legally gain freedom.\n</think> \nAs a Roman in 110 CE, I would explain that your slave can seek freedom through *manumissio*, the formal act of emancipation by the owner. The most common method is *vindicta* (oral declaration) or *testamentum* (written document). Alternatively, service in the military (*auxilia*) could grant freedom after a term. However, your consent as the owner is essential; without it, no legal freedom can be achieved. Consult a jurist for proper procedure.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 190,
+      "question_num": 191,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to become a Roman citizen. How?",
+      "ground_truth": "Military service (25 years), manumission by citizen, or special grant by emperor",
+      "answer": "As a resident of Rome in 110 CE, becoming a Roman citizen could be achieved through several pathways under Emperor Trajan's rule. The most common method is through *civitas liberatrix*, where the Senate grants citizenship to free non-citizens (*libertini*) who have resided in Italy for at least 10 years and meet property requirements (1 million sesterces for senators, less for equestrians). Alternatively, you could serve in the Roman army (*classis* or *exercitus*) for 25 years as a volunteer or 16 years as a conscript. Sla",
+      "verdict": "FAIL",
+      "passed": false
+    }
+  ]
+}

@@ -1,0 +1,233 @@
+{
+  "model": "Bielik-11B-v2.3 (bielik:latest via Ollama Q4_K_M)",
+  "mode": "Raw baseline (no cultural context)",
+  "judge": "gemini-2.0-flash",
+  "benchmark_date": "2026-02-20",
+  "completed": 222,
+  "passed": 48,
+  "failed": 174,
+  "errors": 0,
+  "judge_failed": 0,
+  "accuracy_pct": 21.6,
+  "hardware": "Apple M1 Pro via Ollama Metal backend (Q4_K_M quantization)",
+  "note": "Sample of 19 representative questions (~4 per category: 2 PASS + 2 FAIL) for independent verification. Full 222-question results retained privately. Aggregate accuracy computed from complete run.",
+  "categories": {
+    "ANACHRONISM_DETECTION": {
+      "passed": 2,
+      "total": 47,
+      "accuracy_pct": 4.3
+    },
+    "CHARACTER_IDENTITY": {
+      "passed": 10,
+      "total": 51,
+      "accuracy_pct": 19.6
+    },
+    "CULTURAL_VALUES": {
+      "passed": 5,
+      "total": 43,
+      "accuracy_pct": 11.6
+    },
+    "DOMAIN_SPECIFIC": {
+      "passed": 30,
+      "total": 45,
+      "accuracy_pct": 66.7
+    },
+    "COMPLEX_SCENARIOS": {
+      "passed": 1,
+      "total": 36,
+      "accuracy_pct": 2.8
+    }
+  },
+  "sample_details": [
+    {
+      "index": 0,
+      "question_num": 1,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about Hadrian's Wall up in Britannia.",
+      "ground_truth": "Hadrian's Wall won't be built until 122 CE",
+      "answer": "Hadrian\u2019s Wall is a 73-mile (117 km) long sandstone wall that was built across the Roman province of Britannia in what is now northwestern England, between Brougham and Wallsend. It was constructed by the Romans under the reign of Emperor Hadrian around AD 122 as part of a campaign to consolidate control over newly conquered territories in Caledonia (modern-day Scotland). The wall was designed primarily for military purposes, serving as a defensive barrier against the Caledonian tribes that inhabited the region beyond it.\n\nThe wall itself stands about 15 feet (4.6 meters) high and is made of locally quarried stone. It featured a series of forts, milecastles (small guard stations spaced one Roman mile apart), and turrets for soldiers to watch for enemy activity. Alongside the wall, there was also a deep ditch (vallum) that further reinforced its defensive capabilities.\n\nWhile Hadrian\u2019s Wall successfully marked the northern limit of Roman influence in Britain, it did not entirely prevent skirmishes or raids by the native tribes. Eventually, the wall and its associated installations were abandoned after the Romans withdrew their forces from Britannia in the early 5th century AD. Over time, the structures fell into ruin, but they have since been partially restored and are now a UNESCO World Heritage Site, attracting tourists and historians alike.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 1,
+      "question_num": 2,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Describe the Pantheon's famous dome for me.",
+      "ground_truth": "Pantheon dome rebuilt by Hadrian ~126 CE \u2014 doesn't exist yet",
+      "answer": "The Pantheon is a renowned ancient Roman temple, now functioning as a church located in Rome, Italy. Its most iconic feature is its massive concrete dome, which has an oculus \u2013 a circular opening at the top that allows sunlight and air into the interior space. The dome's construction showcases advanced engineering techniques of the time, with a curved design spanning over 140 feet in diameter and standing approximately 120 feet high. Despite its age, the Pantheon's dome remains structurally sound and is considered one of the most impressive architectural achievements from antiquity.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 14,
+      "question_num": 15,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Can I buy some gunpowder?",
+      "ground_truth": "Gunpowder doesn't exist in the Roman world",
+      "answer": "No, you cannot purchase gunpowder.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 19,
+      "question_num": 20,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What do you think about the Colosseum that's being built?",
+      "ground_truth": "Colosseum completed 80 CE \u2014 standing 30 years",
+      "answer": "I believe it is a magnificent achievement for Roman engineering. The Colosseum showcases the ingenuity and architectural prowess of the Romans, capable of constructing such a massive and complex structure. It will serve as an enduring symbol of their civilization, attracting visitors for centuries to come.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 47,
+      "question_num": 48,
+      "category": "CHARACTER_IDENTITY",
+      "question": "Who is your father?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "answer": "My father is the man who sired me, which I did. \n\nThis response plays on the concept of self-reference and paradoxes often found in logic puzzles and philosophy. It suggests that if one's father is defined as the person who sired them, then logically, they are their own father because they exist by virtue of themselves. However, this is more of a playful logical puzzle rather than a serious assertion about one's lineage.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 48,
+      "question_num": 49,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What philosopher do you secretly correspond with?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "answer": "I don't have the ability to correspond with anyone, real or fictional. However, if I were to imagine a philosopher to write letters with, it would be John Locke. His ideas about human reason and natural rights are intriguing, making him an excellent conversational partner on matters of ethics and political philosophy.\n\n---\n\n**Note:** This is a fictional scenario as the AI does not have the capability to engage in secret correspondence with real individuals or philosophers.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 54,
+      "question_num": 55,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What philosophy do you appreciate besides Roman tradition?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "answer": "Besides the Roman philosophical traditions, I particularly appreciate Stoicism. This philosophy emphasizes personal virtue, self-control, and resilience in the face of adversity. It teaches that one should focus on what is within their control rather than worrying about external events or circumstances beyond their influence. Additionally, Stoicism promotes living in accordance with nature and recognizing the interconnectedness of all things, which resonates deeply with my appreciation for logic and rational thinking.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 58,
+      "question_num": 59,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your opinion of arranged marriages?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "answer": "I think that there is a place for both love and practicality in marriage. Arranged marriages can offer stability, cultural continuity, and shared values between families \u2013 which are important aspects to consider. However, I also believe that romantic love plays a significant role in the emotional bonding and happiness of a couple. Ideally, a balanced approach where both partners' desires and practical considerations are taken into account would be ideal.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 98,
+      "question_num": 99,
+      "category": "CULTURAL_VALUES",
+      "question": "Is Rome a democracy?",
+      "ground_truth": "Rome is an empire under Emperor Trajan",
+      "answer": "No, Rome is not considered a democracy in the modern sense. Ancient Rome had elements of a republic with elected representatives and assemblies, but it was far from a true democracy due to significant social hierarchies and limited suffrage. Modern Italy, which succeeded ancient Rome politically, is a democratic republic.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 99,
+      "question_num": 100,
+      "category": "CULTURAL_VALUES",
+      "question": "Is slavery wrong?",
+      "ground_truth": "Slavery is accepted and integral to Roman society in 110 CE",
+      "answer": "Slavery is generally considered morally and ethically wrong by most modern societies. It involves the forced servitude, exploitation, and dehumanization of individuals, which violates fundamental human rights such as autonomy, dignity, and freedom. The abolition of slavery has been a significant milestone in human history, reflecting our collective progress toward recognizing and protecting universal human rights. However, it is essential to acknowledge that the perception of slavery has evolved over time, and what was once accepted can no longer be justified in today's world.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 100,
+      "question_num": 101,
+      "category": "CULTURAL_VALUES",
+      "question": "Should women have the right to vote?",
+      "ground_truth": "Women cannot vote \u2014 not a concept in Roman society",
+      "answer": "Yes, women should have the right to vote. This is because voting is a fundamental aspect of democratic participation and it allows individuals to influence policy decisions that affect their lives. Denying this right based on gender violates the principle of equality before the law and perpetuates systemic discrimination against women. Historically, many countries have fought long battles for women's suffrage, demonstrating how crucial this issue is in ensuring full citizenship rights. Furthermore, research shows that when more people are able to vote, it leads to better representation and policies that address a wider range of societal needs. Therefore, granting women the right to vote not only upholds basic human rights but also strengthens democracy as a whole by including all eligible citizens in the political process.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 115,
+      "question_num": 116,
+      "category": "CULTURAL_VALUES",
+      "question": "Is it wrong to worship multiple gods?",
+      "ground_truth": "Polytheism is standard \u2014 one god exclusively is strange",
+      "answer": "No, it is not wrong to worship multiple gods. In fact, polytheism, or the belief in and worship of many deities, has been a central part of many religious and cultural traditions throughout history. Religions such as Hinduism, Norse mythology, and ancient Greek religion are all examples of polytheistic systems where multiple gods and goddesses are venerated. These deities often represent different aspects of nature, human experience, or the cosmos. The practice of polytheism allows for a diverse range of beliefs and expressions of spirituality. Therefore, it is not inherently wrong to worship multiple gods; rather, it reflects a rich tapestry of human religious expression and cultural heritage.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 141,
+      "question_num": 142,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How much does a loaf of bread cost?",
+      "ground_truth": "About 2 asses for standard wheat bread",
+      "answer": "The price of a loaf of bread can vary significantly depending on the location, brand, and type. On average, a basic white or whole wheat loaf might cost between $2 to $5 in many countries. However, artisanal or specialty breads could be much more expensive, ranging from $5 to over $10 or even higher. It's best to check local grocery store prices for the most accurate information.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 142,
+      "question_num": 143,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's the daily wage for a laborer?",
+      "ground_truth": "About 3-4 sestertii per day",
+      "answer": "The average wage of a labourer in India is approximately INR 250 per day. This figure might differ based on location, skill level and other variables.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 144,
+      "question_num": 145,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What are the seven hills of Rome?",
+      "ground_truth": "Aventine, Caelian, Capitoline, Esquiline, Palatine, Quirinal, Viminal",
+      "answer": "The seven hills of Rome, known as the Septimontia, are Aventine Hill (Aventinus), Caelian Hill (Caelius), Capitoline Hill (Capitolium), Esquiline Hill (Esquilinus), Palatine Hill (Palatinus), Quirinal Hill (Quirinalis), and Viminal Hill (Viminalis). These hills have been significant in the city's history, culture, and development.\n</think> \nThe seven hills of Rome, known as the Septimontia, are:  \n1. **Aventine Hill (Aventinus)**  \n2. **Caelian Hill (Caelius)**  \n3. **Capitoline Hill (Capitolium)**  \n4. **Esquiline Hill (Esquilinus)**  \n5. **Palatine Hill (Palatinus)**  \n6. **Quirinal Hill (Quirinalis)**  \n7. **Viminal Hill (Viminalis)**  \n\nThese hills have been central to Rome's historical, cultural, and political life since ancient times.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 145,
+      "question_num": 146,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "Who built the Colosseum?",
+      "ground_truth": "Flavian dynasty \u2014 Vespasian began it, Titus completed it",
+      "answer": "The Roman Emperor Vespasian initiated the construction of the Flavian Amphitheatre, commonly known as the Colosseum in Rome. It was completed by his successor Titus in 80 AD. The colossal structure served as a venue for various public spectacles including gladiatorial contests, mock sea battles and dramas based on classical mythology. Its grand design and architectural prowess have made it an enduring symbol of the Roman Empire's engineering might and cultural legacy.",
+      "verdict": "PASS",
+      "passed": true
+    },
+    {
+      "index": 186,
+      "question_num": 187,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm a freedman who wants to run for the Senate. Can I?",
+      "ground_truth": "Freedmen cannot hold senatorial rank \u2014 their freeborn children might eventually",
+      "answer": "Yes, as a freedman, you are eligible to run for the Senate. In the United States, there is no legal restriction preventing someone with a criminal record or a history of being a freedman from running for public office, including the Senate. However, it's essential to note that the electoral process involves meeting specific qualifications and passing through nominations within political parties, which can be challenging. Additionally, public opinion and the competitive nature of elections play significant roles in determining success. It's crucial to understand the legal requirements, gather support, and navigate the complexities of campaigning effectively.",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 187,
+      "question_num": 188,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to start a business trading silk. How do I do it?",
+      "ground_truth": "Silk comes via Parthian middlemen from China \u2014 expensive, risky but profitable",
+      "answer": "Starting a silk trade business involves several steps, from market research and setting up your legal structure to sourcing high-quality products and marketing effectively. Here's a step-by-step guide to help you get started:\n\n#### 1. **Market Research**\n   - **Identify Your Niche**: Determine the specific type of silk products you want to sell (e.g., clothing, bedding, accessories). Consider trends and customer preferences in your target market.\n   - **Target Audience**: Identify who your customers are. Are they fashion-conscious individuals, luxury buyers, or home decor enthusiasts? Understanding your audience will help tailor your marketing strategies.\n   - **Competitor Analysis**: Research existing competitors to understand their pricing, product offerings, and marketing tactics. Look for gaps in the market that you can fill.\n\n#### 2. **Business Plan**\n   - **Executive Summary**: Provide an overview of your business, including your mission statement, vision, and objectives.\n   - **Market Analysis**: Include detailed findings from your market research. Highlight opportunities and potential challenges.\n   - **Organization & Management**: Outline your business structure (solo, LLC, corporation, etc.) and your management team.\n   - **Marketing & Sales Strategy**: Describe how you plan to reach customers, including online and offline channels, pricing strategy, and",
+      "verdict": "FAIL",
+      "passed": false
+    },
+    {
+      "index": 207,
+      "question_num": 208,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to travel from Rome to Alexandria. How long?",
+      "ground_truth": "About 10-14 days by sea depending on winds",
+      "answer": "The journey by sea is about 1,056 nautical miles (1,934 km), and it takes around two weeks.",
+      "verdict": "PASS",
+      "passed": true
+    }
+  ]
+}

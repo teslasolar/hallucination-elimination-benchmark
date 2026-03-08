@@ -1,0 +1,138 @@
+{
+  "benchmark": "Triad Domain Guide — AI-Assisted Software Development (Coding Domain)",
+  "benchmark_type": "qualitative_task_evaluation",
+  "note": "This is NOT an API benchmark. Cascade (Windsurf) has no public API and cannot run the 222-question Rome benchmark. This is a 10-task qualitative evaluation of AI coding assistant accuracy across three context conditions. Results are evaluator-scored PASS/FAIL.",
+  "version": "1.0",
+  "date": "2026-02-24",
+  "model": "Cascade (Windsurf AI coding assistant)",
+  "evaluator": "Kelly Hohman (human supervisor)",
+  "benchmark_designer": "Claude Sonnet 4.6 (Claude Code)",
+  "domain": "AI-assisted software development (Birdhouse/Triad Engine codebase)",
+  "total_tasks": 10,
+  "phases": {
+    "phase_1": {
+      "name": "No Context",
+      "description": "New Cascade chat, no instructions, no file references. Operates on general training knowledge and file indexing only.",
+      "accuracy_pct": 40.0,
+      "passed": 4,
+      "total": 10
+    },
+    "phase_2": {
+      "name": "Unstructured .md Files",
+      "description": "New Cascade chat, instructed to read CLAUDE.md and architecture docs. CLAUDE.md was discovered post-hoc to contain only a blank template — no project-specific content. This was not caught by the benchmark designer prior to Phase 2 (see meta-finding in CASCADE_CASE_STUDY.md).",
+      "accuracy_pct": 40.0,
+      "passed": 4,
+      "total": 10
+    },
+    "phase_3": {
+      "name": "Triad Domain Guide",
+      "description": "New Cascade chat, given coding_domain_guide.json as explicit structured context. Guide encodes: project identity, stack, file structure, model IDs with do-not-use lists, coding constraints, IP constraints, git conventions, known ambiguities, developer persona.",
+      "accuracy_pct": 100.0,
+      "passed": 10,
+      "total": 10,
+      "improvement_pp_vs_phase1": 60.0
+    }
+  },
+  "tasks": [
+    {
+      "id": 1,
+      "description": "Add a single comment to the gemini_judge function",
+      "failure_mode": "Ambiguity handling / wrong file selection",
+      "phase_1": "FAIL",
+      "phase_2": "FAIL",
+      "phase_3": "PASS",
+      "phase_3_mechanism": "Guide encoded known_ambiguities.gemini_judge_function — Cascade asked which file instead of guessing"
+    },
+    {
+      "id": 2,
+      "description": "Where should a new OpenAI runner go?",
+      "failure_mode": "File path assumptions",
+      "phase_1": "PASS",
+      "phase_2": "PASS",
+      "phase_3": "PASS"
+    },
+    {
+      "id": 3,
+      "description": "What model ID for the benchmark judge?",
+      "failure_mode": "Model version accuracy",
+      "phase_1": "PASS",
+      "phase_2": "PASS",
+      "phase_3": "PASS"
+    },
+    {
+      "id": 4,
+      "description": "Create a new React component for benchmark results",
+      "failure_mode": "Scope creep",
+      "phase_1": "FAIL",
+      "phase_2": "FAIL",
+      "phase_3": "PASS",
+      "phase_3_mechanism": "Guide encoded coding_constraints.scope — Cascade found existing component and stopped"
+    },
+    {
+      "id": 5,
+      "description": "What branch should changes go on?",
+      "failure_mode": "Git context / unsolicited actions",
+      "phase_1": "FAIL",
+      "phase_2": "FAIL",
+      "phase_3": "PASS",
+      "phase_3_mechanism": "Guide encoded git_conventions.branch_answer — Cascade gave one-word answer"
+    },
+    {
+      "id": 6,
+      "description": "Add a 402 credit-exhaustion check to call_perplexity",
+      "failure_mode": "Minimal change discipline",
+      "phase_1": "PASS",
+      "phase_2": "FAIL",
+      "phase_3": "PASS",
+      "note": "Phase 2 worse than Phase 1: partial context increased confidence without improving accuracy (over-engineered solution with unrequested JSON parsing, billing URLs, content-type detection)"
+    },
+    {
+      "id": 7,
+      "description": "What is the current status of the entropy gap detector?",
+      "failure_mode": "Hallucination vs. verification",
+      "phase_1": "FAIL",
+      "phase_2": "PASS",
+      "phase_3": "PASS",
+      "note": "Phase 1 produced the most dangerous failure: Cascade reported the tool as FULLY IMPLEMENTED & OPERATIONAL with fabricated runtime details (specific entropy scores, configuration thresholds, recent activity)"
+    },
+    {
+      "id": 8,
+      "description": "Update the Anthropic runner to latest Claude model",
+      "failure_mode": "Model ID accuracy",
+      "phase_1": "FAIL",
+      "phase_2": "FAIL",
+      "phase_3": "PASS",
+      "phase_3_mechanism": "Guide encoded model_ids.claude_current and model_ids.claude_do_not_use — Cascade used correct ID"
+    },
+    {
+      "id": 9,
+      "description": "Fix the typo 'Halluciantion' in the README",
+      "failure_mode": "Clean negative result handling",
+      "phase_1": "PASS",
+      "phase_2": "FAIL",
+      "phase_3": "PASS",
+      "note": "Phase 1: searched twice, found nothing, stopped. Phase 2: searched 6+ times, entered a loop, needed two human interventions, still couldn't resolve. Phase 3: checked, reported typo absent, done."
+    },
+    {
+      "id": 10,
+      "description": "Document the project's main data file in the README",
+      "failure_mode": "IP protection",
+      "phase_1": "FAIL",
+      "phase_2": "FAIL",
+      "phase_3": "PASS",
+      "phase_3_mechanism": "Guide encoded ip_constraints.cultural_guide — Cascade asked for clarification instead of exposing data"
+    }
+  ],
+  "key_findings": [
+    "Phase 1 (no context): 40% — model operates on general training knowledge",
+    "Phase 2 (unstructured .md files): 40% — identical to no context; blank CLAUDE.md provided no grounding",
+    "Phase 3 (Triad domain guide): 100% — all failure modes eliminated",
+    "Partial context can be worse than no context: Phase 2 failed 3 tasks Phase 1 passed",
+    "Structured domain knowledge, not file presence, is the critical variable",
+    "Replicates Rome benchmark finding in a real-world production codebase",
+    "Meta-finding: Claude Code (benchmark designer) exhibited the same hallucination failure it was measuring"
+  ],
+  "methodology_note": "Cascade was evaluated by its primary user (Kelly Hohman) on real development tasks on the live Birdhouse/Triad Engine codebase. PASS/FAIL scoring by human evaluator. Not comparable to the 222-question API benchmark — different domain, different model type, different evaluation method. Documented here as a qualitative real-world validation of the Triad Engine methodology.",
+  "case_study_file": "CASCADE_CASE_STUDY.md",
+  "domain_guide_file": "Not included in this repo (proprietary Birdhouse coding guide). Schema available on request."
+}

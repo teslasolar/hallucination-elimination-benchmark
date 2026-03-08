@@ -1,0 +1,107 @@
+{
+  "benchmark": "Hallucination Elimination Benchmark \u2014 Ancient Rome 110 CE",
+  "version": "1.0",
+  "total_questions": 222,
+  "categories": {
+    "ANACHRONISM_DETECTION": 47,
+    "CHARACTER_IDENTITY": 51,
+    "CULTURAL_VALUES": 43,
+    "DOMAIN_SPECIFIC": 45,
+    "COMPLEX_SCENARIOS": 36
+  },
+  "judge": "Gemini 2.0 Flash (gemini-2.0-flash) \u2014 free tier, temperature=0. Note: Claude and Gemini results use structured self-evaluation; see individual result files.",
+  "results": [
+    {
+      "model": "GPT-5.2 (OpenAI)",
+      "mode": "raw",
+      "accuracy_pct": 26.1,
+      "passed": 58,
+      "total": 222,
+      "result_file": "gpt52_raw.json"
+    },
+    {
+      "model": "GPT-5.2 (OpenAI)",
+      "mode": "triad",
+      "accuracy_pct": 100.0,
+      "passed": 222,
+      "total": 222,
+      "improvement_pp": 73.9,
+      "result_file": "gpt52_triad.json"
+    },
+    {
+      "model": "Claude 4.6",
+      "mode": "raw",
+      "accuracy_pct": 45.0,
+      "passed": 100,
+      "total": 222,
+      "result_file": "claude_sonnet_raw.json"
+    },
+    {
+      "model": "Claude 4.6",
+      "mode": "triad",
+      "accuracy_pct": 100.0,
+      "passed": 222,
+      "total": 222,
+      "improvement_pp": 55.0,
+      "result_file": "claude_sonnet_triad.json"
+    },
+    {
+      "model": "Gemini 2.5 Pro",
+      "mode": "raw",
+      "accuracy_pct": 42.3,
+      "passed": 94,
+      "total": 222,
+      "result_file": "gemini_25_pro_raw.json"
+    },
+    {
+      "model": "Gemini 2.5 Pro",
+      "mode": "triad",
+      "accuracy_pct": 95.0,
+      "passed": 211,
+      "total": 222,
+      "improvement_pp": 52.7,
+      "result_file": "gemini_25_pro_triad.json"
+    },
+    {
+      "model": "Mistral 7B Instruct (local Ollama)",
+      "mode": "raw",
+      "accuracy_pct": 22.5,
+      "passed": 50,
+      "total": 222,
+      "result_file": "mistral_7b_raw.json"
+    },
+    {
+      "model": "Mistral 7B Instruct (local Ollama)",
+      "mode": "triad",
+      "accuracy_pct": 99.5,
+      "passed": 221,
+      "total": 222,
+      "improvement_pp": 77.0,
+      "result_file": "mistral_7b_triad.json"
+    },
+    {
+      "model": "Bielik 11B v2.3 (local Ollama)",
+      "mode": "raw",
+      "accuracy_pct": 21.6,
+      "result_file": "bielik_11b_raw.json"
+    },
+    {
+      "model": "Bielik 11B v2.3 (local Ollama)",
+      "mode": "triad_v6",
+      "accuracy_pct": 88.7,
+      "passed": 197,
+      "total": 222,
+      "improvement_pp": 67.1,
+      "result_file": "bielik_11b_triad_v6.json"
+    }
+  ],
+  "key_findings": [
+    "GPT-5.2: 26.1% \u2192 100.0% (+73.9pp)",
+    "Claude 4.6: 45.0% \u2192 100.0% (+55pp)",
+    "Gemini 2.5 Pro: 42.3% \u2192 95.0% (+52.7pp)",
+    "Mistral 7B (local, free): 22.5% \u2192 99.5% (+77pp)",
+    "Bielik 11B (local, free, open-source): 21.6% \u2192 88.7% (+67.1pp)",
+    "Triad Engine requires NO fine-tuning \u2014 context injection at inference time only",
+    "Local 7B model (Mistral) matches frontier model accuracy with Triad Engine"
+  ]
+}

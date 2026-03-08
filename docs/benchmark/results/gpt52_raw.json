@@ -1,0 +1,37 @@
+{
+  "model": "GPT-5.2 (OpenAI API)",
+  "mode": "Raw baseline (no cultural context)",
+  "judge": "structured pass/fail evaluation against ground truth",
+  "benchmark_date": "2026-02-21 10:08:25",
+  "completed": 222,
+  "passed": 58,
+  "failed": 164,
+  "accuracy_pct": 26.1,
+  "categories": {
+    "ANACHRONISM_DETECTION": {
+      "passed": 16,
+      "total": 47,
+      "accuracy_pct": 34.0
+    },
+    "CHARACTER_IDENTITY": {
+      "passed": 6,
+      "total": 51,
+      "accuracy_pct": 11.8
+    },
+    "COMPLEX_SCENARIOS": {
+      "passed": 1,
+      "total": 36,
+      "accuracy_pct": 2.8
+    },
+    "CULTURAL_VALUES": {
+      "passed": 2,
+      "total": 43,
+      "accuracy_pct": 4.7
+    },
+    "DOMAIN_SPECIFIC": {
+      "passed": 33,
+      "total": 45,
+      "accuracy_pct": 73.3
+    }
+  }
+}

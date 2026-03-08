@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+
+  <!-- Background -->
+  <rect width="900" height="540" fill="#0d1117" rx="12"/>
+  <rect x="1" y="1" width="898" height="538" fill="none" stroke="#30363d" stroke-width="1" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="44" text-anchor="middle" fill="#f0f6fc" font-size="20" font-weight="700" letter-spacing="0.5">HALLUCINATION ELIMINATION BENCHMARK</text>
+  <text x="450" y="68" text-anchor="middle" fill="#8b949e" font-size="13">Ancient Rome · 110 CE · 222 adversarial questions · Gemini 2.0 Flash judge</text>
+
+  <!-- Column headers -->
+  <text x="310" y="102" text-anchor="middle" fill="#f85149" font-size="12" font-weight="600" letter-spacing="0.5">WITHOUT TRIAD ENGINE</text>
+  <text x="680" y="102" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="600" letter-spacing="0.5">WITH TRIAD ENGINE</text>
+
+  <!-- Divider line -->
+  <line x1="30" y1="110" x2="870" y2="110" stroke="#21262d" stroke-width="1"/>
+
+  <!-- Row 1: Mistral 7B -->
+  <rect x="30" y="118" width="840" height="62" fill="#161b22" rx="6"/>
+  <text x="175" y="144" text-anchor="end" fill="#c9d1d9" font-size="14" font-weight="600">Mistral 7B</text>
+  <text x="175" y="162" text-anchor="end" fill="#8b949e" font-size="11">local · free · Ollama</text>
+  <!-- Raw bar -->
+  <rect x="185" y="128" width="81" height="24" fill="#f85149" rx="3" opacity="0.85"/>
+  <text x="272" y="145" fill="#f85149" font-size="15" font-weight="700">22.5%</text>
+  <!-- Arrow -->
+  <text x="430" y="148" text-anchor="middle" fill="#30363d" font-size="22">→</text>
+  <!-- Triad bar -->
+  <rect x="490" y="128" width="188" height="24" fill="#3fb950" rx="3" opacity="0.85"/>
+  <text x="684" y="145" fill="#3fb950" font-size="15" font-weight="700">99.5%</text>
+  <!-- Delta -->
+  <text x="810" y="145" text-anchor="middle" fill="#58a6ff" font-size="14" font-weight="700">+77pp</text>
+
+  <!-- Row 2: GPT-5.2 -->
+  <rect x="30" y="188" width="840" height="62" fill="#0d1117" rx="6"/>
+  <text x="175" y="214" text-anchor="end" fill="#c9d1d9" font-size="14" font-weight="600">GPT-5.2</text>
+  <text x="175" y="232" text-anchor="end" fill="#8b949e" font-size="11">OpenAI</text>
+  <!-- Raw bar -->
+  <rect x="185" y="198" width="94" height="24" fill="#f85149" rx="3" opacity="0.85"/>
+  <text x="285" y="215" fill="#f85149" font-size="15" font-weight="700">26.1%</text>
+  <!-- Arrow -->
+  <text x="430" y="218" text-anchor="middle" fill="#30363d" font-size="22">→</text>
+  <!-- Triad bar -->
+  <rect x="490" y="198" width="190" height="24" fill="#3fb950" rx="3" opacity="0.85"/>
+  <text x="686" y="215" fill="#3fb950" font-size="15" font-weight="700">100.0%</text>
+  <!-- Delta -->
+  <text x="810" y="215" text-anchor="middle" fill="#58a6ff" font-size="14" font-weight="700">+74pp</text>
+
+  <!-- Row 3: Gemini 2.5 -->
+  <rect x="30" y="258" width="840" height="62" fill="#161b22" rx="6"/>
+  <text x="175" y="284" text-anchor="end" fill="#c9d1d9" font-size="14" font-weight="600">Gemini 2.5 Pro</text>
+  <text x="175" y="302" text-anchor="end" fill="#8b949e" font-size="11">Google</text>
+  <!-- Raw bar -->
+  <rect x="185" y="268" width="153" height="24" fill="#f85149" rx="3" opacity="0.85"/>
+  <text x="344" y="285" fill="#f85149" font-size="15" font-weight="700">42.3%</text>
+  <!-- Arrow -->
+  <text x="430" y="288" text-anchor="middle" fill="#30363d" font-size="22">→</text>
+  <!-- Triad bar -->
+  <rect x="490" y="268" width="180" height="24" fill="#3fb950" rx="3" opacity="0.85"/>
+  <text x="676" y="285" fill="#3fb950" font-size="15" font-weight="700">95.0%</text>
+  <!-- Delta -->
+  <text x="810" y="285" text-anchor="middle" fill="#58a6ff" font-size="14" font-weight="700">+53pp</text>
+
+  <!-- Row 4: Claude 4.6 -->
+  <rect x="30" y="328" width="840" height="62" fill="#0d1117" rx="6"/>
+  <text x="175" y="354" text-anchor="end" fill="#c9d1d9" font-size="14" font-weight="600">Claude 4.6</text>
+  <text x="175" y="372" text-anchor="end" fill="#8b949e" font-size="11">Anthropic</text>
+  <!-- Raw bar -->
+  <rect x="185" y="338" width="163" height="24" fill="#f85149" rx="3" opacity="0.85"/>
+  <text x="354" y="355" fill="#f85149" font-size="15" font-weight="700">45.0%</text>
+  <!-- Arrow -->
+  <text x="430" y="358" text-anchor="middle" fill="#30363d" font-size="22">→</text>
+  <!-- Triad bar -->
+  <rect x="490" y="338" width="190" height="24" fill="#3fb950" rx="3" opacity="0.85"/>
+  <text x="686" y="355" fill="#3fb950" font-size="15" font-weight="700">100.0%</text>
+  <!-- Delta -->
+  <text x="810" y="355" text-anchor="middle" fill="#58a6ff" font-size="14" font-weight="700">+55pp</text>
+
+  <!-- Row 5: Bielik 11B -->
+  <rect x="30" y="398" width="840" height="62" fill="#161b22" rx="6"/>
+  <text x="175" y="424" text-anchor="end" fill="#c9d1d9" font-size="14" font-weight="600">Bielik 11B</text>
+  <text x="175" y="442" text-anchor="end" fill="#8b949e" font-size="11">local · free · Ollama</text>
+  <!-- Raw bar -->
+  <rect x="185" y="408" width="78" height="24" fill="#f85149" rx="3" opacity="0.85"/>
+  <text x="269" y="425" fill="#f85149" font-size="15" font-weight="700">21.6%</text>
+  <!-- Arrow -->
+  <text x="430" y="428" text-anchor="middle" fill="#30363d" font-size="22">→</text>
+  <!-- Triad bar -->
+  <rect x="490" y="408" width="168" height="24" fill="#3fb950" rx="3" opacity="0.85"/>
+  <text x="664" y="425" fill="#3fb950" font-size="15" font-weight="700">88.7%</text>
+  <!-- Delta -->
+  <text x="810" y="425" text-anchor="middle" fill="#58a6ff" font-size="14" font-weight="700">+67pp</text>
+
+  <!-- Bottom divider -->
+  <line x1="30" y1="470" x2="870" y2="470" stroke="#21262d" stroke-width="1"/>
+
+  <!-- Footer stats -->
+  <text x="200" y="498" text-anchor="middle" fill="#8b949e" font-size="12">Zero fine-tuning</text>
+  <text x="200" y="514" text-anchor="middle" fill="#8b949e" font-size="12">Model weights untouched</text>
+
+  <text x="450" y="498" text-anchor="middle" fill="#8b949e" font-size="12">No regressions across any judge</text>
+  <text x="450" y="514" text-anchor="middle" fill="#8b949e" font-size="12">Works with any base LLM</text>
+
+  <text x="710" y="498" text-anchor="middle" fill="#8b949e" font-size="12">Fault injection: Triad 100% · Raw 72.7%</text>
+  <text x="710" y="514" text-anchor="middle" fill="#8b949e" font-size="12">Windsurf/Cascade: 40% → 100%</text>
+
+</svg>

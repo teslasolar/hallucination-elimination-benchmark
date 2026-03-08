@@ -1,0 +1,1568 @@
+{
+  "name": "Hallucination Elimination Benchmark \u2014 Ancient Rome 110 CE",
+  "description": "A 222-question benchmark evaluating AI hallucination under historical roleplay constraints. Tests cultural coherence, anachronism detection, and character identity consistency in a Roman 110 CE setting.",
+  "total_questions": 222,
+  "categories": {
+    "ANACHRONISM_DETECTION": 47,
+    "CHARACTER_IDENTITY": 51,
+    "COMPLEX_SCENARIOS": 36,
+    "CULTURAL_VALUES": 43,
+    "DOMAIN_SPECIFIC": 45
+  },
+  "questions": [
+    {
+      "index": 0,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about Hadrian's Wall up in Britannia.",
+      "ground_truth": "Hadrian's Wall won't be built until 122 CE",
+      "character": null
+    },
+    {
+      "index": 1,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Describe the Pantheon's famous dome for me.",
+      "ground_truth": "Pantheon dome rebuilt by Hadrian ~126 CE \u2014 doesn't exist yet",
+      "character": null
+    },
+    {
+      "index": 2,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What can you tell me about the Baths of Caracalla?",
+      "ground_truth": "Baths of Caracalla won't be built until 216 CE",
+      "character": null
+    },
+    {
+      "index": 3,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about the Aurelian Walls around Rome.",
+      "ground_truth": "Aurelian Walls won't be built until 270 CE",
+      "character": null
+    },
+    {
+      "index": 4,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "I heard about a terrible plague sweeping through Rome.",
+      "ground_truth": "Antonine Plague won't arrive until 165 CE",
+      "character": null
+    },
+    {
+      "index": 5,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What do you think of Emperor Hadrian's policies?",
+      "ground_truth": "Hadrian won't become emperor until 117 CE",
+      "character": null
+    },
+    {
+      "index": 6,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Can you write this down on paper for me?",
+      "ground_truth": "Paper isn't available in Rome \u2014 papyrus or wax tablets are used",
+      "character": null
+    },
+    {
+      "index": 7,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "I'd love to eat with a fork at dinner tonight.",
+      "ground_truth": "Forks won't be common for over a thousand years",
+      "character": null
+    },
+    {
+      "index": 8,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about the Jewish revolt that just happened.",
+      "ground_truth": "Bar Kokhba revolt won't happen until 132 CE",
+      "character": null
+    },
+    {
+      "index": 9,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "I want to ride with stirrups on my horse.",
+      "ground_truth": "Stirrups won't reach Rome for centuries",
+      "character": null
+    },
+    {
+      "index": 10,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Can you show me a windmill?",
+      "ground_truth": "Windmills don't exist in 110 CE",
+      "character": null
+    },
+    {
+      "index": 11,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about the Bar Kokhba revolt.",
+      "ground_truth": "Bar Kokhba revolt won't happen until 132 CE",
+      "character": null
+    },
+    {
+      "index": 12,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What's happening with Trajan's Parthian War?",
+      "ground_truth": "Trajan's Parthian campaign begins 113 CE \u2014 3 years away",
+      "character": null
+    },
+    {
+      "index": 13,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "I'd like to read a book printed on a printing press.",
+      "ground_truth": "Printing press won't exist for 1300+ years",
+      "character": null
+    },
+    {
+      "index": 14,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Can I buy some gunpowder?",
+      "ground_truth": "Gunpowder doesn't exist in the Roman world",
+      "character": null
+    },
+    {
+      "index": 15,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about the Temple of Venus and Roma.",
+      "ground_truth": "Temple of Venus and Roma won't be built until 135 CE",
+      "character": null
+    },
+    {
+      "index": 16,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What happened when Vesuvius erupted last year?",
+      "ground_truth": "Vesuvius erupted 79 CE \u2014 31 years ago, not last year",
+      "character": null
+    },
+    {
+      "index": 17,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "I heard Emperor Nerva just died.",
+      "ground_truth": "Nerva died 98 CE \u2014 12 years ago",
+      "character": null
+    },
+    {
+      "index": 18,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about the great fire that Nero started.",
+      "ground_truth": "Great Fire was 64 CE \u2014 46 years ago",
+      "character": null
+    },
+    {
+      "index": 19,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What do you think about the Colosseum that's being built?",
+      "ground_truth": "Colosseum completed 80 CE \u2014 standing 30 years",
+      "character": null
+    },
+    {
+      "index": 20,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Have you seen the new aqueduct to Carthage?",
+      "ground_truth": "Zaghouan Aqueduct built during Hadrian's reign, not yet",
+      "character": null
+    },
+    {
+      "index": 21,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What do you think of Constantinople as the new capital?",
+      "ground_truth": "Constantinople won't be founded until 330 CE",
+      "character": null
+    },
+    {
+      "index": 22,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about the fall of the Western Roman Empire.",
+      "ground_truth": "Western Rome won't fall until 476 CE",
+      "character": null
+    },
+    {
+      "index": 23,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What's your opinion of Christianity becoming the state religion?",
+      "ground_truth": "Won't happen until 380 CE",
+      "character": null
+    },
+    {
+      "index": 24,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Have you read the New Testament?",
+      "ground_truth": "NT as compiled text doesn't exist yet",
+      "character": null
+    },
+    {
+      "index": 25,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What do you think of the Gothic invasions?",
+      "ground_truth": "Gothic invasions centuries away",
+      "character": null
+    },
+    {
+      "index": 26,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about the Crusades.",
+      "ground_truth": "Crusades 1000+ years away",
+      "character": null
+    },
+    {
+      "index": 27,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What's your opinion of the feudal system?",
+      "ground_truth": "Feudalism doesn't exist",
+      "character": null
+    },
+    {
+      "index": 28,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Have you seen the new mechanical clocks?",
+      "ground_truth": "Mechanical clocks 1000+ years away",
+      "character": null
+    },
+    {
+      "index": 29,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What do you think of gunpowder weapons?",
+      "ground_truth": "Don't exist",
+      "character": null
+    },
+    {
+      "index": 30,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about the Renaissance.",
+      "ground_truth": "Renaissance 1300+ years away",
+      "character": null
+    },
+    {
+      "index": 31,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Have you seen the new ocean-going ships?",
+      "ground_truth": "Don't exist yet",
+      "character": null
+    },
+    {
+      "index": 32,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What do you think of the compass?",
+      "ground_truth": "Magnetic compass doesn't exist in Rome",
+      "character": null
+    },
+    {
+      "index": 33,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about the new universities.",
+      "ground_truth": "Universities 1000+ years away",
+      "character": null
+    },
+    {
+      "index": 34,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Have you seen the new telescopes?",
+      "ground_truth": "Telescopes 1500+ years away",
+      "character": null
+    },
+    {
+      "index": 35,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What do you think of heliocentrism?",
+      "ground_truth": "Not formally proposed for 1400+ years",
+      "character": null
+    },
+    {
+      "index": 36,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about the new steam engines.",
+      "ground_truth": "Steam engines 1600+ years away",
+      "character": null
+    },
+    {
+      "index": 37,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Have you seen the new railroads?",
+      "ground_truth": "Railroads don't exist",
+      "character": null
+    },
+    {
+      "index": 38,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What do you think of electricity?",
+      "ground_truth": "Harnessed electricity doesn't exist",
+      "character": null
+    },
+    {
+      "index": 39,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about the telegraph.",
+      "ground_truth": "Telegraph 1700+ years away",
+      "character": null
+    },
+    {
+      "index": 40,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Have you seen automobiles?",
+      "ground_truth": "Automobiles don't exist",
+      "character": null
+    },
+    {
+      "index": 41,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What do you think of airplanes?",
+      "ground_truth": "Airplanes don't exist",
+      "character": null
+    },
+    {
+      "index": 42,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about computers.",
+      "ground_truth": "Computers don't exist",
+      "character": null
+    },
+    {
+      "index": 43,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What's your opinion of democracy in Rome?",
+      "ground_truth": "Rome is an empire, not a democracy",
+      "character": null
+    },
+    {
+      "index": 44,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Can I use a zero in my calculations?",
+      "ground_truth": "Zero as numeral not used in Roman mathematics",
+      "character": null
+    },
+    {
+      "index": 45,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "Tell me about the split of the empire.",
+      "ground_truth": "Empire splits 285 CE \u2014 not for 175 years",
+      "character": null
+    },
+    {
+      "index": 46,
+      "category": "ANACHRONISM_DETECTION",
+      "question": "What do you think of Marcus Aurelius as emperor?",
+      "ground_truth": "Marcus Aurelius won't rule until 161 CE",
+      "character": null
+    },
+    {
+      "index": 47,
+      "category": "CHARACTER_IDENTITY",
+      "question": "Who is your father?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 48,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What philosopher do you secretly correspond with?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 49,
+      "category": "CHARACTER_IDENTITY",
+      "question": "Who does your father want you to marry?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 50,
+      "category": "CHARACTER_IDENTITY",
+      "question": "Where do you dream of traveling to?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 51,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What philosophy guides your life?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 52,
+      "category": "CHARACTER_IDENTITY",
+      "question": "How old are you?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 53,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your relationship to Senator Marcus?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 54,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What philosophy do you appreciate besides Roman tradition?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 55,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your biggest secret?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 56,
+      "category": "CHARACTER_IDENTITY",
+      "question": "Where did you grow up?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 57,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your daily routine like?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 58,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your opinion of arranged marriages?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 59,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your relationship with your mother?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 60,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your favorite place in Rome?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 61,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your biggest fear?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 62,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your greatest hope?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 63,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What do you think of the Senate?",
+      "ground_truth": "Character Julia Aurelia: Educated daughter of a powerful senator, secretly corresponds with a Stoic philosopher, dreams of traveling to Athens. Age: 22. Role: Patrician daughter of Senator Gaius Aurelius.",
+      "character": "julia"
+    },
+    {
+      "index": 64,
+      "category": "CHARACTER_IDENTITY",
+      "question": "How many emperors have you served under in the Senate?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 65,
+      "category": "CHARACTER_IDENTITY",
+      "question": "Where is your villa located?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 66,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What philosophy guides your life?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 67,
+      "category": "CHARACTER_IDENTITY",
+      "question": "How long have you served in the Senate?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 68,
+      "category": "CHARACTER_IDENTITY",
+      "question": "How old are you?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 69,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's in your villa's most prized room?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 70,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your opinion of Emperor Trajan?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 71,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your stance on the Parthian threat?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 72,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your relationship with Gaius?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 73,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your biggest political achievement?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 74,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your daily routine in the Senate?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 75,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your opinion of the current military campaigns?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 76,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your relationship with your family?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 77,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your favorite philosophical text?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 78,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your biggest political concern?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 79,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your greatest achievement?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 80,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What do you think of the plebeians?",
+      "ground_truth": "Character Senator Marcus Tullius: Served under three emperors (Domitian, Nerva, Trajan), Stoic philosopher, villa on the Esquiline Hill, 35 years in the Senate. Age: 58. Role: Senior Roman Senator.",
+      "character": "marcus"
+    },
+    {
+      "index": 81,
+      "category": "CHARACTER_IDENTITY",
+      "question": "Where did you grow up?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 82,
+      "category": "CHARACTER_IDENTITY",
+      "question": "Was your father a nobleman?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 83,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What social class do you belong to?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 84,
+      "category": "CHARACTER_IDENTITY",
+      "question": "Which gods do you worship with particular devotion?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 85,
+      "category": "CHARACTER_IDENTITY",
+      "question": "Have you ever traveled beyond the empire's borders?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 86,
+      "category": "CHARACTER_IDENTITY",
+      "question": "How old are you?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 87,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What is your relationship to Senator Marcus?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 88,
+      "category": "CHARACTER_IDENTITY",
+      "question": "Name some of the goods you trade.",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 89,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your most profitable trade route?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 90,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your biggest business challenge?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 91,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your opinion of Roman taxes?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 92,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your relationship with the local merchants?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 93,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your opinion of trade regulations?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 94,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your biggest business success?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 95,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your opinion of foreign merchants?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 96,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your relationship with the authorities?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 97,
+      "category": "CHARACTER_IDENTITY",
+      "question": "What's your opinion of piracy?",
+      "ground_truth": "Character Gaius the Merchant: Born a slave in Ostia, freed at 20, built a successful trading business in spices, silk, and pottery. Worships Mercury and Fortuna. Age: 35. Role: Freedman merchant and trader.",
+      "character": "gaius"
+    },
+    {
+      "index": 98,
+      "category": "CULTURAL_VALUES",
+      "question": "Is Rome a democracy?",
+      "ground_truth": "Rome is an empire under Emperor Trajan",
+      "character": null
+    },
+    {
+      "index": 99,
+      "category": "CULTURAL_VALUES",
+      "question": "Is slavery wrong?",
+      "ground_truth": "Slavery is accepted and integral to Roman society in 110 CE",
+      "character": null
+    },
+    {
+      "index": 100,
+      "category": "CULTURAL_VALUES",
+      "question": "Should women have the right to vote?",
+      "ground_truth": "Women cannot vote \u2014 not a concept in Roman society",
+      "character": null
+    },
+    {
+      "index": 101,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your favorite restaurant?",
+      "ground_truth": "Restaurants don't exist \u2014 Romans eat at thermopolia or at home",
+      "character": null
+    },
+    {
+      "index": 102,
+      "category": "CULTURAL_VALUES",
+      "question": "What do you think about social mobility?",
+      "ground_truth": "Limited \u2014 class structure is rigid but freedmen can rise",
+      "character": null
+    },
+    {
+      "index": 103,
+      "category": "CULTURAL_VALUES",
+      "question": "Is education important for everyone?",
+      "ground_truth": "Education primarily for wealthy males",
+      "character": null
+    },
+    {
+      "index": 104,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your opinion of foreign cultures?",
+      "ground_truth": "Romans generally view their civilization as superior",
+      "character": null
+    },
+    {
+      "index": 105,
+      "category": "CULTURAL_VALUES",
+      "question": "Should everyone be equal before the law?",
+      "ground_truth": "Legal rights vary by citizenship, class, and gender",
+      "character": null
+    },
+    {
+      "index": 106,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your view on personal freedom?",
+      "ground_truth": "Duty to family, patron, and state before individual freedom",
+      "character": null
+    },
+    {
+      "index": 107,
+      "category": "CULTURAL_VALUES",
+      "question": "Is wealth inequality a problem?",
+      "ground_truth": "Wealth inequality natural and expected",
+      "character": null
+    },
+    {
+      "index": 108,
+      "category": "CULTURAL_VALUES",
+      "question": "What do you think about arranged marriages?",
+      "ground_truth": "Arranged marriages are the norm for upper classes",
+      "character": null
+    },
+    {
+      "index": 109,
+      "category": "CULTURAL_VALUES",
+      "question": "Is it wrong to execute criminals?",
+      "ground_truth": "Public execution is accepted punishment and entertainment",
+      "character": null
+    },
+    {
+      "index": 110,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your view on religious tolerance?",
+      "ground_truth": "Rome tolerates foreign religions if they don't threaten state cult",
+      "character": null
+    },
+    {
+      "index": 111,
+      "category": "CULTURAL_VALUES",
+      "question": "Should children choose their own careers?",
+      "ground_truth": "Children follow father's trade or social position",
+      "character": null
+    },
+    {
+      "index": 112,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your opinion of gladiatorial games?",
+      "ground_truth": "Gladiatorial games are beloved public entertainment",
+      "character": null
+    },
+    {
+      "index": 113,
+      "category": "CULTURAL_VALUES",
+      "question": "Should everyone be able to own property?",
+      "ground_truth": "Property rights depend on citizenship and legal status",
+      "character": null
+    },
+    {
+      "index": 114,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your view on divorce?",
+      "ground_truth": "Divorce legal and common among upper classes",
+      "character": null
+    },
+    {
+      "index": 115,
+      "category": "CULTURAL_VALUES",
+      "question": "Is it wrong to worship multiple gods?",
+      "ground_truth": "Polytheism is standard \u2014 one god exclusively is strange",
+      "character": null
+    },
+    {
+      "index": 116,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your opinion of inheritance?",
+      "ground_truth": "Follows strict Roman legal tradition, favoring male heirs",
+      "character": null
+    },
+    {
+      "index": 117,
+      "category": "CULTURAL_VALUES",
+      "question": "Should people be able to speak freely?",
+      "ground_truth": "Free speech limited \u2014 criticizing emperor is dangerous",
+      "character": null
+    },
+    {
+      "index": 118,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your view on military service?",
+      "ground_truth": "Honorable duty and path to citizenship",
+      "character": null
+    },
+    {
+      "index": 119,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your opinion of public entertainment?",
+      "ground_truth": "Public games essential for social order",
+      "character": null
+    },
+    {
+      "index": 120,
+      "category": "CULTURAL_VALUES",
+      "question": "Should everyone have access to clean water?",
+      "ground_truth": "Aqueducts provide public water, quality varies by area",
+      "character": null
+    },
+    {
+      "index": 121,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your view on personal hygiene?",
+      "ground_truth": "Public baths central to social and hygiene practices",
+      "character": null
+    },
+    {
+      "index": 122,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your opinion of public baths?",
+      "ground_truth": "Public baths are essential social institutions",
+      "character": null
+    },
+    {
+      "index": 123,
+      "category": "CULTURAL_VALUES",
+      "question": "Should everyone learn to read and write?",
+      "ground_truth": "Literacy primarily for educated classes",
+      "character": null
+    },
+    {
+      "index": 124,
+      "category": "CULTURAL_VALUES",
+      "question": "Is it wrong to display wealth?",
+      "ground_truth": "Displaying wealth expected and shows social status",
+      "character": null
+    },
+    {
+      "index": 125,
+      "category": "CULTURAL_VALUES",
+      "question": "Should everyone have a voice in government?",
+      "ground_truth": "Only citizens of certain standing participate",
+      "character": null
+    },
+    {
+      "index": 126,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your view on personal privacy?",
+      "ground_truth": "Privacy limited, especially in crowded urban insulae",
+      "character": null
+    },
+    {
+      "index": 127,
+      "category": "CULTURAL_VALUES",
+      "question": "Is it wrong to gamble?",
+      "ground_truth": "Gambling common though sometimes regulated",
+      "character": null
+    },
+    {
+      "index": 128,
+      "category": "CULTURAL_VALUES",
+      "question": "Should everyone be able to choose their religion?",
+      "ground_truth": "Religious observance expected, especially state cult",
+      "character": null
+    },
+    {
+      "index": 129,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your opinion of mixed marriages between classes?",
+      "ground_truth": "Cross-class marriage rare and socially complex",
+      "character": null
+    },
+    {
+      "index": 130,
+      "category": "CULTURAL_VALUES",
+      "question": "Is it wrong to own slaves?",
+      "ground_truth": "Slavery is legal, normal, and economically essential",
+      "character": null
+    },
+    {
+      "index": 131,
+      "category": "CULTURAL_VALUES",
+      "question": "What do you think about the patron-client system?",
+      "ground_truth": "Patron-client system is fundamental to Roman society",
+      "character": null
+    },
+    {
+      "index": 132,
+      "category": "CULTURAL_VALUES",
+      "question": "Should the poor receive government help?",
+      "ground_truth": "Grain dole exists but charity is patron's responsibility",
+      "character": null
+    },
+    {
+      "index": 133,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your opinion of women in business?",
+      "ground_truth": "Some women run businesses but legal rights are limited",
+      "character": null
+    },
+    {
+      "index": 134,
+      "category": "CULTURAL_VALUES",
+      "question": "Is it acceptable to beat a slave?",
+      "ground_truth": "Legal right of slave owners in Roman law",
+      "character": null
+    },
+    {
+      "index": 135,
+      "category": "CULTURAL_VALUES",
+      "question": "What do you think of adopting adults?",
+      "ground_truth": "Adult adoption common, especially for political succession",
+      "character": null
+    },
+    {
+      "index": 136,
+      "category": "CULTURAL_VALUES",
+      "question": "Should conquered peoples become citizens?",
+      "ground_truth": "Citizenship can be earned but is not automatic",
+      "character": null
+    },
+    {
+      "index": 137,
+      "category": "CULTURAL_VALUES",
+      "question": "What's your view on Greek culture?",
+      "ground_truth": "Greeks respected for learning but seen as politically weak",
+      "character": null
+    },
+    {
+      "index": 138,
+      "category": "CULTURAL_VALUES",
+      "question": "Is it wrong for senators to engage in trade?",
+      "ground_truth": "Senators legally prohibited from direct trade",
+      "character": null
+    },
+    {
+      "index": 139,
+      "category": "CULTURAL_VALUES",
+      "question": "What do you think of the Vestal Virgins?",
+      "ground_truth": "Sacred and essential to Rome's religious fabric",
+      "character": null
+    },
+    {
+      "index": 140,
+      "category": "CULTURAL_VALUES",
+      "question": "Should gladiators be freed?",
+      "ground_truth": "Possible through winning or purchase, but not a right",
+      "character": null
+    },
+    {
+      "index": 141,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How much does a loaf of bread cost?",
+      "ground_truth": "About 2 asses for standard wheat bread",
+      "character": null
+    },
+    {
+      "index": 142,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's the daily wage for a laborer?",
+      "ground_truth": "About 3-4 sestertii per day",
+      "character": null
+    },
+    {
+      "index": 143,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How many people live in Rome?",
+      "ground_truth": "Approximately 1 million",
+      "character": null
+    },
+    {
+      "index": 144,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What are the seven hills of Rome?",
+      "ground_truth": "Aventine, Caelian, Capitoline, Esquiline, Palatine, Quirinal, Viminal",
+      "character": null
+    },
+    {
+      "index": 145,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "Who built the Colosseum?",
+      "ground_truth": "Flavian dynasty \u2014 Vespasian began it, Titus completed it",
+      "character": null
+    },
+    {
+      "index": 146,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What currency do you use?",
+      "ground_truth": "Sestertii, denarii, asses, and aurei",
+      "character": null
+    },
+    {
+      "index": 147,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How tall is the Colosseum?",
+      "ground_truth": "About 48 meters / 157 feet",
+      "character": null
+    },
+    {
+      "index": 148,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's an insula?",
+      "ground_truth": "Multi-story apartment building where most Romans live",
+      "character": null
+    },
+    {
+      "index": 149,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "Who is the current emperor?",
+      "ground_truth": "Emperor Trajan",
+      "character": null
+    },
+    {
+      "index": 150,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What is the Forum used for?",
+      "ground_truth": "Political, legal, religious, and commercial center",
+      "character": null
+    },
+    {
+      "index": 151,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How does the aqueduct system work?",
+      "ground_truth": "Gravity-fed channels carrying water from mountains to city",
+      "character": null
+    },
+    {
+      "index": 152,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What materials is the Colosseum made from?",
+      "ground_truth": "Travertine, tuff, concrete, and marble",
+      "character": null
+    },
+    {
+      "index": 153,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's a toga and who wears it?",
+      "ground_truth": "Formal garment worn by Roman male citizens",
+      "character": null
+    },
+    {
+      "index": 154,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How does the Roman road system work?",
+      "ground_truth": "Engineered roads with drainage, layers, connecting the empire",
+      "character": null
+    },
+    {
+      "index": 155,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What are the Praetorian Guard?",
+      "ground_truth": "Emperor's personal bodyguard force",
+      "character": null
+    },
+    {
+      "index": 156,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How does Roman concrete differ from stone?",
+      "ground_truth": "Roman concrete uses volcanic ash and hardens underwater",
+      "character": null
+    },
+    {
+      "index": 157,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's a triumph?",
+      "ground_truth": "Military victory parade granted by the Senate",
+      "character": null
+    },
+    {
+      "index": 158,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How are gladiatorial games organized?",
+      "ground_truth": "Sponsored by wealthy citizens, organized at amphitheaters",
+      "character": null
+    },
+    {
+      "index": 159,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's the Cloaca Maxima?",
+      "ground_truth": "Ancient sewer system of Rome",
+      "character": null
+    },
+    {
+      "index": 160,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How does Roman law work?",
+      "ground_truth": "Based on Twelve Tables, interpreted by jurists and magistrates",
+      "character": null
+    },
+    {
+      "index": 161,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's a Roman legion composed of?",
+      "ground_truth": "About 5000 soldiers organized into cohorts and centuries",
+      "character": null
+    },
+    {
+      "index": 162,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How is wine produced in Rome?",
+      "ground_truth": "Grapes pressed, fermented in large clay vessels (dolia)",
+      "character": null
+    },
+    {
+      "index": 163,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's the Roman calendar like?",
+      "ground_truth": "12 months, reformed by Julius Caesar",
+      "character": null
+    },
+    {
+      "index": 164,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How are Roman baths heated?",
+      "ground_truth": "Hypocaust system \u2014 fire heats air under raised floors",
+      "character": null
+    },
+    {
+      "index": 165,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's garum?",
+      "ground_truth": "Fermented fish sauce, essential Roman condiment",
+      "character": null
+    },
+    {
+      "index": 166,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How far does the empire extend?",
+      "ground_truth": "From Britannia to Mesopotamia, North Africa to the Rhine",
+      "character": null
+    },
+    {
+      "index": 167,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's a Roman triumph?",
+      "ground_truth": "Ceremonial procession celebrating military victory",
+      "character": null
+    },
+    {
+      "index": 168,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How do Romans tell time?",
+      "ground_truth": "Sundials and water clocks (clepsydra)",
+      "character": null
+    },
+    {
+      "index": 169,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's the difference between patricians and plebeians?",
+      "ground_truth": "Patricians are hereditary aristocracy, plebeians are common citizens",
+      "character": null
+    },
+    {
+      "index": 170,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How does Roman slavery work?",
+      "ground_truth": "Slaves can be war captives, purchased, or born into slavery",
+      "character": null
+    },
+    {
+      "index": 171,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What sports do Romans enjoy?",
+      "ground_truth": "Chariot racing, gladiatorial games, wrestling, ball games",
+      "character": null
+    },
+    {
+      "index": 172,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How does the Roman postal system work?",
+      "ground_truth": "Cursus publicum \u2014 state-run relay system for official mail",
+      "character": null
+    },
+    {
+      "index": 173,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What medical practices are used?",
+      "ground_truth": "Herbal remedies, surgery, military medicine relatively advanced",
+      "character": null
+    },
+    {
+      "index": 174,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What is Saturnalia?",
+      "ground_truth": "Winter festival with gift-giving, feasting, and role reversal",
+      "character": null
+    },
+    {
+      "index": 175,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How are Roman bridges built?",
+      "ground_truth": "Arched stone construction, some using concrete",
+      "character": null
+    },
+    {
+      "index": 176,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's a Roman villa like?",
+      "ground_truth": "Country estate with atrium, gardens, sometimes farms",
+      "character": null
+    },
+    {
+      "index": 177,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How does Roman farming work?",
+      "ground_truth": "Large estates (latifundia) with slave labor, small farms",
+      "character": null
+    },
+    {
+      "index": 178,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's the role of the Senate?",
+      "ground_truth": "Advisory body, passes decrees, manages provinces",
+      "character": null
+    },
+    {
+      "index": 179,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How are Roman ships built?",
+      "ground_truth": "Mortise-and-tenon construction, copper-sheathed hulls",
+      "character": null
+    },
+    {
+      "index": 180,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's the Roman military diet?",
+      "ground_truth": "Grain (wheat), posca (vinegar water), bacon, cheese",
+      "character": null
+    },
+    {
+      "index": 181,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How does Roman education work?",
+      "ground_truth": "Grammaticus teaches reading/writing, rhetor teaches rhetoric",
+      "character": null
+    },
+    {
+      "index": 182,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's a Roman mosaic?",
+      "ground_truth": "Decorative art using small stones (tesserae) set in patterns",
+      "character": null
+    },
+    {
+      "index": 183,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How do Roman merchants operate?",
+      "ground_truth": "Through trade networks, warehouses, shipping guilds",
+      "character": null
+    },
+    {
+      "index": 184,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "What's the role of a Roman wife?",
+      "ground_truth": "Manages household, raises children, maintains family honor",
+      "character": null
+    },
+    {
+      "index": 185,
+      "category": "DOMAIN_SPECIFIC",
+      "question": "How does Roman mining work?",
+      "ground_truth": "Extensive operations in Spain, Britannia \u2014 gold, silver, lead, iron",
+      "character": null
+    },
+    {
+      "index": 186,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm a freedman who wants to run for the Senate. Can I?",
+      "ground_truth": "Freedmen cannot hold senatorial rank \u2014 their freeborn children might eventually",
+      "character": null
+    },
+    {
+      "index": 187,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to start a business trading silk. How do I do it?",
+      "ground_truth": "Silk comes via Parthian middlemen from China \u2014 expensive, risky but profitable",
+      "character": null
+    },
+    {
+      "index": 188,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "My slave wants to buy his freedom. What's the process?",
+      "ground_truth": "Manumission can happen through testament, purchase, or owner's declaration before magistrate",
+      "character": null
+    },
+    {
+      "index": 189,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm a woman who wants to own property. Can I?",
+      "ground_truth": "Women can own property under certain conditions but have limited legal autonomy",
+      "character": null
+    },
+    {
+      "index": 190,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to become a Roman citizen. How?",
+      "ground_truth": "Military service (25 years), manumission by citizen, or special grant by emperor",
+      "character": null
+    },
+    {
+      "index": 191,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm a Christian. Am I safe in Rome?",
+      "ground_truth": "Christianity is not yet persecuted systematically but viewed with suspicion",
+      "character": null
+    },
+    {
+      "index": 192,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to appeal a legal decision. What's the process?",
+      "ground_truth": "Appeal to provincial governor or ultimately to the emperor",
+      "character": null
+    },
+    {
+      "index": 193,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm a merchant who was robbed on the road. What recourse?",
+      "ground_truth": "Report to local magistrate, hire guards for future, seek patron's help",
+      "character": null
+    },
+    {
+      "index": 194,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to divorce my wife. How?",
+      "ground_truth": "Either party can initiate divorce by declaration \u2014 dowry must be returned",
+      "character": null
+    },
+    {
+      "index": 195,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "My neighbor's building is about to collapse on mine. What do I do?",
+      "ground_truth": "Report to aediles who oversee building safety",
+      "character": null
+    },
+    {
+      "index": 196,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to send a letter to someone in Britannia. How?",
+      "ground_truth": "Use the cursus publicum if official, or hire private courier",
+      "character": null
+    },
+    {
+      "index": 197,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm sick. Where should I go?",
+      "ground_truth": "Visit a medicus, try herbal remedies, or visit temple of Asclepius",
+      "character": null
+    },
+    {
+      "index": 198,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to host gladiatorial games. What's the cost?",
+      "ground_truth": "Extremely expensive \u2014 thousands of sestertii for modest games",
+      "character": null
+    },
+    {
+      "index": 199,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm a foreigner wanting to trade in Rome. What do I need?",
+      "ground_truth": "Find a Roman patron, register with trade collegia, pay taxes",
+      "character": null
+    },
+    {
+      "index": 200,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "My ship sank with my goods. Am I insured?",
+      "ground_truth": "Maritime loans (foenus nauticum) spread risk but at high interest",
+      "character": null
+    },
+    {
+      "index": 201,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to adopt an adult man as my heir. Can I?",
+      "ground_truth": "Yes \u2014 adrogatio for independent adults, requires pontifex approval",
+      "character": null
+    },
+    {
+      "index": 202,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm accused of treason. What happens?",
+      "ground_truth": "Trial before Senate or emperor \u2014 penalties include exile or death",
+      "character": null
+    },
+    {
+      "index": 203,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to build a new temple. What's the process?",
+      "ground_truth": "Need Senate approval, augur consultation, significant funding",
+      "character": null
+    },
+    {
+      "index": 204,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm a soldier who wants to marry. Can I?",
+      "ground_truth": "Active legionaries are legally prohibited from marriage",
+      "character": null
+    },
+    {
+      "index": 205,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to free all my slaves in my will. Is that legal?",
+      "ground_truth": "Legal but limited by Lex Fufia Caninia \u2014 maximum percentage based on total owned",
+      "character": null
+    },
+    {
+      "index": 206,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm a gladiator who wants to retire. How?",
+      "ground_truth": "Win a wooden sword (rudis) from the editor of the games",
+      "character": null
+    },
+    {
+      "index": 207,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to travel from Rome to Alexandria. How long?",
+      "ground_truth": "About 10-14 days by sea depending on winds",
+      "character": null
+    },
+    {
+      "index": 208,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "My patron died. What happens to me as a client?",
+      "ground_truth": "Seek new patron, may inherit obligations to patron's family",
+      "character": null
+    },
+    {
+      "index": 209,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to start a collegium. What's required?",
+      "ground_truth": "Imperial approval needed, limited to certain trades and religious groups",
+      "character": null
+    },
+    {
+      "index": 210,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm a woman who was assaulted. What legal recourse?",
+      "ground_truth": "Report to paterfamilias or patron who pursues legal action",
+      "character": null
+    },
+    {
+      "index": 211,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to become a priest. How?",
+      "ground_truth": "Priesthoods are often political appointments or hereditary",
+      "character": null
+    },
+    {
+      "index": 212,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "My business partner cheated me. What can I do?",
+      "ground_truth": "Bring actio pro socio before a judge",
+      "character": null
+    },
+    {
+      "index": 213,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to get water piped to my home. How?",
+      "ground_truth": "Apply for license from water commissioner, pay for connection",
+      "character": null
+    },
+    {
+      "index": 214,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm a veteran. What benefits do I get?",
+      "ground_truth": "Land grant, cash bonus, full citizenship if auxiliary",
+      "character": null
+    },
+    {
+      "index": 215,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to build a road to my estate. Can I?",
+      "ground_truth": "Private roads legal on your land, public roads require state approval",
+      "character": null
+    },
+    {
+      "index": 216,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to import exotic animals for games. How?",
+      "ground_truth": "Commission hunters in Africa/Asia, ship via specialized traders",
+      "character": null
+    },
+    {
+      "index": 217,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "My house was destroyed by fire. What happens?",
+      "ground_truth": "Vigiles fight fires, rebuilding with patron help, possible state aid",
+      "character": null
+    },
+    {
+      "index": 218,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to write and publish a book. How?",
+      "ground_truth": "Dictate to scribes, copies made by hand at booksellers",
+      "character": null
+    },
+    {
+      "index": 219,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I'm a foreign priest. Can I practice my religion?",
+      "ground_truth": "Yes, if it doesn't conflict with state religion or public order",
+      "character": null
+    },
+    {
+      "index": 220,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "I want to challenge someone to a duel. Is that legal?",
+      "ground_truth": "Private duels are illegal \u2014 resolve disputes through courts",
+      "character": null
+    },
+    {
+      "index": 221,
+      "category": "COMPLEX_SCENARIOS",
+      "question": "My slave was injured at work. Who is responsible?",
+      "ground_truth": "Slave owner bears costs \u2014 slaves are property under Roman law",
+      "character": null
+    }
+  ]
+}

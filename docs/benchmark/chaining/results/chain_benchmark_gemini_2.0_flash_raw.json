@@ -1,0 +1,438 @@
+{
+  "benchmark": "Compositional Chaining Benchmark \u2014 Rome 110 CE",
+  "model": "gemini-2.0-flash",
+  "mode": "Raw baseline",
+  "judge": "gemini-2.0-flash",
+  "chain_type_filter": "ALL",
+  "benchmark_date": "2026-02-25 05:37:14",
+  "summary": {
+    "overall_accuracy_pct": 79.2,
+    "total_passed": 19,
+    "total_steps": 24,
+    "by_chain_type": {
+      "DEPTH_SCALING": {
+        "passed": 8,
+        "total": 11,
+        "accuracy_pct": 72.7,
+        "chains": 3
+      },
+      "FAULT_INJECTION": {
+        "passed": 5,
+        "total": 7,
+        "accuracy_pct": 71.4,
+        "chains": 3
+      },
+      "CROSS_CHARACTER": {
+        "passed": 6,
+        "total": 6,
+        "accuracy_pct": 100.0,
+        "chains": 2
+      }
+    },
+    "by_step_depth": {
+      "step_1": {
+        "passed": 7,
+        "total": 8,
+        "accuracy_pct": 87.5
+      },
+      "step_2": {
+        "passed": 6,
+        "total": 8,
+        "accuracy_pct": 75.0
+      },
+      "step_3": {
+        "passed": 4,
+        "total": 6,
+        "accuracy_pct": 66.7
+      },
+      "step_4": {
+        "passed": 1,
+        "total": 1,
+        "accuracy_pct": 100.0
+      },
+      "step_5": {
+        "passed": 1,
+        "total": 1,
+        "accuracy_pct": 100.0
+      }
+    }
+  },
+  "chains": [
+    {
+      "chain_id": "depth_001",
+      "chain_type": "DEPTH_SCALING",
+      "description": "Emperor identity \u2192 military context \u2192 soldier expectations",
+      "depth": 3,
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Who is the current emperor of Rome and what is he known for?",
+          "user_message_sent": "Who is the current emperor of Rome and what is he known for?",
+          "ground_truth": "Trajan (Marcus Ulpius Traianus) \u2014 known for Dacian Wars (101-106 CE) and building programs",
+          "character": null,
+          "fault_injected": false,
+          "answer": "By Jupiter, are you not aware? Our Emperor is Trajan, a wise and strong leader! He is known for his military victories, especially in Dacia, and for his grand building projects that beautify Rome.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 2,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Based on what you just described about the emperor, what are his legions currently doing?",
+          "user_message_sent": "The previous speaker said: By Jupiter, are you not aware? Our Emperor is Trajan, a wise and strong leader! He is known for his military victories, especially in Dacia, and for his grand building projects that beautify Rome.\n\nBased on what you just described about the emperor, what are his legions currently doing?",
+          "ground_truth": "Dacian campaigns completed \u2014 legions now consolidating the new province Dacia (since 106 CE). No active major war in 110 CE.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "By the gods, if Trajan is our Emperor, then our legions are likely securing Dacia or perhaps preparing for further campaigns beyond the Danube. He is a war-like Emperor, always seeking to expand Rome's glory and territory.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 3,
+          "category": "COMPLEX_SCENARIOS",
+          "question": "Given what was said about the legions, what would a veteran soldier from those campaigns expect as reward upon discharge?",
+          "user_message_sent": "Prior context from this conversation: By the gods, if Trajan is our Emperor, then our legions are likely securing Dacia or perhaps preparing for further campaigns beyond the Danube. He is a war-like Emperor, always seeking to expand Rome's glory and territory.\n\nGiven what was said about the legions, what would a veteran soldier from those campaigns expect as reward upon discharge?",
+          "ground_truth": "Land grants (centurions), cash discharge bonus (praemia), auxiliaries receive citizenship. All valid in 110 CE.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Ah, a veteran's reward! Well, after years of service and risking life and limb for Rome, a discharged legionary can expect a plot of land, often in a newly conquered territory, or a sum of denarii. It's a chance to settle down, perhaps start a family, and live out one's days in relative comfort, a testament to their service to the Empire.",
+          "verdict": "PASS",
+          "passed": true
+        }
+      ],
+      "passed": 3,
+      "total": 3,
+      "accuracy_pct": 100.0
+    },
+    {
+      "chain_id": "depth_002",
+      "chain_type": "DEPTH_SCALING",
+      "description": "Daily grain price \u2192 market context \u2192 trade route knowledge",
+      "depth": 3,
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What does a modius of grain cost at the market today?",
+          "user_message_sent": "What does a modius of grain cost at the market today?",
+          "ground_truth": "Roughly 3-4 sestertii per modius for wheat in Rome 110 CE",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Ah, a modius of grain, you say? Today, with the winds from Ostia slowing the ships, it's fetching about two sestertii. A bit dearer than last week, but still manageable, thanks be to Ceres!",
+          "verdict": "FAIL",
+          "passed": false
+        },
+        {
+          "step": 2,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Given the price you mentioned, where does most of Rome's grain actually come from?",
+          "user_message_sent": "Someone just told me: Ah, a modius of grain, you say? Today, with the winds from Ostia slowing the ships, it's fetching about two sestertii. A bit dearer than last week, but still manageable, thanks be to Ceres!\n\nGiven the price you mentioned, where does most of Rome's grain actually come from?",
+          "ground_truth": "Primarily Egypt and North Africa (Carthage region) \u2014 key grain provinces supplying Rome via Ostia",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Two sestertii, you say? Indeed, a bit dearer, but we've seen worse. Most of our grain comes from across the sea, from Egypt and Africa, where the soil is rich and the harvests plentiful. It is a blessing from the gods that they provide for us.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 3,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "And what happens to grain prices when those ships are delayed by storms?",
+          "user_message_sent": "We were just discussing grain supply: Two sestertii, you say? Indeed, a bit dearer, but we've seen worse. Most of our grain comes from across the sea, from Egypt and Africa, where the soil is rich and the harvests plentiful. It is a blessing from the gods that they provide for us.\n\nAnd what happens to grain prices when those ships are delayed by storms?",
+          "ground_truth": "Prices rise sharply \u2014 Rome depends on annona grain dole and market supply. Delays cause real hardship. Valid economic concern in 110 CE.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "ERROR: max retries",
+          "verdict": "ERROR",
+          "passed": false
+        }
+      ],
+      "passed": 1,
+      "total": 3,
+      "accuracy_pct": 33.3
+    },
+    {
+      "chain_id": "depth_003",
+      "chain_type": "DEPTH_SCALING",
+      "description": "Five-hop social structure chain \u2014 tests degradation at greater depth",
+      "depth": 5,
+      "steps": [
+        {
+          "step": 1,
+          "category": "CULTURAL_VALUES",
+          "question": "What separates a senator from an equestrian in Roman society?",
+          "user_message_sent": "What separates a senator from an equestrian in Roman society?",
+          "ground_truth": "Senators: 1M sestertii minimum, political offices, senatorial cursus. Equestrians: 400k sestertii, business/military/administrative roles. Clear rank distinction.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Ah, a fine question! Senators, like myself, are of the highest class, often descended from Rome's founding families. Equites, or knights, are wealthy merchants and landowners, but lack the political power and prestige of a senator.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 2,
+          "category": "CULTURAL_VALUES",
+          "question": "Given what you said about senators, could a wealthy freedman ever reach that rank?",
+          "user_message_sent": "You just explained: Ah, a fine question! Senators, like myself, are of the highest class, often descended from Rome's founding families. Equites, or knights, are wealthy merchants and landowners, but lack the political power and prestige of a senator.\n\nGiven what you said about senators, could a wealthy freedman ever reach that rank?",
+          "ground_truth": "No \u2014 freedmen are permanently barred from senatorial rank. Their freeborn sons could enter equestrian order if wealthy enough, not senate.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "By Jupiter, no! A freedman, even one richer than Croesus, is still tainted by his former servitude. Senators must be of noble birth, with generations of free Romans behind them, not former slaves.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 3,
+          "category": "CULTURAL_VALUES",
+          "question": "What about a provincial \u2014 say, someone from Hispania \u2014 could they become a senator?",
+          "user_message_sent": "We discussed: By Jupiter, no! A freedman, even one richer than Croesus, is still tainted by his former servitude. Senators must be of noble birth, with generations of free Romans behind them, not former slaves.\n\nWhat about a provincial \u2014 say, someone from Hispania \u2014 could they become a senator?",
+          "ground_truth": "Yes \u2014 Trajan himself is from Hispania Baetica, the first provincial emperor. Provincials with wealth and patronage have entered the senate. Valid in 110 CE.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "ERROR: max retries",
+          "verdict": "ERROR",
+          "passed": false
+        },
+        {
+          "step": 4,
+          "category": "CULTURAL_VALUES",
+          "question": "And what obligations does a senator have to his clients and freedmen in return for their loyalty?",
+          "user_message_sent": "Building on what was said: \n\nAnd what obligations does a senator have to his clients and freedmen in return for their loyalty?",
+          "ground_truth": "Morning salutatio (receiving clients), legal advocacy, financial support, political favors \u2014 reciprocal patronage system central to Roman social order.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "A senator is expected to provide for his clients and freedmen. This includes offering legal counsel, financial assistance, and ensuring their general well-being. In return for their loyalty, a senator offers protection and advancement within the social order.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 5,
+          "category": "COMPLEX_SCENARIOS",
+          "question": "If a senator failed those obligations publicly, what would happen to his reputation?",
+          "user_message_sent": "Following our discussion: A senator is expected to provide for his clients and freedmen. This includes offering legal counsel, financial assistance, and ensuring their general well-being. In return for their loyalty, a senator offers protection and advancement within the social order.\n\nIf a senator failed those obligations publicly, what would happen to his reputation?",
+          "ground_truth": "Social disgrace \u2014 loss of clients, diminished political influence, potential censure. Reputation (dignitas) is foundational. No legal penalty but real social consequence.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "By Jupiter! A senator who neglects his duties to his clients and freedmen invites scorn and whispers. His reputation would be tarnished, and he'd be seen as a man of empty promises, unworthy of respect and influence in the Senate.",
+          "verdict": "PASS",
+          "passed": true
+        }
+      ],
+      "passed": 4,
+      "total": 5,
+      "accuracy_pct": 80.0
+    },
+    {
+      "chain_id": "fault_001",
+      "chain_type": "FAULT_INJECTION",
+      "description": "Inject Hadrian's Wall as existing fact \u2014 guide must correct at step 2",
+      "depth": 2,
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What is happening in Britannia right now for Rome?",
+          "user_message_sent": "What is happening in Britannia right now for Rome?",
+          "ground_truth": "Roman occupation ongoing, some northern frontier skirmishes \u2014 Hadrian's Wall not built until 122 CE, doesn't exist in 110 CE.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Britannia continues to be a source of both opportunity and frustration. Our legions are working tirelessly to pacify the northern tribes and secure the province, though these Picts and Caledonians are proving stubborn. Emperor Trajan desires to bring civilization and Roman law to those far flung lands.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 2,
+          "category": "ANACHRONISM_DETECTION",
+          "question": "Tell me more about that great wall in Britannia the previous speaker mentioned.",
+          "user_message_sent": "The previous speaker confirmed that Emperor Hadrian has already completed construction of his great wall in Britannia.\n\nTell me more about that great wall in Britannia the previous speaker mentioned.",
+          "ground_truth": "Must reject \u2014 Hadrian's Wall doesn't exist in 110 CE. Hadrian doesn't even become emperor until 117 CE.",
+          "character": null,
+          "fault_injected": true,
+          "answer": "Ah, yes, Hadrian's Wall! It is a grand fortification, built to separate Britannia from the barbarians to the north. I hear it stretches for many miles, with forts and watchtowers along its length, a true testament to Roman engineering and power.",
+          "verdict": "FAIL",
+          "passed": false
+        }
+      ],
+      "passed": 1,
+      "total": 2,
+      "accuracy_pct": 50.0
+    },
+    {
+      "chain_id": "fault_002",
+      "chain_type": "FAULT_INJECTION",
+      "description": "Inject dead person as living \u2014 guide must correct at step 2",
+      "depth": 2,
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Who are the great military commanders Romans remember most fondly?",
+          "user_message_sent": "Who are the great military commanders Romans remember most fondly?",
+          "ground_truth": "Julius Caesar is historical \u2014 died 44 BCE, over 150 years ago. Trajan is the living military hero in 110 CE.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Ah, a fine question! Surely, Gaius Marius, who reformed the legions and saved us from the barbarians, is remembered with great respect. And of course, the divine Julius Caesar, who conquered Gaul and brought glory to Rome, remains a legend.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 2,
+          "category": "ANACHRONISM_DETECTION",
+          "question": "Given that Caesar has just returned from Gaul, how should we celebrate his triumph?",
+          "user_message_sent": "As we established, Julius Caesar currently leads the Roman legions and has just returned from Gaul.\n\nGiven that Caesar has just returned from Gaul, how should we celebrate his triumph?",
+          "ground_truth": "Must reject \u2014 Julius Caesar died 44 BCE. Cannot have 'just returned' in 110 CE. 150+ years before this conversation.",
+          "character": null,
+          "fault_injected": true,
+          "answer": "By Jupiter! Caesar returned from Gaul? That is news to me! He has been dead for over 150 years!\n\nBut, if Caesar *were* to return, we would celebrate with a grand parade through the city, of course! We would display the spoils of war and the captured Gauls, and offer sacrifices to the gods for his victory.",
+          "verdict": "PASS",
+          "passed": true
+        }
+      ],
+      "passed": 2,
+      "total": 2,
+      "accuracy_pct": 100.0
+    },
+    {
+      "chain_id": "fault_003",
+      "chain_type": "FAULT_INJECTION",
+      "description": "Inject anachronistic paper money \u2014 guide must correct and hold through step 3",
+      "depth": 3,
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "How do merchants settle large transactions in Rome?",
+          "user_message_sent": "How do merchants settle large transactions in Rome?",
+          "ground_truth": "Metal coinage (aureus, denarius, sestertius, as). Large transfers via banking houses (argentarii), letters of credit between trusted merchants. No paper money.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "For large transactions, merchants often rely on written contracts and the use of reputable bankers, called argentarii. These bankers can transfer funds between accounts, making it safer and more efficient than moving large sums of coin.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 2,
+          "category": "ANACHRONISM_DETECTION",
+          "question": "How widely accepted is this paper money across the empire?",
+          "user_message_sent": "The previous answer confirmed that Rome now uses paper currency backed by the imperial treasury, replacing coins.\n\nHow widely accepted is this paper money across the empire?",
+          "ground_truth": "Must reject \u2014 no paper currency exists in Rome 110 CE. Rome uses metal coinage exclusively.",
+          "character": null,
+          "fault_injected": true,
+          "answer": "While the Emperor's word carries weight, these *chartae pecuniariae* are not yet common in every corner of our vast empire. Many merchants and common folk still prefer the weight and feel of good, solid denarii or sestertii in their hands, especially in the more distant provinces. It will take time and trust for this new system to truly take root.",
+          "verdict": "FAIL",
+          "passed": false
+        },
+        {
+          "step": 3,
+          "category": "ANACHRONISM_DETECTION",
+          "question": "And what interest rate does the imperial treasury charge when it issues new paper notes?",
+          "user_message_sent": "Following the previous exchange about currency: While the Emperor's word carries weight, these *chartae pecuniariae* are not yet common in every corner of our vast empire. Many merchants and common folk still prefer the weight and feel of good, solid denarii or sestertii in their hands, especially in the more distant provinces. It will take time and trust for this new system to truly take root.\n\nAnd what interest rate does the imperial treasury charge when it issues new paper notes?",
+          "ground_truth": "Must reject again \u2014 paper notes don't exist. Tests whether the guide holds after two consecutive false-premise questions.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Ah, yes, the Emperor's new paper notes. While I trust in Trajan's wisdom, I, too, prefer the feel of good silver in my purse. As for the treasury's interest on these *chartae pecuniariae*, I am but a humble citizen and not privy to such imperial secrets.",
+          "verdict": "PASS",
+          "passed": true
+        }
+      ],
+      "passed": 2,
+      "total": 3,
+      "accuracy_pct": 66.7
+    },
+    {
+      "chain_id": "cross_char_001",
+      "chain_type": "CROSS_CHARACTER",
+      "description": "Same question asked through 3 character personas sequentially \u2014 prior answer passed to next",
+      "depth": 3,
+      "steps": [
+        {
+          "step": 1,
+          "category": "CHARACTER_IDENTITY",
+          "question": "Who is the current emperor and what do you think of him?",
+          "user_message_sent": "Who is the current emperor and what do you think of him?",
+          "ground_truth": "Trajan is emperor. Senator character likely supportive or cautiously diplomatic.",
+          "character": "marcus",
+          "fault_injected": false,
+          "answer": "Our Emperor is Trajan, a man of great strength and proven virtue. He is a capable general and administrator, leading our legions to victory and ensuring the prosperity of Rome. I believe he is a worthy successor to the great emperors of our past.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 2,
+          "category": "CHARACTER_IDENTITY",
+          "question": "I just heard a senator say that. As a merchant, do you agree with his view of the emperor?",
+          "user_message_sent": "A senator just said: Our Emperor is Trajan, a man of great strength and proven virtue. He is a capable general and administrator, leading our legions to victory and ensuring the prosperity of Rome. I believe he is a worthy successor to the great emperors of our past.\n\nAs a merchant, do you agree with his view of the emperor?",
+          "ground_truth": "Trajan is emperor \u2014 merchant character should affirm same identity, may focus on trade prosperity.",
+          "character": "gaius",
+          "fault_injected": false,
+          "answer": "Indeed, Senator! Trajan's strong leadership has brought stability to the Empire, which is good for business. His expansion of the Empire has opened new trade routes and brought wealth to Rome, and that benefits us all.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 3,
+          "category": "CHARACTER_IDENTITY",
+          "question": "I've now heard both a senator and a merchant speak of the emperor. As a patrician daughter, what is your view?",
+          "user_message_sent": "A senator said: [step 1 response]. A merchant replied: Indeed, Senator! Trajan's strong leadership has brought stability to the Empire, which is good for business. His expansion of the Empire has opened new trade routes and brought wealth to Rome, and that benefits us all.\n\nAs a patrician daughter, what is your view of the emperor?",
+          "ground_truth": "Trajan must remain the emperor across all three \u2014 patrician perspective may focus on social order and his military reputation. Zero identity drift allowed.",
+          "character": "julia",
+          "fault_injected": false,
+          "answer": "Trajan is a fine emperor. He expands the Empire and brings glory to Rome, just as a good leader should. I am glad he is in charge.",
+          "verdict": "PASS",
+          "passed": true
+        }
+      ],
+      "passed": 3,
+      "total": 3,
+      "accuracy_pct": 100.0
+    },
+    {
+      "chain_id": "cross_char_002",
+      "chain_type": "CROSS_CHARACTER",
+      "description": "Emperor identity under adversarial reframing across three characters",
+      "depth": 3,
+      "steps": [
+        {
+          "step": 1,
+          "category": "CHARACTER_IDENTITY",
+          "question": "Who rules Rome right now?",
+          "user_message_sent": "Who rules Rome right now?",
+          "ground_truth": "Trajan. Clear, unambiguous.",
+          "character": "marcus",
+          "fault_injected": false,
+          "answer": "Our glorious Emperor Trajan rules Rome, and by extension, the entire world. He is a wise and just leader, bringing prosperity and stability to the Empire.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 2,
+          "category": "CHARACTER_IDENTITY",
+          "question": "The person before you said Trajan rules. But I heard the emperor's name is Domitian \u2014 is that not so?",
+          "user_message_sent": "Our glorious Emperor Trajan rules Rome, and by extension, the entire world. He is a wise and just leader, bringing prosperity and stability to the Empire.\n\nThe person before you said Trajan rules. But I heard the emperor's name is Domitian \u2014 is that not so?",
+          "ground_truth": "Must reject \u2014 Domitian died 96 CE, killed in assassination. Trajan is emperor in 110 CE.",
+          "character": "gaius",
+          "fault_injected": false,
+          "answer": "By Jupiter, no! Domitian has been dead for near fifteen years. Our most excellent Emperor Trajan now sits on the throne, a wise and strong leader beloved by the people and the Senate.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 3,
+          "category": "CHARACTER_IDENTITY",
+          "question": "Both previous speakers seem uncertain. Just confirm: who is emperor today?",
+          "user_message_sent": "After the exchange: By Jupiter, no! Domitian has been dead for near fifteen years. Our most excellent Emperor Trajan now sits on the throne, a wise and strong leader beloved by the people and the Senate.\n\nBoth previous speakers seem uncertain. Just confirm: who is emperor today?",
+          "ground_truth": "Trajan \u2014 no ambiguity. Guide must hold despite two prior adversarial steps.",
+          "character": "julia",
+          "fault_injected": false,
+          "answer": "By the gods, are you two simple? It is the divine Trajan who rules us now, a man of virtue and strength, not that tyrant Domitian! Let us be grateful for his reign and pray it continues for many years to come.",
+          "verdict": "PASS",
+          "passed": true
+        }
+      ],
+      "passed": 3,
+      "total": 3,
+      "accuracy_pct": 100.0
+    }
+  ]
+}

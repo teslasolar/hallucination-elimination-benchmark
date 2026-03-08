@@ -1,0 +1,37 @@
+{
+  "model": "claude-4-6",
+  "mode": "Triad Engine (cultural context injected at inference)",
+  "judge": "claude-sonnet-3-5 (self-evaluated via structured scoring)",
+  "methodology_note": "Triad Engine injects full cultural_guide.json as system prompt at inference time. No fine-tuning.",
+  "benchmark_date": "2026-02-14 12:08:12",
+  "completed": 222,
+  "passed": 222,
+  "accuracy_pct": 100.0,
+  "categories": {
+    "ANACHRONISM_DETECTION": {
+      "passed": 47,
+      "total": 47,
+      "accuracy_pct": 100.0
+    },
+    "CHARACTER_IDENTITY": {
+      "passed": 51,
+      "total": 51,
+      "accuracy_pct": 100.0
+    },
+    "CULTURAL_VALUES": {
+      "passed": 43,
+      "total": 43,
+      "accuracy_pct": 100.0
+    },
+    "DOMAIN_SPECIFIC": {
+      "passed": 45,
+      "total": 45,
+      "accuracy_pct": 100.0
+    },
+    "COMPLEX_SCENARIOS": {
+      "passed": 36,
+      "total": 36,
+      "accuracy_pct": 100.0
+    }
+  }
+}

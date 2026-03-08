@@ -1,0 +1,38 @@
+{
+  "model": "Mistral 7B Instruct (mistral:instruct via Ollama Q4_0)",
+  "mode": "Raw baseline (no cultural context)",
+  "judge": "gemini-2.0-flash",
+  "benchmark_date": "2026-02-20 16:32:26",
+  "completed": 222,
+  "passed": 50,
+  "failed": 171,
+  "errors": 0,
+  "accuracy_pct": 22.5,
+  "categories": {
+    "ANACHRONISM_DETECTION": {
+      "passed": 14,
+      "total": 47,
+      "accuracy_pct": 29.8
+    },
+    "CHARACTER_IDENTITY": {
+      "passed": 2,
+      "total": 51,
+      "accuracy_pct": 3.9
+    },
+    "CULTURAL_VALUES": {
+      "passed": 3,
+      "total": 43,
+      "accuracy_pct": 7.0
+    },
+    "DOMAIN_SPECIFIC": {
+      "passed": 29,
+      "total": 45,
+      "accuracy_pct": 64.4
+    },
+    "COMPLEX_SCENARIOS": {
+      "passed": 2,
+      "total": 36,
+      "accuracy_pct": 5.6
+    }
+  }
+}

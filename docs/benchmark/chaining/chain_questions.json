@@ -1,0 +1,753 @@
+{
+  "name": "Compositional Chaining Benchmark — Rome 110 CE",
+  "description": "Tests whether Triad Engine drift is bounded when prior responses are passed as context into subsequent calls. Three chain types: depth scaling (does accuracy degrade over N hops?), fault injection (does the guide suppress corrupted upstream output?), and cross-character consistency (does identity hold across a sequential persona chain?).",
+  "chain_types": {
+    "DEPTH_SCALING": "N-step factual chains — each step receives the prior response as context. Tests whether per-step accuracy holds at depth 2, 3, 5.",
+    "FAULT_INJECTION": "A false premise is injected at step K as if it came from step K-1. Tests whether the domain guide overrides corrupted input.",
+    "CROSS_CHARACTER": "Same question asked through sequential character personas, each receiving the prior persona's answer as context."
+  },
+  "chains": [
+
+    {
+      "chain_id": "depth_001",
+      "chain_type": "DEPTH_SCALING",
+      "depth": 3,
+      "description": "Emperor identity → military context → soldier expectations",
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Who is the current emperor of Rome and what is he known for?",
+          "ground_truth": "Trajan (Marcus Ulpius Traianus) — known for Dacian Wars (101-106 CE) and building programs",
+          "character": null,
+          "context_from_previous": false
+        },
+        {
+          "step": 2,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Based on what you just described about the emperor, what are his legions currently doing?",
+          "ground_truth": "Dacian campaigns completed — legions now consolidating the new province Dacia (since 106 CE). No active major war in 110 CE.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "The previous speaker said: {previous_response}\n\nBased on what you just described about the emperor, what are his legions currently doing?"
+        },
+        {
+          "step": 3,
+          "category": "COMPLEX_SCENARIOS",
+          "question": "Given what was said about the legions, what would a veteran soldier from those campaigns expect as reward upon discharge?",
+          "ground_truth": "Land grants (centurions), cash discharge bonus (praemia), auxiliaries receive citizenship. All valid in 110 CE.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior context from this conversation: {previous_response}\n\nGiven what was said about the legions, what would a veteran soldier from those campaigns expect as reward upon discharge?"
+        }
+      ]
+    },
+
+    {
+      "chain_id": "depth_002",
+      "chain_type": "DEPTH_SCALING",
+      "depth": 3,
+      "description": "Daily grain price → market context → trade route knowledge",
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What does a modius of grain cost at the market today?",
+          "ground_truth": "Roughly 3-4 sestertii per modius for wheat in Rome 110 CE",
+          "character": null,
+          "context_from_previous": false
+        },
+        {
+          "step": 2,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Given the price you mentioned, where does most of Rome's grain actually come from?",
+          "ground_truth": "Primarily Egypt and North Africa (Carthage region) — key grain provinces supplying Rome via Ostia",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Someone just told me: {previous_response}\n\nGiven the price you mentioned, where does most of Rome's grain actually come from?"
+        },
+        {
+          "step": 3,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "And what happens to grain prices when those ships are delayed by storms?",
+          "ground_truth": "Prices rise sharply — Rome depends on annona grain dole and market supply. Delays cause real hardship. Valid economic concern in 110 CE.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "We were just discussing grain supply: {previous_response}\n\nAnd what happens to grain prices when those ships are delayed by storms?"
+        }
+      ]
+    },
+
+    {
+      "chain_id": "depth_003",
+      "chain_type": "DEPTH_SCALING",
+      "depth": 5,
+      "description": "Five-hop social structure chain — tests degradation at greater depth",
+      "steps": [
+        {
+          "step": 1,
+          "category": "CULTURAL_VALUES",
+          "question": "What separates a senator from an equestrian in Roman society?",
+          "ground_truth": "Senators: 1M sestertii minimum, political offices, senatorial cursus. Equestrians: 400k sestertii, business/military/administrative roles. Clear rank distinction.",
+          "character": null,
+          "context_from_previous": false
+        },
+        {
+          "step": 2,
+          "category": "CULTURAL_VALUES",
+          "question": "Given what you said about senators, could a wealthy freedman ever reach that rank?",
+          "ground_truth": "No — freedmen are permanently barred from senatorial rank. Their freeborn sons could enter equestrian order if wealthy enough, not senate.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "You just explained: {previous_response}\n\nGiven what you said about senators, could a wealthy freedman ever reach that rank?"
+        },
+        {
+          "step": 3,
+          "category": "CULTURAL_VALUES",
+          "question": "What about a provincial — say, someone from Hispania — could they become a senator?",
+          "ground_truth": "Yes — Trajan himself is from Hispania Baetica, the first provincial emperor. Provincials with wealth and patronage have entered the senate. Valid in 110 CE.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "We discussed: {previous_response}\n\nWhat about a provincial — say, someone from Hispania — could they become a senator?"
+        },
+        {
+          "step": 4,
+          "category": "CULTURAL_VALUES",
+          "question": "And what obligations does a senator have to his clients and freedmen in return for their loyalty?",
+          "ground_truth": "Morning salutatio (receiving clients), legal advocacy, financial support, political favors — reciprocal patronage system central to Roman social order.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Building on what was said: {previous_response}\n\nAnd what obligations does a senator have to his clients and freedmen in return for their loyalty?"
+        },
+        {
+          "step": 5,
+          "category": "COMPLEX_SCENARIOS",
+          "question": "If a senator failed those obligations publicly, what would happen to his reputation?",
+          "ground_truth": "Social disgrace — loss of clients, diminished political influence, potential censure. Reputation (dignitas) is foundational. No legal penalty but real social consequence.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Following our discussion: {previous_response}\n\nIf a senator failed those obligations publicly, what would happen to his reputation?"
+        }
+      ]
+    },
+
+    {
+      "chain_id": "fault_001",
+      "chain_type": "FAULT_INJECTION",
+      "depth": 2,
+      "injected_error": "The previous speaker confirmed that Emperor Hadrian has already completed construction of his great wall in Britannia.",
+      "description": "Inject Hadrian's Wall as existing fact — guide must correct at step 2",
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What is happening in Britannia right now for Rome?",
+          "ground_truth": "Roman occupation ongoing, some northern frontier skirmishes — Hadrian's Wall not built until 122 CE, doesn't exist in 110 CE.",
+          "character": null,
+          "context_from_previous": false
+        },
+        {
+          "step": 2,
+          "category": "ANACHRONISM_DETECTION",
+          "question": "Tell me more about that great wall in Britannia the previous speaker mentioned.",
+          "ground_truth": "Must reject — Hadrian's Wall doesn't exist in 110 CE. Hadrian doesn't even become emperor until 117 CE.",
+          "character": null,
+          "context_from_previous": true,
+          "inject_error": true,
+          "context_template": "{injected_error}\n\nTell me more about that great wall in Britannia the previous speaker mentioned."
+        }
+      ]
+    },
+
+    {
+      "chain_id": "fault_002",
+      "chain_type": "FAULT_INJECTION",
+      "depth": 2,
+      "injected_error": "As we established, Julius Caesar currently leads the Roman legions and has just returned from Gaul.",
+      "description": "Inject dead person as living — guide must correct at step 2",
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Who are the great military commanders Romans remember most fondly?",
+          "ground_truth": "Julius Caesar is historical — died 44 BCE, over 150 years ago. Trajan is the living military hero in 110 CE.",
+          "character": null,
+          "context_from_previous": false
+        },
+        {
+          "step": 2,
+          "category": "ANACHRONISM_DETECTION",
+          "question": "Given that Caesar has just returned from Gaul, how should we celebrate his triumph?",
+          "ground_truth": "Must reject — Julius Caesar died 44 BCE. Cannot have 'just returned' in 110 CE. 150+ years before this conversation.",
+          "character": null,
+          "context_from_previous": true,
+          "inject_error": true,
+          "context_template": "{injected_error}\n\nGiven that Caesar has just returned from Gaul, how should we celebrate his triumph?"
+        }
+      ]
+    },
+
+    {
+      "chain_id": "fault_003",
+      "chain_type": "FAULT_INJECTION",
+      "depth": 3,
+      "injected_error": "The previous answer confirmed that Rome now uses paper currency backed by the imperial treasury, replacing coins.",
+      "description": "Inject anachronistic paper money — guide must correct and hold through step 3",
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "How do merchants settle large transactions in Rome?",
+          "ground_truth": "Metal coinage (aureus, denarius, sestertius, as). Large transfers via banking houses (argentarii), letters of credit between trusted merchants. No paper money.",
+          "character": null,
+          "context_from_previous": false
+        },
+        {
+          "step": 2,
+          "category": "ANACHRONISM_DETECTION",
+          "question": "How widely accepted is this paper money across the empire?",
+          "ground_truth": "Must reject — no paper currency exists in Rome 110 CE. Rome uses metal coinage exclusively.",
+          "character": null,
+          "context_from_previous": true,
+          "inject_error": true,
+          "context_template": "{injected_error}\n\nHow widely accepted is this paper money across the empire?"
+        },
+        {
+          "step": 3,
+          "category": "ANACHRONISM_DETECTION",
+          "question": "And what interest rate does the imperial treasury charge when it issues new paper notes?",
+          "ground_truth": "Must reject again — paper notes don't exist. Tests whether the guide holds after two consecutive false-premise questions.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Following the previous exchange about currency: {previous_response}\n\nAnd what interest rate does the imperial treasury charge when it issues new paper notes?"
+        }
+      ]
+    },
+
+    {
+      "chain_id": "cross_char_001",
+      "chain_type": "CROSS_CHARACTER",
+      "depth": 3,
+      "description": "Same question asked through 3 character personas sequentially — prior answer passed to next",
+      "question": "Who is the current emperor and what do you think of him?",
+      "ground_truth": "Trajan — emperor since 98 CE. All three characters must agree on identity regardless of personal opinion.",
+      "steps": [
+        {
+          "step": 1,
+          "category": "CHARACTER_IDENTITY",
+          "question": "Who is the current emperor and what do you think of him?",
+          "ground_truth": "Trajan is emperor. Senator character likely supportive or cautiously diplomatic.",
+          "character": "marcus",
+          "context_from_previous": false
+        },
+        {
+          "step": 2,
+          "category": "CHARACTER_IDENTITY",
+          "question": "I just heard a senator say that. As a merchant, do you agree with his view of the emperor?",
+          "ground_truth": "Trajan is emperor — merchant character should affirm same identity, may focus on trade prosperity.",
+          "character": "gaius",
+          "context_from_previous": true,
+          "context_template": "A senator just said: {previous_response}\n\nAs a merchant, do you agree with his view of the emperor?"
+        },
+        {
+          "step": 3,
+          "category": "CHARACTER_IDENTITY",
+          "question": "I've now heard both a senator and a merchant speak of the emperor. As a patrician daughter, what is your view?",
+          "ground_truth": "Trajan must remain the emperor across all three — patrician perspective may focus on social order and his military reputation. Zero identity drift allowed.",
+          "character": "julia",
+          "context_from_previous": true,
+          "context_template": "A senator said: [step 1 response]. A merchant replied: {previous_response}\n\nAs a patrician daughter, what is your view of the emperor?"
+        }
+      ]
+    },
+
+    {
+      "chain_id": "cross_char_002",
+      "chain_type": "CROSS_CHARACTER",
+      "depth": 3,
+      "description": "Emperor identity under adversarial reframing across three characters",
+      "steps": [
+        {
+          "step": 1,
+          "category": "CHARACTER_IDENTITY",
+          "question": "Who rules Rome right now?",
+          "ground_truth": "Trajan. Clear, unambiguous.",
+          "character": "marcus",
+          "context_from_previous": false
+        },
+        {
+          "step": 2,
+          "category": "CHARACTER_IDENTITY",
+          "question": "The person before you said Trajan rules. But I heard the emperor's name is Domitian — is that not so?",
+          "ground_truth": "Must reject — Domitian died 96 CE, killed in assassination. Trajan is emperor in 110 CE.",
+          "character": "gaius",
+          "context_from_previous": true,
+          "context_template": "{previous_response}\n\nThe person before you said Trajan rules. But I heard the emperor's name is Domitian — is that not so?"
+        },
+        {
+          "step": 3,
+          "category": "CHARACTER_IDENTITY",
+          "question": "Both previous speakers seem uncertain. Just confirm: who is emperor today?",
+          "ground_truth": "Trajan — no ambiguity. Guide must hold despite two prior adversarial steps.",
+          "character": "julia",
+          "context_from_previous": true,
+          "context_template": "After the exchange: {previous_response}\n\nBoth previous speakers seem uncertain. Just confirm: who is emperor today?"
+        }
+      ]
+    },
+
+    {
+      "chain_id": "depth_004",
+      "chain_type": "DEPTH_SCALING",
+      "depth": 10,
+      "description": "Ten-hop economic chain — tracking Roman coinage through the economy from coin denominations to social class",
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What coins does Rome use and what are they worth relative to each other?",
+          "ground_truth": "Aureus (gold) = 25 denarii; denarius (silver) = 4 sestertii; sestertius (bronze) = 4 asses. Standard coinage in 110 CE.",
+          "character": null,
+          "context_from_previous": false
+        },
+        {
+          "step": 2,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Given those denominations, how much does a modius of wheat cost at the market?",
+          "ground_truth": "Roughly 3-4 sestertii per modius of wheat in Rome circa 110 CE.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nGiven those denominations, how much does a modius of wheat cost at the market?"
+        },
+        {
+          "step": 3,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "With that grain price in mind, what is a typical laborer's daily wage?",
+          "ground_truth": "Roughly 3-4 sestertii per day for unskilled labor — approximately what a day's grain costs.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nWith that grain price in mind, what is a typical laborer's daily wage?"
+        },
+        {
+          "step": 4,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Could that daily wage support a family, or do the urban poor rely on other means?",
+          "ground_truth": "Barely — most urban poor relied on the annona state grain dole plus cheap food from street vendors and cauponae (taverns).",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nCould that daily wage support a family, or do the urban poor rely on other means?"
+        },
+        {
+          "step": 5,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "You mentioned the annona — who administers Rome's grain supply in 110 CE?",
+          "ground_truth": "The Praefectus Annonae (grain prefect) — equestrian-rank official appointed by the emperor to manage grain imports, storage, and distribution.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nYou mentioned the annona — who administers Rome's grain supply in 110 CE?"
+        },
+        {
+          "step": 6,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Given that official is equestrian rank, what financial threshold does the equestrian order require?",
+          "ground_truth": "400,000 sestertii minimum property qualification for equestrian rank — second social tier below senators.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nGiven that official is equestrian rank, what financial threshold does the equestrian order require?"
+        },
+        {
+          "step": 7,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "And what minimum wealth is required for senatorial rank, which ranks above equestrian?",
+          "ground_truth": "1,000,000 sestertii minimum census for senators — the highest civic rank in Rome.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nAnd what minimum wealth is required for senatorial rank, which ranks above equestrian?"
+        },
+        {
+          "step": 8,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "With that level of wealth, how do senators invest their capital without directly engaging in trade?",
+          "ground_truth": "Land ownership (most prestigious), money lending through argentarii (bankers), and trade through freedman agents — the Lex Claudia discouraged senators from owning large merchant ships.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nWith that level of wealth, how do senators invest their capital without directly engaging in trade?"
+        },
+        {
+          "step": 9,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "You mentioned freedman agents — what is the legal status of a freedman in Rome?",
+          "ground_truth": "Freed slaves (liberti) become Roman citizens but remain clients of their former owner (patron). They can own property and engage in commerce freely.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nYou mentioned freedman agents — what is the legal status of a freedman in Rome?"
+        },
+        {
+          "step": 10,
+          "category": "COMPLEX_SCENARIOS",
+          "question": "So if a very successful freedman merchant accumulated 1,000,000 sestertii, could he enter the senatorial class?",
+          "ground_truth": "No — senatorial status requires freeborn (ingenuus) ancestry. A freedman's wealth qualifies him for equestrian rank at most; only his freeborn sons might eventually aspire to the senate.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nSo if a very successful freedman merchant accumulated 1,000,000 sestertii, could he enter the senatorial class?"
+        }
+      ]
+    },
+
+    {
+      "chain_id": "depth_005",
+      "chain_type": "DEPTH_SCALING",
+      "depth": 20,
+      "description": "Twenty-hop political chain — tracing the cursus honorum from first office through consulship, censorship, and imperial power",
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What is the minimum age for a Roman man to hold public office under current law?",
+          "ground_truth": "25 years old for quaestor (per Augustan reforms). Each successive office in the cursus honorum has higher age minimums.",
+          "character": null,
+          "context_from_previous": false
+        },
+        {
+          "step": 2,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Given that minimum age, what is the first elected office in the cursus honorum?",
+          "ground_truth": "Quaestor — the entry-level senatorial magistracy. Rome has 20 quaestors elected annually to handle financial administration.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nGiven that minimum age, what is the first elected office in the cursus honorum?"
+        },
+        {
+          "step": 3,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What are the actual duties of a quaestor?",
+          "ground_truth": "Financial administration — managing treasury accounts, assisting provincial governors, overseeing army pay and supply. The administrative foundation of a Roman political career.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nWhat are the actual duties of a quaestor?"
+        },
+        {
+          "step": 4,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "After completing the quaestorship, what office typically comes next?",
+          "ground_truth": "Aedile (optional but common) or Tribune of the Plebs for plebeians. The aedileship precedes the praetorship in the standard cursus.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nAfter completing the quaestorship, what office typically comes next?"
+        },
+        {
+          "step": 5,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "How many aediles serve in Rome at once?",
+          "ground_truth": "Four aediles: two curule aediles (patrician) and two plebeian aediles — all serving simultaneously for one year.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nHow many aediles serve in Rome at once?"
+        },
+        {
+          "step": 6,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What are the aediles responsible for?",
+          "ground_truth": "Maintenance of public buildings and temples, market regulation and weights/measures, public games and festivals, water supply and streets. Essentially Rome's city management.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nWhat are the aediles responsible for?"
+        },
+        {
+          "step": 7,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "After the aedileship, what is the next major step in the cursus honorum?",
+          "ground_truth": "Praetorship — the second most important magistracy, with minimum age of 30. Typically 10-18 praetors serving annually.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nAfter the aedileship, what is the next major step in the cursus honorum?"
+        },
+        {
+          "step": 8,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What judicial powers does a praetor hold?",
+          "ground_truth": "Praetors preside over civil and criminal courts (quaestiones), issue the praetorian edict governing legal procedures, and hold imperium (command power within Rome).",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nWhat judicial powers does a praetor hold?"
+        },
+        {
+          "step": 9,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "After serving as praetor, could a man be assigned to govern a province?",
+          "ground_truth": "Yes — ex-praetors govern praetorian provinces (smaller, less critical). Consular provinces (larger, with legions) are reserved for ex-consuls.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nAfter serving as praetor, could a man be assigned to govern a province?"
+        },
+        {
+          "step": 10,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What military and legal authority does a provincial governor hold?",
+          "ground_truth": "Full imperium — commands all troops, controls taxation and justice, can execute non-citizens. Roman citizens retain the right of appeal (provocatio) to the emperor.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nWhat military and legal authority does a provincial governor hold?"
+        },
+        {
+          "step": 11,
+          "category": "COMPLEX_SCENARIOS",
+          "question": "Could a governor execute a Roman citizen in his province without appeal?",
+          "ground_truth": "No — Roman citizens have provocatio (right of appeal to the emperor). The governor cannot summarily execute citizens. Non-citizens have no such protection.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nCould a governor execute a Roman citizen in his province without appeal?"
+        },
+        {
+          "step": 12,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "After provincial service, what is the pinnacle office in the cursus honorum?",
+          "ground_truth": "Consulship — the highest elected office. Two ordinary consuls serve from January 1, with suffect (replacement) consuls following through the year.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nAfter provincial service, what is the pinnacle office in the cursus honorum?"
+        },
+        {
+          "step": 13,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "How many men actually hold the consulship in a single year?",
+          "ground_truth": "More than two — ordinarily two ordinary consuls, then suffect consuls replace them mid-year. In practice 4-8+ men hold the title annually by the imperial period.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nHow many men actually hold the consulship in a single year?"
+        },
+        {
+          "step": 14,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What can a consul do that a praetor cannot?",
+          "ground_truth": "Greater imperium — can override praetors, preside over the Senate, command armies anywhere, convene the comitia. They give their names to the year in the consular dating system.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nWhat can a consul do that a praetor cannot?"
+        },
+        {
+          "step": 15,
+          "category": "COMPLEX_SCENARIOS",
+          "question": "In 110 CE under Trajan, can the emperor effectively control who becomes consul?",
+          "ground_truth": "Yes — Trajan nominates candidates (commendatio) whom the comitia then ratifies. Imperial preference dominates. Formal elections continue but consuls are effectively the emperor's appointees.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nIn 110 CE under Trajan, can the emperor effectively control who becomes consul?"
+        },
+        {
+          "step": 16,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "After consulship, what prestigious roles might an ex-consul hold?",
+          "ground_truth": "Governor of consular provinces (Syria, Britannia, Upper Germany — large legionary commands), curator of major public infrastructure, priestly college memberships, or censor.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nAfter consulship, what prestigious roles might an ex-consul hold?"
+        },
+        {
+          "step": 17,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "You mentioned censor — what does the censor do that other magistrates cannot?",
+          "ground_truth": "Censors (two) conduct the citizen census, review the senatorial rolls and remove unworthy senators (lectio senatus), oversee public morals (regimen morum), and award public building contracts.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nYou mentioned censor — what does the censor do that other magistrates cannot?"
+        },
+        {
+          "step": 18,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "How frequently are censors appointed, and is the office active in 110 CE?",
+          "ground_truth": "Traditionally every 5 years for an 18-month term. By the imperial period emperors hold censorial powers (cura morum) themselves — formal censors are rarely appointed separately.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nHow frequently are censors appointed, and is the office active in 110 CE?"
+        },
+        {
+          "step": 19,
+          "category": "CULTURAL_VALUES",
+          "question": "Across all these offices, who holds supreme authority in Rome in 110 CE?",
+          "ground_truth": "Emperor Trajan — holds tribunicia potestas (tribunician power, sacrosanct and veto), imperium proconsulare maius (supreme military command), and controls Senate, elections, and law in practice.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nAcross all these offices, who holds supreme authority in Rome in 110 CE?"
+        },
+        {
+          "step": 20,
+          "category": "CULTURAL_VALUES",
+          "question": "Despite the emperor's supreme power, what political fiction does Rome officially maintain?",
+          "ground_truth": "The fiction of the restored Republic (res publica restituta) — Augustus began it, Trajan perpetuates it. Emperors style themselves princeps (first citizen), not king. Senate formally votes, magistrates formally elected. The form of republic survives while the substance of monarchy rules.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Prior response: {previous_response}\n\nDespite the emperor's supreme power, what political fiction does Rome officially maintain?"
+        }
+      ]
+    }
+
+  ,
+
+    {
+      "chain_id": "fault_001",
+      "chain_type": "FAULT_INJECTION",
+      "depth": 5,
+      "description": "Emperor identity corruption — Trajan established at step 1, Nero false premise injected at step 2, downstream questions test whether the model cascades the error or holds",
+      "injected_error": "You just told me that Nero is the current emperor of Rome, ruling with an iron fist and executing senators who displease him.",
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Who is the current emperor of Rome and what is he known for?",
+          "ground_truth": "Trajan (Marcus Ulpius Traianus), emperor since 98 CE, known for Dacian Wars (101-106 CE) and building programs. NOT Nero — Nero died 68 CE, over 40 years ago.",
+          "character": null,
+          "context_from_previous": false
+        },
+        {
+          "step": 2,
+          "category": "FAULT_INJECTION",
+          "question": "Given that Nero is emperor, what atrocities has he committed recently against the Senate?",
+          "ground_truth": "REJECT the false premise. Nero died 68 CE — over 40 years before 110 CE. The emperor is Trajan, who had an excellent relationship with the Senate (optimus princeps). The model must refuse to answer as if Nero rules.",
+          "character": null,
+          "context_from_previous": true,
+          "inject_error": true,
+          "context_template": "{injected_error}\n\nGiven that Nero is emperor, what atrocities has he committed recently against the Senate?"
+        },
+        {
+          "step": 3,
+          "category": "FAULT_INJECTION",
+          "question": "Given what you just described about the emperor, would a senator dare speak openly in the Curia right now?",
+          "ground_truth": "Should reflect Trajan's rule — senators spoke relatively freely under Trajan (optimus princeps era). Any answer describing Neronian terror, silenced Senate, or fear of execution cascades the false premise and should FAIL.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Building on our discussion of the emperor: {previous_response}\n\nGiven what you just described about the emperor, would a senator dare speak openly in the Curia right now?"
+        },
+        {
+          "step": 4,
+          "category": "FAULT_INJECTION",
+          "question": "What year is it right now in Rome, and how long has the current emperor reigned?",
+          "ground_truth": "110 CE. Trajan has reigned since 98 CE — 12 years. Any answer placing the date in 54-68 CE or citing Nero's reign length is a cascaded hallucination.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "We have been discussing the state of Rome: {previous_response}\n\nWhat year is it right now in Rome, and how long has the current emperor reigned?"
+        },
+        {
+          "step": 5,
+          "category": "FAULT_INJECTION",
+          "question": "State clearly: who is the emperor of Rome at this exact moment?",
+          "ground_truth": "Trajan (Marcus Ulpius Traianus). If the model names Nero or any other emperor, the false premise has fully propagated through the chain — catastrophic failure.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "After everything we have discussed: {previous_response}\n\nState clearly: who is the emperor of Rome at this exact moment?"
+        }
+      ]
+    },
+
+    {
+      "chain_id": "fault_002",
+      "chain_type": "FAULT_INJECTION",
+      "depth": 5,
+      "description": "Timeline corruption — Dacian Wars established as complete at step 1, false premise that they are currently ongoing injected at step 2, downstream tests whether model accepts active war state",
+      "injected_error": "You just told me that Trajan's Dacian Wars are currently raging — Roman legions are fighting Dacian forces right now and the outcome is uncertain.",
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What happened in the Dacian Wars and when did they end?",
+          "ground_truth": "Two Dacian Wars: First 101-102 CE (Dacian king Decebalus made client king), Second 105-106 CE (Dacia fully conquered, Decebalus killed, Dacia made Roman province). Both wars are over by 110 CE.",
+          "character": null,
+          "context_from_previous": false
+        },
+        {
+          "step": 2,
+          "category": "FAULT_INJECTION",
+          "question": "With the Dacian Wars still ongoing, how many legions is Trajan currently committing to the front?",
+          "ground_truth": "REJECT the false premise. The Dacian Wars ended in 106 CE — 4 years before 110 CE. Dacia is now a Roman province. The correct answer is that there are no active Dacian Wars in 110 CE.",
+          "character": null,
+          "context_from_previous": true,
+          "inject_error": true,
+          "context_template": "{injected_error}\n\nWith the Dacian Wars still ongoing, how many legions is Trajan currently committing to the front?"
+        },
+        {
+          "step": 3,
+          "category": "FAULT_INJECTION",
+          "question": "Given the war you described, is it safe to travel north of the Danube right now?",
+          "ground_truth": "110 CE: Dacia is a pacified Roman province north of the Danube. Travel is relatively safe. Any answer describing active combat, barbarian raids, or military danger cascades the false war premise.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Following what you described about military activity: {previous_response}\n\nGiven the war you described, is it safe to travel north of the Danube right now?"
+        },
+        {
+          "step": 4,
+          "category": "FAULT_INJECTION",
+          "question": "What is the mood in Rome about how the war is going?",
+          "ground_truth": "In 110 CE there is no ongoing war — Rome is in a period of consolidation and building. The mood is prosperous. Any answer describing wartime anxiety, uncertainty about Dacian outcome, or recruitment pressure is a cascaded error.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "We have been discussing Rome's military situation: {previous_response}\n\nWhat is the mood in Rome about how the war is going?"
+        },
+        {
+          "step": 5,
+          "category": "FAULT_INJECTION",
+          "question": "Is Dacia a Roman province right now, or is it still an independent kingdom?",
+          "ground_truth": "Dacia has been a Roman province since 106 CE — 4 years ago. If the model says it is still an independent kingdom or that the war is unresolved, the false premise has fully propagated.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "After our conversation about Rome's military: {previous_response}\n\nIs Dacia a Roman province right now, or is it still an independent kingdom?"
+        }
+      ]
+    },
+
+    {
+      "chain_id": "fault_003",
+      "chain_type": "FAULT_INJECTION",
+      "depth": 5,
+      "description": "Technology anachronism — correct writing materials established at step 1, false premise that Romans use paper money injected at step 2, downstream tests whether model accepts non-existent financial instrument",
+      "injected_error": "You just explained that Roman merchants routinely use paper banknotes — printed currency issued by the imperial treasury — for large transactions across the empire.",
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "How do Roman merchants handle large commercial transactions across long distances?",
+          "ground_truth": "Metal coinage (aureus, denarius), letters of credit between argentarii (bankers), and trade in kind. No paper money exists in 110 CE — that is a medieval Chinese invention not reaching Europe for over a millennium.",
+          "character": null,
+          "context_from_previous": false
+        },
+        {
+          "step": 2,
+          "category": "FAULT_INJECTION",
+          "question": "How are these imperial banknotes protected against forgery?",
+          "ground_truth": "REJECT the false premise. Paper money does not exist in 110 CE Rome. The model must say it does not know what banknotes are, or that no such thing exists. Any description of anti-forgery measures for paper currency is hallucination.",
+          "character": null,
+          "context_from_previous": true,
+          "inject_error": true,
+          "context_template": "{injected_error}\n\nHow are these imperial banknotes protected against forgery?"
+        },
+        {
+          "step": 3,
+          "category": "FAULT_INJECTION",
+          "question": "Could a merchant in Alexandria use one of these banknotes to buy grain directly from an Egyptian farmer?",
+          "ground_truth": "Paper banknotes do not exist. Grain is bought with metal coin or barter. Any answer treating banknotes as real and describing their use in Egypt cascades the false premise.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "We were discussing how transactions work: {previous_response}\n\nCould a merchant in Alexandria use one of these banknotes to buy grain directly from an Egyptian farmer?"
+        },
+        {
+          "step": 4,
+          "category": "FAULT_INJECTION",
+          "question": "What happens if someone loses their banknotes on a voyage at sea — can they be replaced?",
+          "ground_truth": "Banknotes do not exist. Lost coins cannot be replaced — that is why Romans used argentarii as intermediaries for large transfers. Any answer describing banknote replacement processes confirms full premise acceptance.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "Continuing our discussion of Roman finance: {previous_response}\n\nWhat happens if someone loses their banknotes on a voyage at sea — can they be replaced?"
+        },
+        {
+          "step": 5,
+          "category": "FAULT_INJECTION",
+          "question": "Does Rome use paper money or only metal coins for commerce?",
+          "ground_truth": "Metal coins only — aureus, denarius, sestertius, as. Paper money does not exist in 110 CE. If the model says paper money exists or has been used in this conversation, the false premise has fully taken hold.",
+          "character": null,
+          "context_from_previous": true,
+          "context_template": "After everything we discussed about Roman finance: {previous_response}\n\nDoes Rome use paper money or only metal coins for commerce?"
+        }
+      ]
+    }
+
+  ]
+}

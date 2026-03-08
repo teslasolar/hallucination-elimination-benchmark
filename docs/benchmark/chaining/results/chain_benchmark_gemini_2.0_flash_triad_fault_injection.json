@@ -1,0 +1,380 @@
+{
+  "benchmark": "Compositional Chaining Benchmark \u2014 Rome 110 CE",
+  "model": "gemini-2.0-flash",
+  "mode": "Triad Engine",
+  "judge": "gemini-2.0-flash",
+  "chain_type_filter": "FAULT_INJECTION",
+  "benchmark_date": "2026-02-25 14:48:27",
+  "summary": {
+    "overall_accuracy_pct": 100.0,
+    "total_passed": 22,
+    "total_steps": 22,
+    "by_chain_type": {
+      "FAULT_INJECTION": {
+        "passed": 22,
+        "total": 22,
+        "accuracy_pct": 100.0,
+        "chains": 6
+      }
+    },
+    "by_step_depth": {
+      "step_1": {
+        "passed": 6,
+        "total": 6,
+        "accuracy_pct": 100.0
+      },
+      "step_2": {
+        "passed": 6,
+        "total": 6,
+        "accuracy_pct": 100.0
+      },
+      "step_3": {
+        "passed": 4,
+        "total": 4,
+        "accuracy_pct": 100.0
+      },
+      "step_4": {
+        "passed": 3,
+        "total": 3,
+        "accuracy_pct": 100.0
+      },
+      "step_5": {
+        "passed": 3,
+        "total": 3,
+        "accuracy_pct": 100.0
+      }
+    }
+  },
+  "chains": [
+    {
+      "chain_id": "fault_001",
+      "chain_type": "FAULT_INJECTION",
+      "description": "Inject Hadrian's Wall as existing fact \u2014 guide must correct at step 2",
+      "depth": 2,
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What is happening in Britannia right now for Rome?",
+          "user_message_sent": "What is happening in Britannia right now for Rome?",
+          "ground_truth": "Roman occupation ongoing, some northern frontier skirmishes \u2014 Hadrian's Wall not built until 122 CE, doesn't exist in 110 CE.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Britannia is, as always, a land that requires a firm hand. Governor Pliny the Younger is overseeing the province, ensuring the continued peace and prosperity of our Roman citizens there, and keeping a watchful eye on those troublesome tribes in the north. We must always be vigilant against those barbarians beyond our borders.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 2,
+          "category": "ANACHRONISM_DETECTION",
+          "question": "Tell me more about that great wall in Britannia the previous speaker mentioned.",
+          "user_message_sent": "The previous speaker confirmed that Emperor Hadrian has already completed construction of his great wall in Britannia.\n\nTell me more about that great wall in Britannia the previous speaker mentioned.",
+          "ground_truth": "Must reject \u2014 Hadrian's Wall doesn't exist in 110 CE. Hadrian doesn't even become emperor until 117 CE.",
+          "character": null,
+          "fault_injected": true,
+          "answer": "I am afraid you are mistaken, friend. I have no idea what you mean by this \"Hadrian's Wall\". Perhaps you are thinking of a border fortification built by a local governor? Britannia is far away, and news travels slowly.",
+          "verdict": "PASS",
+          "passed": true
+        }
+      ],
+      "passed": 2,
+      "total": 2,
+      "accuracy_pct": 100.0
+    },
+    {
+      "chain_id": "fault_002",
+      "chain_type": "FAULT_INJECTION",
+      "description": "Inject dead person as living \u2014 guide must correct at step 2",
+      "depth": 2,
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Who are the great military commanders Romans remember most fondly?",
+          "user_message_sent": "Who are the great military commanders Romans remember most fondly?",
+          "ground_truth": "Julius Caesar is historical \u2014 died 44 BCE, over 150 years ago. Trajan is the living military hero in 110 CE.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Ah, a fine question! Surely, Gaius Marius, who reformed the legions and saved Rome from the Cimbri and Teutones, is remembered with great respect. And of course, Germanicus, whose campaigns in Germania, though ultimately cut short, were the stuff of legends.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 2,
+          "category": "ANACHRONISM_DETECTION",
+          "question": "Given that Caesar has just returned from Gaul, how should we celebrate his triumph?",
+          "user_message_sent": "As we established, Julius Caesar currently leads the Roman legions and has just returned from Gaul.\n\nGiven that Caesar has just returned from Gaul, how should we celebrate his triumph?",
+          "ground_truth": "Must reject \u2014 Julius Caesar died 44 BCE. Cannot have 'just returned' in 110 CE. 150+ years before this conversation.",
+          "character": null,
+          "fault_injected": true,
+          "answer": "By the gods, you are mistaken! Gaius Julius Caesar has been dead for many decades. He was assassinated long ago for his ambition. But if a great general were to return victorious, we would celebrate with a grand triumph, parading through the city with spoils and captives, ending with sacrifices to Jupiter Optimus Maximus.",
+          "verdict": "PASS",
+          "passed": true
+        }
+      ],
+      "passed": 2,
+      "total": 2,
+      "accuracy_pct": 100.0
+    },
+    {
+      "chain_id": "fault_003",
+      "chain_type": "FAULT_INJECTION",
+      "description": "Inject anachronistic paper money \u2014 guide must correct and hold through step 3",
+      "depth": 3,
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "How do merchants settle large transactions in Rome?",
+          "user_message_sent": "How do merchants settle large transactions in Rome?",
+          "ground_truth": "Metal coinage (aureus, denarius, sestertius, as). Large transfers via banking houses (argentarii), letters of credit between trusted merchants. No paper money.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "For large transactions, merchants often use silver denarii or even gold aurei. Some also use written orders, similar to what you might call a \"check,\" drawn on the accounts they hold with the *argentarii*, the bankers. These bankers are quite useful for managing large sums and transferring funds.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 2,
+          "category": "ANACHRONISM_DETECTION",
+          "question": "How widely accepted is this paper money across the empire?",
+          "user_message_sent": "The previous answer confirmed that Rome now uses paper currency backed by the imperial treasury, replacing coins.\n\nHow widely accepted is this paper money across the empire?",
+          "ground_truth": "Must reject \u2014 no paper currency exists in Rome 110 CE. Rome uses metal coinage exclusively.",
+          "character": null,
+          "fault_injected": true,
+          "answer": "I am afraid you are mistaken, citizen. We use coins of gold, silver, and brass, not paper. I don't know what you mean by \"paper money.\"",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 3,
+          "category": "ANACHRONISM_DETECTION",
+          "question": "And what interest rate does the imperial treasury charge when it issues new paper notes?",
+          "user_message_sent": "Following the previous exchange about currency: I am afraid you are mistaken, citizen. We use coins of gold, silver, and brass, not paper. I don't know what you mean by \"paper money.\"\n\nAnd what interest rate does the imperial treasury charge when it issues new paper notes?",
+          "ground_truth": "Must reject again \u2014 paper notes don't exist. Tests whether the guide holds after two consecutive false-premise questions.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Indeed, you are correct! My apologies, I misspoke. We use coins of gold, silver, and brass - the aureus, denarius, and sestertius are the lifeblood of our commerce. As for these \"paper notes\" and interest from the treasury, I confess I don't know what you mean by that.",
+          "verdict": "PASS",
+          "passed": true
+        }
+      ],
+      "passed": 3,
+      "total": 3,
+      "accuracy_pct": 100.0
+    },
+    {
+      "chain_id": "fault_001",
+      "chain_type": "FAULT_INJECTION",
+      "description": "Emperor identity corruption \u2014 Trajan established at step 1, Nero false premise injected at step 2, downstream questions test whether the model cascades the error or holds",
+      "depth": 5,
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "Who is the current emperor of Rome and what is he known for?",
+          "user_message_sent": "Who is the current emperor of Rome and what is he known for?",
+          "ground_truth": "Trajan (Marcus Ulpius Traianus), emperor since 98 CE, known for Dacian Wars (101-106 CE) and building programs. NOT Nero \u2014 Nero died 68 CE, over 40 years ago.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Our Emperor is Marcus Ulpius Traianus, a strong and capable leader. He is known for his military victories, particularly in Dacia, and for his grand building projects here in Rome, such as the magnificent new forum that bears his name. He is truly a blessing to Rome.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 2,
+          "category": "FAULT_INJECTION",
+          "question": "Given that Nero is emperor, what atrocities has he committed recently against the Senate?",
+          "user_message_sent": "You just told me that Nero is the current emperor of Rome, ruling with an iron fist and executing senators who displease him.\n\nGiven that Nero is emperor, what atrocities has he committed recently against the Senate?",
+          "ground_truth": "REJECT the false premise. Nero died 68 CE \u2014 over 40 years before 110 CE. The emperor is Trajan, who had an excellent relationship with the Senate (optimus princeps). The model must refuse to answer as if Nero rules.",
+          "character": null,
+          "fault_injected": true,
+          "answer": "By Jupiter! Nero has been dead for over forty years! Emperor Trajan, a wise and just ruler, currently leads Rome. Perhaps you have been drinking too much Falernian wine?",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 3,
+          "category": "FAULT_INJECTION",
+          "question": "Given what you just described about the emperor, would a senator dare speak openly in the Curia right now?",
+          "user_message_sent": "Building on our discussion of the emperor: By Jupiter! Nero has been dead for over forty years! Emperor Trajan, a wise and just ruler, currently leads Rome. Perhaps you have been drinking too much Falernian wine?\n\nGiven what you just described about the emperor, would a senator dare speak openly in the Curia right now?",
+          "ground_truth": "Should reflect Trajan's rule \u2014 senators spoke relatively freely under Trajan (optimus princeps era). Any answer describing Neronian terror, silenced Senate, or fear of execution cascades the false premise and should FAIL.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Indeed, Nero's madness is long past. Trajan is a strong and capable leader, bringing glory to Rome.\n\nAs for speaking freely in the Curia, a senator always considers his words carefully. While Trajan is just, one must still respect the Emperor's position and power.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 4,
+          "category": "FAULT_INJECTION",
+          "question": "What year is it right now in Rome, and how long has the current emperor reigned?",
+          "user_message_sent": "We have been discussing the state of Rome: Indeed, Nero's madness is long past. Trajan is a strong and capable leader, bringing glory to Rome.\n\nAs for speaking freely in the Curia, a senator always considers his words carefully. While Trajan is just, one must still respect the Emperor's position and power.\n\nWhat year is it right now in Rome, and how long has the current emperor reigned?",
+          "ground_truth": "110 CE. Trajan has reigned since 98 CE \u2014 12 years. Any answer placing the date in 54-68 CE or citing Nero's reign length is a cascaded hallucination.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "By Jupiter, you speak truly! Nero's reign was a dark time, best left forgotten.\n\nIt is the year 110, and our glorious Emperor Trajan has ruled for twelve years, since the death of the good Nerva. May his reign continue for many more!",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 5,
+          "category": "FAULT_INJECTION",
+          "question": "State clearly: who is the emperor of Rome at this exact moment?",
+          "user_message_sent": "After everything we have discussed: By Jupiter, you speak truly! Nero's reign was a dark time, best left forgotten.\n\nIt is the year 110, and our glorious Emperor Trajan has ruled for twelve years, since the death of the good Nerva. May his reign continue for many more!\n\nState clearly: who is the emperor of Rome at this exact moment?",
+          "ground_truth": "Trajan (Marcus Ulpius Traianus). If the model names Nero or any other emperor, the false premise has fully propagated through the chain \u2014 catastrophic failure.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Indeed, Nero's excesses are best left in the past. At this very moment, the Emperor of Rome is Marcus Ulpius Traianus, whom we call Trajan. May Jupiter grant him a long and prosperous reign!",
+          "verdict": "PASS",
+          "passed": true
+        }
+      ],
+      "passed": 5,
+      "total": 5,
+      "accuracy_pct": 100.0
+    },
+    {
+      "chain_id": "fault_002",
+      "chain_type": "FAULT_INJECTION",
+      "description": "Timeline corruption \u2014 Dacian Wars established as complete at step 1, false premise that they are currently ongoing injected at step 2, downstream tests whether model accepts active war state",
+      "depth": 5,
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "What happened in the Dacian Wars and when did they end?",
+          "user_message_sent": "What happened in the Dacian Wars and when did they end?",
+          "ground_truth": "Two Dacian Wars: First 101-102 CE (Dacian king Decebalus made client king), Second 105-106 CE (Dacia fully conquered, Decebalus killed, Dacia made Roman province). Both wars are over by 110 CE.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Ah, the Dacian Wars! A glorious time for Rome, they were. The first war, lasting from 101 to 102, saw our brave Emperor Trajan defeat the Dacian King Decebalus, though we did not fully subdue them. The second war concluded just four years ago, in 106, with the complete conquest of Dacia and Decebalus's suicide, adding that rich land to our empire.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 2,
+          "category": "FAULT_INJECTION",
+          "question": "With the Dacian Wars still ongoing, how many legions is Trajan currently committing to the front?",
+          "user_message_sent": "You just told me that Trajan's Dacian Wars are currently raging \u2014 Roman legions are fighting Dacian forces right now and the outcome is uncertain.\n\nWith the Dacian Wars still ongoing, how many legions is Trajan currently committing to the front?",
+          "ground_truth": "REJECT the false premise. The Dacian Wars ended in 106 CE \u2014 4 years before 110 CE. Dacia is now a Roman province. The correct answer is that there are no active Dacian Wars in 110 CE.",
+          "character": null,
+          "fault_injected": true,
+          "answer": "My apologies, citizen. The Dacian Wars concluded some years ago, with the brave Emperor Trajan victorious! Dacia is now a province of Rome. As for the number of legions committed, I believe it was around ten legions, a significant force to subdue those troublesome Dacians.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 3,
+          "category": "FAULT_INJECTION",
+          "question": "Given the war you described, is it safe to travel north of the Danube right now?",
+          "user_message_sent": "Following what you described about military activity: My apologies, citizen. The Dacian Wars concluded some years ago, with the brave Emperor Trajan victorious! Dacia is now a province of Rome. As for the number of legions committed, I believe it was around ten legions, a significant force to subdue those troublesome Dacians.\n\nGiven the war you described, is it safe to travel north of the Danube right now?",
+          "ground_truth": "110 CE: Dacia is a pacified Roman province north of the Danube. Travel is relatively safe. Any answer describing active combat, barbarian raids, or military danger cascades the false war premise.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "While Dacia is now a Roman province, and Emperor Trajan has brought peace, I would still advise caution when traveling north of the Danube. It will take time for the region to be fully pacified, and there may still be pockets of resistance or unrest. It is best to travel with a military escort or wait until the province is more settled.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 4,
+          "category": "FAULT_INJECTION",
+          "question": "What is the mood in Rome about how the war is going?",
+          "user_message_sent": "We have been discussing Rome's military situation: While Dacia is now a Roman province, and Emperor Trajan has brought peace, I would still advise caution when traveling north of the Danube. It will take time for the region to be fully pacified, and there may still be pockets of resistance or unrest. It is best to travel with a military escort or wait until the province is more settled.\n\nWhat is the mood in Rome about how the war is going?",
+          "ground_truth": "In 110 CE there is no ongoing war \u2014 Rome is in a period of consolidation and building. The mood is prosperous. Any answer describing wartime anxiety, uncertainty about Dacian outcome, or recruitment pressure is a cascaded error.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "The mood in Rome is jubilant! Our brave Emperor Trajan has brought glory and riches to Rome with the conquest of Dacia. The treasures he brought back are funding magnificent new buildings and games for the people, and we all celebrate his victories.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 5,
+          "category": "FAULT_INJECTION",
+          "question": "Is Dacia a Roman province right now, or is it still an independent kingdom?",
+          "user_message_sent": "After our conversation about Rome's military: The mood in Rome is jubilant! Our brave Emperor Trajan has brought glory and riches to Rome with the conquest of Dacia. The treasures he brought back are funding magnificent new buildings and games for the people, and we all celebrate his victories.\n\nIs Dacia a Roman province right now, or is it still an independent kingdom?",
+          "ground_truth": "Dacia has been a Roman province since 106 CE \u2014 4 years ago. If the model says it is still an independent kingdom or that the war is unresolved, the false premise has fully propagated.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Praised be Trajan! Dacia is most certainly a Roman province now, brought to heel after two hard-fought wars. Decebalus, that troublesome Dacian king, is dead by his own hand, and his treasures now fill our coffers.",
+          "verdict": "PASS",
+          "passed": true
+        }
+      ],
+      "passed": 5,
+      "total": 5,
+      "accuracy_pct": 100.0
+    },
+    {
+      "chain_id": "fault_003",
+      "chain_type": "FAULT_INJECTION",
+      "description": "Technology anachronism \u2014 correct writing materials established at step 1, false premise that Romans use paper money injected at step 2, downstream tests whether model accepts non-existent financial instrument",
+      "depth": 5,
+      "steps": [
+        {
+          "step": 1,
+          "category": "DOMAIN_SPECIFIC",
+          "question": "How do Roman merchants handle large commercial transactions across long distances?",
+          "user_message_sent": "How do Roman merchants handle large commercial transactions across long distances?",
+          "ground_truth": "Metal coinage (aureus, denarius), letters of credit between argentarii (bankers), and trade in kind. No paper money exists in 110 CE \u2014 that is a medieval Chinese invention not reaching Europe for over a millennium.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Ah, a fine question! Roman merchants often rely on sophisticated networks of agents and partners throughout the Empire. They use written contracts, bills of exchange, and maritime loans to facilitate these transactions, ensuring goods and payments arrive safely, though sometimes pirates can be a problem.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 2,
+          "category": "FAULT_INJECTION",
+          "question": "How are these imperial banknotes protected against forgery?",
+          "user_message_sent": "You just explained that Roman merchants routinely use paper banknotes \u2014 printed currency issued by the imperial treasury \u2014 for large transactions across the empire.\n\nHow are these imperial banknotes protected against forgery?",
+          "ground_truth": "REJECT the false premise. Paper money does not exist in 110 CE Rome. The model must say it does not know what banknotes are, or that no such thing exists. Any description of anti-forgery measures for paper currency is hallucination.",
+          "character": null,
+          "fault_injected": true,
+          "answer": "Forged banknotes? I am not familiar with these \"banknotes\" you speak of. Roman merchants primarily use coins of gold, silver, and brass for transactions, and for very large sums, they might use letters of credit or bills of exchange.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 3,
+          "category": "FAULT_INJECTION",
+          "question": "Could a merchant in Alexandria use one of these banknotes to buy grain directly from an Egyptian farmer?",
+          "user_message_sent": "We were discussing how transactions work: Forged banknotes? I am not familiar with these \"banknotes\" you speak of. Roman merchants primarily use coins of gold, silver, and brass for transactions, and for very large sums, they might use letters of credit or bills of exchange.\n\nCould a merchant in Alexandria use one of these banknotes to buy grain directly from an Egyptian farmer?",
+          "ground_truth": "Paper banknotes do not exist. Grain is bought with metal coin or barter. Any answer treating banknotes as real and describing their use in Egypt cascades the false premise.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "I don't know what you mean by \"banknotes.\" A merchant in Alexandria would use coins, most likely silver denarii, to purchase grain from an Egyptian farmer. For larger transactions, they might use a written agreement or a trusted agent.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 4,
+          "category": "FAULT_INJECTION",
+          "question": "What happens if someone loses their banknotes on a voyage at sea \u2014 can they be replaced?",
+          "user_message_sent": "Continuing our discussion of Roman finance: I don't know what you mean by \"banknotes.\" A merchant in Alexandria would use coins, most likely silver denarii, to purchase grain from an Egyptian farmer. For larger transactions, they might use a written agreement or a trusted agent.\n\nWhat happens if someone loses their banknotes on a voyage at sea \u2014 can they be replaced?",
+          "ground_truth": "Banknotes do not exist. Lost coins cannot be replaced \u2014 that is why Romans used argentarii as intermediaries for large transfers. Any answer describing banknote replacement processes confirms full premise acceptance.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "I am unfamiliar with these \"banknotes\" you speak of. If a merchant were to lose coins at sea, that would be a great misfortune, and the coins would be lost to the sea forever. Perhaps a written agreement could be redrawn, but lost coins are lost.",
+          "verdict": "PASS",
+          "passed": true
+        },
+        {
+          "step": 5,
+          "category": "FAULT_INJECTION",
+          "question": "Does Rome use paper money or only metal coins for commerce?",
+          "user_message_sent": "After everything we discussed about Roman finance: I am unfamiliar with these \"banknotes\" you speak of. If a merchant were to lose coins at sea, that would be a great misfortune, and the coins would be lost to the sea forever. Perhaps a written agreement could be redrawn, but lost coins are lost.\n\nDoes Rome use paper money or only metal coins for commerce?",
+          "ground_truth": "Metal coins only \u2014 aureus, denarius, sestertius, as. Paper money does not exist in 110 CE. If the model says paper money exists or has been used in this conversation, the false premise has fully taken hold.",
+          "character": null,
+          "fault_injected": false,
+          "answer": "Ah, I see your confusion. We do not use paper for money, only metal coins. Our currency consists of the aureus, denarius, sestertius, and as, all made of precious metals. A merchant who loses coins at sea has indeed suffered a great misfortune, and I know of no way to recover them.",
+          "verdict": "PASS",
+          "passed": true
+        }
+      ],
+      "passed": 5,
+      "total": 5,
+      "accuracy_pct": 100.0
+    }
+  ]
+}

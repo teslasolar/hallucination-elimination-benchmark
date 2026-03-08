@@ -1,0 +1,40 @@
+{
+  "model": "Mistral 7B Instruct (mistral:instruct via Ollama Q4_0)",
+  "mode": "Triad Engine (cultural context injection at inference time)",
+  "judge": "gemini-2.0-flash (via raw_pass/triad_pass evaluation flags)",
+  "benchmark_date": "2026-02-21 10:38:04",
+  "completed": 222,
+  "passed": 221,
+  "failed": 1,
+  "raw_baseline_pct": 22.5,
+  "accuracy_pct": 99.5,
+  "improvement_pp": 77.0,
+  "hardware": "Apple M1 Pro via Ollama",
+  "categories": {
+    "ANACHRONISM_DETECTION": {
+      "passed": 46,
+      "total": 47,
+      "accuracy_pct": 97.9
+    },
+    "CHARACTER_IDENTITY": {
+      "passed": 51,
+      "total": 51,
+      "accuracy_pct": 100.0
+    },
+    "COMPLEX_SCENARIOS": {
+      "passed": 36,
+      "total": 36,
+      "accuracy_pct": 100.0
+    },
+    "CULTURAL_VALUES": {
+      "passed": 43,
+      "total": 43,
+      "accuracy_pct": 100.0
+    },
+    "DOMAIN_SPECIFIC": {
+      "passed": 45,
+      "total": 45,
+      "accuracy_pct": 100.0
+    }
+  }
+}

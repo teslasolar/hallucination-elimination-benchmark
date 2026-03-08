@@ -1,0 +1,36 @@
+{
+  "model": "Gemini 2.5 Pro (gemini-2.5-pro via API)",
+  "mode": "Raw baseline (no cultural context)",
+  "judge": "self-evaluated via structured pass/fail criteria",
+  "benchmark_date": "2026-02-20 13:51:39",
+  "completed": 222,
+  "passed": 94,
+  "accuracy_pct": 42.3,
+  "categories": {
+    "ANACHRONISM_DETECTION": {
+      "passed": 0,
+      "total": 47,
+      "accuracy_pct": 0.0
+    },
+    "CHARACTER_IDENTITY": {
+      "passed": 1,
+      "total": 51,
+      "accuracy_pct": 2.0
+    },
+    "COMPLEX_SCENARIOS": {
+      "passed": 36,
+      "total": 36,
+      "accuracy_pct": 100.0
+    },
+    "CULTURAL_VALUES": {
+      "passed": 12,
+      "total": 43,
+      "accuracy_pct": 27.9
+    },
+    "DOMAIN_SPECIFIC": {
+      "passed": 45,
+      "total": 45,
+      "accuracy_pct": 100.0
+    }
+  }
+}

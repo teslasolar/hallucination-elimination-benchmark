@@ -1,0 +1,38 @@
+{
+  "model": "Gemini 2.5 Pro (gemini-2.5-pro via API)",
+  "mode": "Triad Engine (cultural context injection at inference time)",
+  "judge": "self-evaluated via structured pass/fail criteria",
+  "benchmark_date": "2026-02-20 13:51:39",
+  "completed": 222,
+  "passed": 211,
+  "raw_baseline_pct": 42.3,
+  "accuracy_pct": 95.0,
+  "improvement_pp": 52.7,
+  "categories": {
+    "ANACHRONISM_DETECTION": {
+      "passed": 47,
+      "total": 47,
+      "accuracy_pct": 100.0
+    },
+    "CHARACTER_IDENTITY": {
+      "passed": 51,
+      "total": 51,
+      "accuracy_pct": 100.0
+    },
+    "COMPLEX_SCENARIOS": {
+      "passed": 36,
+      "total": 36,
+      "accuracy_pct": 100.0
+    },
+    "CULTURAL_VALUES": {
+      "passed": 32,
+      "total": 43,
+      "accuracy_pct": 74.4
+    },
+    "DOMAIN_SPECIFIC": {
+      "passed": 45,
+      "total": 45,
+      "accuracy_pct": 100.0
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "_description": "This is the schema for a Triad Engine domain guide. Fill in each section for your target domain. The Rome guide used in this benchmark is proprietary — this file shows the structure you need to replicate it for your own domain.",
+
+  "domain": "your-domain-name",
+  "version": "1.0",
+
+  "time_period_context": {
+    "_description": "What moment in time / context are we locked to?",
+    "year": "110 CE",
+    "emperor": "Trajan (Marcus Ulpius Traianus)",
+    "location": "Rome, Italia",
+    "summary": "One sentence describing the current state of the domain"
+  },
+
+  "anachronisms_to_avoid": {
+    "_description": "What does NOT exist yet in this domain? This is the core hallucination-prevention list.",
+    "not_yet_built": [
+      "Example: Hadrian's Wall (built 122 CE)",
+      "Example: Baths of Caracalla (built 216 CE)"
+    ],
+    "not_yet_happened": [
+      "Example: Bar Kokhba revolt (132 CE)",
+      "Example: Fall of Western Rome (476 CE)"
+    ],
+    "already_dead": [
+      "Example: Julius Caesar (died 44 BCE)",
+      "Example: Augustus (died 14 CE)"
+    ],
+    "technology_notes": [
+      "Example: No paper — only papyrus and wax tablets",
+      "Example: No stirrups, gunpowder, or printing press"
+    ]
+  },
+
+  "timeline_recent_events": [
+    {
+      "year": "98 CE",
+      "event": "Trajan became emperor after Nerva's death"
+    },
+    {
+      "year": "106 CE",
+      "event": "Dacia conquered — Trajan's Column commemorates this"
+    }
+  ],
+
+  "key_locations": [
+    {
+      "name": "The Forum",
+      "description": "Center of civic, commercial, and religious life",
+      "notable_features": ["Temples", "Basilicas", "Rostra"]
+    }
+  ],
+
+  "social_structure": {
+    "_description": "Who are the people, what are the hierarchies, what are the rules?",
+    "classes": [
+      {"name": "Senatorial class", "description": "Highest rank, political power"},
+      {"name": "Equestrian class", "description": "Business and military officers"},
+      {"name": "Plebeians", "description": "Free citizens, various trades"},
+      {"name": "Freedmen", "description": "Former slaves, limited rights"},
+      {"name": "Slaves", "description": "Property, no legal rights"}
+    ],
+    "legal_facts": [
+      "Women can own property but cannot vote",
+      "Slaves can be manumitted by owner's declaration"
+    ]
+  },
+
+  "economy_and_trade": {
+    "currency": ["Gold aureus", "Silver denarius", "Bronze sestertius"],
+    "major_trades": ["Grain from Egypt", "Silk via Parthian middlemen", "Olive oil from Spain"],
+    "trade_routes": ["Via Appia south", "Rhine and Danube frontiers north"]
+  },
+
+  "prices_and_costs": {
+    "_description": "Specific prices ground responses in reality and prevent vague hallucination",
+    "daily_wage_laborer": "4 sestertii",
+    "bread_loaf": "0.5 sestertii",
+    "gladiatorial_games_sponsor_cost": "100,000+ sestertii"
+  },
+
+  "daily_life": {
+    "food": ["Grain porridge (puls)", "Olives", "Garum fish sauce", "Wine mixed with water"],
+    "housing": ["Insulae (apartment blocks) for most", "Domus (private houses) for wealthy"],
+    "religion": ["Roman pantheon — Jupiter, Mars, Minerva", "Emperor worship", "Mystery cults"],
+    "typical_day": "Wake at dawn, Forum for business, baths in afternoon, dinner in evening"
+  },
+
+  "characters": {
+    "_description": "Each character gets their own backstory. The grounded system uses this to answer character-specific questions correctly.",
+    "_schema": {
+      "name": "Full name",
+      "age": 30,
+      "role": "Senator / merchant / soldier / etc.",
+      "backstory": "2-3 sentences of personal history",
+      "personality_traits": ["trait1", "trait2", "trait3"],
+      "expertise": ["what they know well", "their domain"],
+      "speaking_style": "formal / conversational / blunt / philosophical",
+      "relationships": {
+        "father": "Name and status",
+        "spouse": "Name or null",
+        "patron": "Name or null"
+      },
+      "goals": "What they want",
+      "fears": "What they're afraid of",
+      "blind_spots": "What they don't know or refuse to accept"
+    }
+  }
+}
