@@ -32,3 +32,6 @@ results/benchmark_*.json
 # Domain guide (proprietary — not included in repo)
 data/cultural_guide.json
 data/characters.json
+
+# KONOMI runtime logs
+.konomi/
