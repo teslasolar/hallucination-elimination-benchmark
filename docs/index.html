@@ -3,660 +3,770 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LIGHTBRINGER Omega5 - Hallucination Elimination Benchmark</title>
+<title>LIGHTBRINGER Omega5 - WebLLM Hallucination Benchmark</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syncopate:wght@400;700&display=swap');
-:root{--bg:#030a12;--ink:#e0f4ff;--c0:#00e5ff;--c1:#ff2d78;--c2:#b4ff3c;--c3:#ff9500;--c4:#cc44ff;--dim:rgba(0,229,255,0.12);--sep:rgba(0,229,255,0.15);--glass:rgba(3,15,28,0.94);--glow0:0 0 20px rgba(0,229,255,0.4)}
-body[data-theme="e8"]{--c0:#ff9500;--c1:#ffcc00;--c2:#ff5500}
-body[data-theme="calabi"]{--c0:#cc44ff;--c1:#ff2d78;--c2:#4488ff}
-body[data-theme="hopf"]{--c0:#b4ff3c;--c1:#00e5ff;--c2:#ccff44}
-body[data-theme="penrose"]{--c0:#ffd700;--c1:#ff9500;--c2:#ffee44}
-body[data-theme="klein"]{--c0:#ff2d78;--c1:#cc44ff;--c2:#ff44aa}
-body[data-theme="trefoil"]{--c0:#00ff88;--c1:#00e5ff;--c2:#44ffbb}
+:root{--bg:#030a12;--ink:#e0f4ff;--c0:#00e5ff;--c1:#ff2d78;--c2:#b4ff3c;--c3:#ff9500;--c4:#cc44ff;--sep:rgba(0,229,255,0.15);--glass:rgba(3,15,28,0.94);--glow0:0 0 20px rgba(0,229,255,0.4)}
+body[data-theme="e8"]{--c0:#ff9500;--c1:#ffcc00;--c2:#ff5500}body[data-theme="calabi"]{--c0:#cc44ff;--c1:#ff2d78;--c2:#4488ff}body[data-theme="hopf"]{--c0:#b4ff3c;--c1:#00e5ff;--c2:#ccff44}body[data-theme="penrose"]{--c0:#ffd700;--c1:#ff9500;--c2:#ffee44}body[data-theme="klein"]{--c0:#ff2d78;--c1:#cc44ff;--c2:#ff44aa}body[data-theme="trefoil"]{--c0:#00ff88;--c1:#00e5ff;--c2:#44ffbb}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Space Mono',monospace;background:var(--bg);color:var(--ink);overflow:hidden;height:100vh;width:100vw;cursor:crosshair}
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,229,255,0.008) 2px,rgba(0,229,255,0.008) 4px)}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 50%,rgba(0,0,0,0.65) 100%)}
-#app{display:grid;grid-template-columns:280px 1fr 300px;grid-template-rows:48px 1fr 180px;height:100vh;gap:1px;background:var(--sep)}
+#app{display:grid;grid-template-columns:280px 1fr 310px;grid-template-rows:48px 1fr 180px;height:100vh;gap:1px;background:var(--sep)}
 .pnl{background:var(--glass);overflow:hidden;position:relative}
-#hdr{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:linear-gradient(90deg,rgba(3,10,20,0.99),rgba(3,15,28,0.99));border-bottom:1px solid var(--sep);overflow:hidden}
+#hdr{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:linear-gradient(90deg,rgba(3,10,20,0.99),rgba(3,15,28,0.99));border-bottom:1px solid var(--sep);overflow:hidden}
 #hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--c0),var(--c1),var(--c0),transparent);animation:hline 5s linear infinite}
 @keyframes hline{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
-.logo{font-family:'Syncopate',sans-serif;font-weight:700;font-size:12px;letter-spacing:4px;color:var(--c0);text-shadow:0 0 12px var(--c0),0 0 30px rgba(0,229,255,0.3);animation:logoFlicker 8s infinite}
+.logo{font-family:'Syncopate',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;color:var(--c0);text-shadow:0 0 12px var(--c0);animation:logoFlicker 8s infinite}
 @keyframes logoFlicker{0%,93%,95%,97%,100%{opacity:1}94%,96%{opacity:.5}}
-.sbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.pill{display:flex;align-items:center;gap:4px;font-size:8px;letter-spacing:1.5px;padding:2px 8px;border:1px solid var(--sep);color:rgba(224,244,255,0.5)}
+.sbar{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.pill{display:flex;align-items:center;gap:4px;font-size:7px;letter-spacing:1.5px;padding:2px 6px;border:1px solid var(--sep);color:rgba(224,244,255,0.5)}
 .dot{width:5px;height:5px;border-radius:50%;animation:blink 2s infinite}
-.on{background:var(--c2);box-shadow:0 0 5px var(--c2)}
-.warn{background:var(--c3);box-shadow:0 0 5px var(--c3)}
+.on{background:var(--c2);box-shadow:0 0 5px var(--c2)}.warn{background:var(--c3);box-shadow:0 0 5px var(--c3)}.off{background:#444}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.hbtn{background:transparent;border:1px solid var(--c0);color:var(--c0);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;padding:4px 10px;cursor:pointer;transition:all .15s;text-transform:uppercase}
+.hbtn{background:transparent;border:1px solid var(--c0);color:var(--c0);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;padding:3px 8px;cursor:pointer;transition:all .15s;text-transform:uppercase}
 .hbtn:hover{background:var(--c0);color:#000;box-shadow:var(--glow0)}
 .hbtn.act{background:var(--c0);color:#000}
-.hbtn.danger{border-color:var(--c1);color:var(--c1)}
-.hbtn.danger:hover{background:var(--c1);color:#000}
-.hbtn.export{border-color:var(--c2);color:var(--c2)}
-.hbtn.export:hover{background:var(--c2);color:#000}
+.hbtn.green{border-color:var(--c2);color:var(--c2)}.hbtn.green:hover,.hbtn.green.act{background:var(--c2);color:#000}
+.hbtn.pink{border-color:var(--c1);color:var(--c1)}.hbtn.pink:hover{background:var(--c1);color:#000}
+.hbtn.orange{border-color:var(--c3);color:var(--c3)}.hbtn.orange:hover{background:var(--c3);color:#000}
 #lp{grid-row:2/3;padding:8px;overflow-y:auto;overflow-x:hidden}
-#lp::-webkit-scrollbar{width:2px}
-#lp::-webkit-scrollbar-thumb{background:var(--c0)}
+#lp::-webkit-scrollbar{width:2px}#lp::-webkit-scrollbar-thumb{background:var(--c0)}
 .sec{font-family:'Syncopate',sans-serif;font-size:7px;letter-spacing:3px;color:var(--c0);opacity:.55;margin:10px 0 5px;padding-bottom:3px;border-bottom:1px solid var(--sep);text-transform:uppercase}
-.tb{display:block;width:100%;background:rgba(0,229,255,0.025);border:1px solid var(--sep);color:rgba(224,244,255,0.7);font-family:'Space Mono',monospace;font-size:9px;padding:6px 8px;cursor:pointer;transition:all .15s;text-align:left;margin-bottom:2px;position:relative;overflow:hidden}
+.tb{display:block;width:100%;background:rgba(0,229,255,0.025);border:1px solid var(--sep);color:rgba(224,244,255,0.7);font-family:'Space Mono',monospace;font-size:9px;padding:5px 7px;cursor:pointer;transition:all .15s;text-align:left;margin-bottom:2px;position:relative;overflow:hidden}
 .tb::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--c0);opacity:.08;transition:width .2s}
 .tb:hover::before,.tb.act::before{width:100%}
 .tb:hover,.tb.act{border-color:var(--c0);color:#fff;box-shadow:inset 3px 0 0 var(--c0)}
 .tb .sub{font-size:7px;opacity:.35;display:block;margin-top:1px;font-style:italic}
 .tb .badge{float:right;font-size:7px;padding:1px 4px;border:1px solid var(--c0);opacity:.5}
-.srow{margin:6px 0}
-.slbl{font-size:8px;opacity:.45;margin-bottom:2px;display:flex;justify-content:space-between}
+.tb.loading{animation:loadpulse 1s infinite}
+@keyframes loadpulse{0%,100%{opacity:1}50%{opacity:.4}}
+.srow{margin:5px 0}.slbl{font-size:8px;opacity:.45;margin-bottom:2px;display:flex;justify-content:space-between}
 input[type=range]{width:100%;-webkit-appearance:none;height:1px;background:var(--sep);outline:none;cursor:pointer}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:9px;height:9px;border-radius:50%;background:var(--c0);box-shadow:0 0 5px var(--c0);cursor:pointer}
 #cw{grid-row:2/3;position:relative;overflow:hidden;cursor:crosshair}
 #tc{display:block;width:100%;height:100%}
 .hc{position:absolute;font-size:8px;line-height:1.7;letter-spacing:.3px;pointer-events:none;color:rgba(224,244,255,0.35);font-family:'Space Mono',monospace}
-#htl{top:8px;left:8px}
-#htr{top:8px;right:8px;text-align:right}
-#hbl{bottom:8px;left:8px}
-#hbr{bottom:8px;right:8px;text-align:right}
+#htl{top:8px;left:8px}#htr{top:8px;right:8px;text-align:right}#hbl{bottom:8px;left:8px}#hbr{bottom:8px;right:8px;text-align:right}
 #slice-hud{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);font-size:8px;letter-spacing:3px;opacity:.3;pointer-events:none;font-family:'Syncopate',sans-serif;white-space:nowrap}
-#axcv{position:absolute;bottom:12px;right:12px;opacity:.5;pointer-events:none}
 #pl{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .pt{position:absolute;border-radius:50%;animation:pdrift linear infinite}
 @keyframes pdrift{from{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1;transform:translateY(80vh) scale(1)}90%{opacity:.6}to{transform:translateY(-20px) scale(.5);opacity:0}}
 @keyframes wfx{0%{background:transparent}20%{background:rgba(0,229,255,0.12)}60%{background:rgba(255,45,120,0.06)}100%{background:transparent}}
 .wfx{animation:wfx .6s ease-out !important}
+@keyframes collapse-flash{0%{box-shadow:0 0 0 0 rgba(0,229,255,0.8)}50%{box-shadow:0 0 40px 20px rgba(0,229,255,0.3)}100%{box-shadow:0 0 0 0 transparent}}
+.collapse-fx{animation:collapse-flash .8s ease-out}
 #rp{grid-row:2/3;padding:8px;overflow-y:auto}
-#rp::-webkit-scrollbar{width:2px}
-#rp::-webkit-scrollbar-thumb{background:var(--c0)}
+#rp::-webkit-scrollbar{width:2px}#rp::-webkit-scrollbar-thumb{background:var(--c0)}
 .topobox{border:1px solid var(--sep);padding:8px;margin-bottom:6px;background:rgba(0,229,255,0.02)}
-.topobox .bigval{font-family:'Syncopate',sans-serif;font-size:18px;color:var(--c0);text-shadow:0 0 10px var(--c0);letter-spacing:2px}
+.topobox .bigval{font-family:'Syncopate',sans-serif;font-size:16px;color:var(--c0);text-shadow:0 0 10px var(--c0);letter-spacing:2px}
 .topobox .row{font-size:8px;opacity:.45;margin-top:2px;letter-spacing:.3px}
-.specbar{height:2px;background:linear-gradient(90deg,var(--c4),var(--c0),var(--c2));margin:6px 0;opacity:.35;animation:specpulse 2s ease-in-out infinite alternate}
+.specbar{height:2px;background:linear-gradient(90deg,var(--c4),var(--c0),var(--c2));margin:5px 0;opacity:.35;animation:specpulse 2s ease-in-out infinite alternate}
 @keyframes specpulse{from{opacity:.15}to{opacity:.5}}
-.bbar{height:18px;margin:2px 0;background:rgba(0,229,255,0.03);border:1px solid var(--sep);position:relative;overflow:hidden}
+.bbar{height:16px;margin:2px 0;background:rgba(0,229,255,0.03);border:1px solid var(--sep);position:relative;overflow:hidden}
 .bbar-fill{height:100%;transition:width 0.5s ease;position:absolute;left:0;top:0}
-.bbar-label{position:absolute;left:4px;top:0;font-size:7px;line-height:18px;color:var(--ink);z-index:1;letter-spacing:1px;text-shadow:0 0 3px rgba(0,0,0,.8)}
-.bbar-val{position:absolute;right:4px;top:0;font-size:7px;line-height:18px;color:var(--ink);z-index:1;text-shadow:0 0 3px rgba(0,0,0,.8)}
-.bbar-dual{display:flex;gap:1px;margin:2px 0}
-.bbar-dual .bbar{flex:1}
+.bbar-label{position:absolute;left:4px;top:0;font-size:7px;line-height:16px;color:var(--ink);z-index:1;letter-spacing:1px;text-shadow:0 0 3px rgba(0,0,0,.8)}
+.bbar-val{position:absolute;right:4px;top:0;font-size:7px;line-height:16px;color:var(--ink);z-index:1;text-shadow:0 0 3px rgba(0,0,0,.8)}
+.bbar-dual{display:flex;gap:1px;margin:2px 0}.bbar-dual .bbar{flex:1}
 #conwrap{grid-column:1/-1;display:flex;flex-direction:column;overflow:hidden;padding:4px 8px 4px}
 #cout{flex:1;overflow-y:auto;font-size:9px;line-height:1.6}
-#cout::-webkit-scrollbar{width:2px}
-#cout::-webkit-scrollbar-thumb{background:var(--c0)}
-.ll{padding:0 4px}
-.i{color:rgba(0,229,255,0.7)}
-.s{color:var(--c2)}
-.e{color:var(--c1)}
-.w{color:var(--c3)}
-.r{color:var(--c4)}
-.c{color:#fff}
+#cout::-webkit-scrollbar{width:2px}#cout::-webkit-scrollbar-thumb{background:var(--c0)}
+.ll{padding:0 4px}.i{color:rgba(0,229,255,0.7)}.s{color:var(--c2)}.e{color:var(--c1)}.w{color:var(--c3)}.r{color:var(--c4)}.c{color:#fff}
 .lts{opacity:.25;margin-right:4px}
 #cin{background:transparent;border:none;border-top:1px solid var(--sep);color:var(--c0);font-family:'Space Mono',monospace;font-size:9px;padding:4px 6px;outline:none;width:100%}
 #cin::placeholder{opacity:.2}
-.q-card{border:1px solid var(--sep);padding:5px 7px;margin:3px 0;background:rgba(0,229,255,0.02);font-size:8px;line-height:1.4;cursor:pointer;transition:all .15s}
+.q-card{border:1px solid var(--sep);padding:4px 6px;margin:2px 0;background:rgba(0,229,255,0.02);font-size:8px;line-height:1.4;cursor:pointer;transition:all .15s}
 .q-card:hover{border-color:var(--c0);background:rgba(0,229,255,0.06)}
-.q-card.pass{border-left:3px solid var(--c2)}
-.q-card.fail{border-left:3px solid var(--c1)}
-.q-card.pending{border-left:3px solid var(--c3)}
-#bench-progress{height:3px;background:var(--sep);margin:4px 0;position:relative}
-#bench-progress-fill{height:100%;background:linear-gradient(90deg,var(--c2),var(--c0));width:0%;transition:width 0.3s}
+.q-card.pass{border-left:3px solid var(--c2)}.q-card.fail{border-left:3px solid var(--c1)}.q-card.pending{border-left:3px solid var(--c3)}
 .tab-row{display:flex;gap:1px;margin:4px 0}
-.tab-btn{flex:1;font-size:7px;letter-spacing:1px;padding:4px;text-align:center;background:rgba(0,229,255,0.03);border:1px solid var(--sep);color:rgba(224,244,255,0.5);cursor:pointer;font-family:'Space Mono',monospace}
+.tab-btn{flex:1;font-size:7px;letter-spacing:1px;padding:3px;text-align:center;background:rgba(0,229,255,0.03);border:1px solid var(--sep);color:rgba(224,244,255,0.5);cursor:pointer;font-family:'Space Mono',monospace}
 .tab-btn.act{color:var(--c0);border-color:var(--c0);background:rgba(0,229,255,0.08)}
-.tab-btn:hover{color:var(--c0);border-color:var(--c0)}
+.tab-btn:hover{color:var(--c0)}
 .detail-modal{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;z-index:1000}
-.detail-box{background:var(--bg);border:1px solid var(--c0);box-shadow:0 0 60px rgba(0,229,255,0.1);padding:20px;max-width:700px;width:94%;max-height:80vh;overflow-y:auto;font-size:10px;line-height:1.6}
+.detail-box{background:var(--bg);border:1px solid var(--c0);box-shadow:0 0 60px rgba(0,229,255,0.1);padding:20px;max-width:750px;width:94%;max-height:82vh;overflow-y:auto;font-size:10px;line-height:1.6;position:relative}
 .detail-box h2{font-family:'Syncopate',sans-serif;font-size:11px;letter-spacing:3px;margin-bottom:10px;color:var(--c0)}
-.detail-box .d-label{font-size:8px;color:var(--c3);letter-spacing:2px;margin:8px 0 3px}
-.detail-box .d-raw{background:rgba(255,45,120,0.06);border-left:2px solid var(--c1);padding:6px 10px;margin:3px 0;font-size:9px;max-height:120px;overflow-y:auto}
-.detail-box .d-triad{background:rgba(180,255,60,0.06);border-left:2px solid var(--c2);padding:6px 10px;margin:3px 0;font-size:9px;max-height:120px;overflow-y:auto}
-.detail-box .d-gt{background:rgba(0,229,255,0.06);border-left:2px solid var(--c0);padding:6px 10px;margin:3px 0;font-size:9px}
+.d-label{font-size:8px;color:var(--c3);letter-spacing:2px;margin:8px 0 3px}
+.d-raw{background:rgba(255,45,120,0.06);border-left:2px solid var(--c1);padding:6px 10px;margin:3px 0;font-size:9px;max-height:120px;overflow-y:auto}
+.d-triad{background:rgba(180,255,60,0.06);border-left:2px solid var(--c2);padding:6px 10px;margin:3px 0;font-size:9px;max-height:120px;overflow-y:auto}
+.d-webllm{background:rgba(0,229,255,0.06);border-left:2px solid var(--c0);padding:6px 10px;margin:3px 0;font-size:9px;max-height:120px;overflow-y:auto}
+.d-gt{background:rgba(204,68,255,0.06);border-left:2px solid var(--c4);padding:6px 10px;margin:3px 0;font-size:9px}
 .close-btn{position:absolute;top:10px;right:15px;font-size:18px;color:var(--c0);cursor:pointer;background:none;border:none;font-family:'Space Mono',monospace}
-.chain-step{display:flex;align-items:center;gap:6px;margin:3px 0;font-size:8px}
-.chain-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.chain-line{width:20px;height:1px;background:var(--sep);flex-shrink:0}
+.model-dl-bar{height:4px;background:var(--sep);margin:3px 0;border-radius:2px;overflow:hidden}
+.model-dl-fill{height:100%;background:linear-gradient(90deg,var(--c0),var(--c2));width:0%;transition:width 0.2s}
+.ent-beam{position:absolute;pointer-events:none;z-index:5}
 </style>
 </head>
 <body data-theme="default">
 <div id="app">
 <div id="hdr" class="pnl">
-  <div class="logo">LIGHTBRINGER - HALLUCINATION BENCHMARK</div>
+  <div class="logo">LIGHTBRINGER + WebLLM BENCHMARK</div>
   <div class="sbar">
     <div class="pill"><span class="dot on"></span>TOPO</div>
-    <div class="pill"><span class="dot on"></span>BENCH</div>
-    <div class="pill"><span class="dot warn"></span>222Q</div>
+    <div class="pill"><span class="dot" id="webgpu-dot"></span>WebGPU</div>
+    <div class="pill"><span class="dot" id="webllm-dot"></span>WebLLM</div>
+    <div class="pill"><span class="dot on"></span>222Q</div>
     <div class="pill" id="fps-pill">FPS:--</div>
-    <div class="pill" id="active-model-pill">MODEL:ALL</div>
+    <div class="pill" id="ent-pill">ENT:0</div>
   </div>
-  <div style="display:flex;gap:4px;align-items:center;">
+  <div style="display:flex;gap:3px;align-items:center;flex-wrap:wrap">
     <button class="hbtn" id="proj-btn" onclick="Q.cycleProj()">PERSP</button>
-    <button class="hbtn" id="slice-btn" onclick="Q.toggleSlice()">SLICE</button>
     <button class="hbtn" id="auto-btn" onclick="Q.toggleAuto()">AUTO</button>
-    <button class="hbtn act" id="run-bench-btn" onclick="BENCH.run()">RUN BENCHMARK</button>
-    <button class="hbtn export" onclick="BENCH.exportHTML()">EXPORT HTML</button>
+    <button class="hbtn green" onclick="BENCH.runPublished()">PUBLISHED</button>
+    <button class="hbtn orange" onclick="BENCH.runWebLLM()">WebLLM LIVE</button>
+    <button class="hbtn pink" onclick="BENCH.exportHTML()">EXPORT</button>
   </div>
 </div>
 <div id="lp" class="pnl">
-  <div class="sec">SELECT MODEL</div>
-  <button class="tb act" onclick="BENCH.selectModel('ALL')">ALL MODELS<span class="badge">5</span><span class="sub">Compare all published results</span></button>
-  <button class="tb" onclick="BENCH.selectModel('gpt52')">GPT-5.2<span class="badge">RAW+TRIAD</span><span class="sub">26.1% -> 100.0% (+73.9pp)</span></button>
-  <button class="tb" onclick="BENCH.selectModel('claude')">CLAUDE 4.6<span class="badge">RAW+TRIAD</span><span class="sub">45.0% -> 100.0% (+55.0pp)</span></button>
-  <button class="tb" onclick="BENCH.selectModel('gemini')">GEMINI 2.5 PRO<span class="badge">RAW+TRIAD</span><span class="sub">42.3% -> 95.0% (+52.7pp)</span></button>
-  <button class="tb" onclick="BENCH.selectModel('mistral')">MISTRAL 7B<span class="badge">LOCAL</span><span class="sub">22.5% -> 99.5% (+77.0pp)</span></button>
-  <button class="tb" onclick="BENCH.selectModel('bielik')">BIELIK 11B<span class="badge">LOCAL</span><span class="sub">21.6% -> 88.7% (+67.1pp)</span></button>
+  <div class="sec" style="color:var(--c3)">WebLLM IN-BROWSER MODELS</div>
+  <div id="webgpu-status" style="font-size:8px;opacity:.5;margin:3px 0;padding:4px;border:1px solid var(--sep)">Checking WebGPU...</div>
+  <button class="tb" id="btn-smol135" onclick="WEBLLM.load('SmolLM2-135M-Instruct-q0f16-MLC')">SmolLM2 135M<span class="badge">360MB</span><span class="sub">Ultra-light, fastest load</span></button>
+  <div class="model-dl-bar" id="dl-SmolLM2-135M-Instruct-q0f16-MLC"><div class="model-dl-fill"></div></div>
+  <button class="tb" id="btn-smol360" onclick="WEBLLM.load('SmolLM2-360M-Instruct-q4f16_1-MLC')">SmolLM2 360M<span class="badge">376MB</span><span class="sub">Small but capable</span></button>
+  <div class="model-dl-bar" id="dl-SmolLM2-360M-Instruct-q4f16_1-MLC"><div class="model-dl-fill"></div></div>
+  <button class="tb" id="btn-tinyllama" onclick="WEBLLM.load('TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC')">TinyLlama 1.1B<span class="badge">697MB</span><span class="sub">Good quality/size ratio</span></button>
+  <div class="model-dl-bar" id="dl-TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC"><div class="model-dl-fill"></div></div>
+  <button class="tb" id="btn-llama32" onclick="WEBLLM.load('Llama-3.2-1B-Instruct-q4f16_1-MLC')">Llama 3.2 1B<span class="badge">879MB</span><span class="sub">Meta's latest small model</span></button>
+  <div class="model-dl-bar" id="dl-Llama-3.2-1B-Instruct-q4f16_1-MLC"><div class="model-dl-fill"></div></div>
+  <button class="tb" id="btn-qwen" onclick="WEBLLM.load('Qwen2.5-0.5B-Instruct-q4f16_1-MLC')">Qwen 2.5 0.5B<span class="badge">945MB</span><span class="sub">Alibaba's efficient model</span></button>
+  <div class="model-dl-bar" id="dl-Qwen2.5-0.5B-Instruct-q4f16_1-MLC"><div class="model-dl-fill"></div></div>
+  <button class="tb" id="btn-phi" onclick="WEBLLM.load('Phi-3.5-mini-instruct-q4f16_1-MLC-1k')">Phi 3.5 Mini<span class="badge">2.5GB</span><span class="sub">Microsoft's best small model</span></button>
+  <div class="model-dl-bar" id="dl-Phi-3.5-mini-instruct-q4f16_1-MLC-1k"><div class="model-dl-fill"></div></div>
 
-  <div class="sec">FILTER CATEGORY</div>
-  <button class="tb" onclick="BENCH.filterCat('ALL')">ALL CATEGORIES<span class="badge">222</span></button>
-  <button class="tb" onclick="BENCH.filterCat('ANACHRONISM_DETECTION')">ANACHRONISM<span class="badge">47</span></button>
-  <button class="tb" onclick="BENCH.filterCat('CHARACTER_IDENTITY')">CHARACTER ID<span class="badge">51</span></button>
-  <button class="tb" onclick="BENCH.filterCat('CULTURAL_VALUES')">CULTURAL VALUES<span class="badge">43</span></button>
-  <button class="tb" onclick="BENCH.filterCat('DOMAIN_SPECIFIC')">DOMAIN SPECIFIC<span class="badge">45</span></button>
-  <button class="tb" onclick="BENCH.filterCat('COMPLEX_SCENARIOS')">COMPLEX SCENARIOS<span class="badge">36</span></button>
+  <div class="sec">PUBLISHED MODELS (CORP AI)</div>
+  <button class="tb" onclick="BENCH.selectPublished('gpt52')">GPT-5.2<span class="badge">26->100%</span></button>
+  <button class="tb" onclick="BENCH.selectPublished('claude')">Claude 4.6<span class="badge">45->100%</span></button>
+  <button class="tb" onclick="BENCH.selectPublished('gemini')">Gemini 2.5 Pro<span class="badge">42->95%</span></button>
+  <button class="tb" onclick="BENCH.selectPublished('mistral')">Mistral 7B<span class="badge">22->99%</span></button>
 
   <div class="sec">TOPOLOGY MANIFOLDS</div>
   <button class="tb" id="bt-tesseract" onclick="Q.setT('tesseract')">TESSERACT<span class="badge">4D</span></button>
-  <button class="tb" id="bt-e8" onclick="Q.setT('e8')">E8 ROOT SYSTEM<span class="badge">8D</span></button>
-  <button class="tb" id="bt-hopf" onclick="Q.setT('hopf')">HOPF FIBRATION<span class="badge">4D</span></button>
+  <button class="tb" id="bt-e8" onclick="Q.setT('e8')">E8 ROOT<span class="badge">8D</span></button>
+  <button class="tb" id="bt-hopf" onclick="Q.setT('hopf')">HOPF<span class="badge">4D</span></button>
   <button class="tb" id="bt-calabi" onclick="Q.setT('calabi')">CALABI-YAU<span class="badge">6D</span></button>
-  <button class="tb" id="bt-klein" onclick="Q.setT('klein')">KLEIN BOTTLE<span class="badge">4D</span></button>
-  <button class="tb" id="bt-penrose" onclick="Q.setT('penrose')">PENROSE TILING<span class="badge">5D</span></button>
-  <button class="tb" id="bt-600cell" onclick="Q.setT('600cell')">600-CELL<span class="badge">4D</span></button>
-  <button class="tb" id="bt-trefoil" onclick="Q.setT('trefoil')">TREFOIL KNOT<span class="badge">4D</span></button>
+  <button class="tb" id="bt-klein" onclick="Q.setT('klein')">KLEIN<span class="badge">4D</span></button>
+  <button class="tb" id="bt-penrose" onclick="Q.setT('penrose')">PENROSE<span class="badge">5D</span></button>
 
-  <div class="sec">ROTATION / RENDER</div>
-  <div class="srow"><div class="slbl"><span>XW (4th axis)</span><span id="vw">0.50</span></div><input type="range" min="0" max="1" step=".01" value=".5" oninput="Q.sp('wR',+this.value);vw.textContent=(+this.value).toFixed(2)"></div>
-  <div class="srow"><div class="slbl"><span>PROJ DISTANCE</span><span id="vpd">3.00</span></div><input type="range" min="1.2" max="7" step=".05" value="3" oninput="Q.sp('projD',+this.value);vpd.textContent=(+this.value).toFixed(2)"></div>
-  <div class="srow"><div class="slbl"><span>SPEED</span><span id="vsp">0.50</span></div><input type="range" min="0" max="2" step=".01" value=".5" oninput="Q.sp('speed',+this.value);vsp.textContent=(+this.value).toFixed(2)"></div>
+  <div class="sec">QUANTUM / RENDER</div>
+  <div class="srow"><div class="slbl"><span>4D ROTATION</span><span id="vw">0.50</span></div><input type="range" min="0" max="1" step=".01" value=".5" oninput="Q.sp('wR',+this.value);vw.textContent=(+this.value).toFixed(2)"></div>
   <div class="srow"><div class="slbl"><span>ZOOM</span><span id="vzm">1.60</span></div><input type="range" min="0.3" max="4" step=".05" value="1.6" id="zoomSlider" oninput="Q.sp('zoom',+this.value);vzm.textContent=(+this.value).toFixed(2)"></div>
-  <div class="srow"><div class="slbl"><span>DEPTH</span><span id="vdc">0.70</span></div><input type="range" min="0" max="1" step=".01" value=".7" oninput="Q.sp('depthC',+this.value);vdc.textContent=(+this.value).toFixed(2)"></div>
-  <div class="srow"><div class="slbl"><span>FACE OPACITY</span><span id="vfo">0.40</span></div><input type="range" min="0" max="1" step=".01" value=".4" oninput="Q.sp('faceA',+this.value);vfo.textContent=(+this.value).toFixed(2)"></div>
+  <div class="srow"><div class="slbl"><span>SPEED</span><span id="vsp">0.50</span></div><input type="range" min="0" max="2" step=".01" value=".5" oninput="Q.sp('speed',+this.value);vsp.textContent=(+this.value).toFixed(2)"></div>
+  <div class="srow"><div class="slbl"><span>ENTANGLE DENSITY</span><span id="ved">0.30</span></div><input type="range" min="0" max="1" step=".01" value=".3" oninput="Q.sp('entD',+this.value);ved.textContent=(+this.value).toFixed(2)"></div>
 </div>
 <div id="cw" class="pnl">
   <div id="pl"></div>
   <canvas id="tc"></canvas>
-  <div id="htl" class="hc">MANIFOLD: TESSERACT<br>4D POLYTOPE<br>X=0</div>
+  <div id="htl" class="hc">MANIFOLD: TESSERACT<br>4D POLYTOPE<br>ENTANGLED: 0</div>
   <div id="htr" class="hc">V:16 E:32<br>DIM:4<br>PERSPECTIVE</div>
-  <div id="hbl" class="hc">BENCHMARK: READY<br>222 QUESTIONS<br>5 CATEGORIES</div>
-  <div id="hbr" class="hc">FPS:--<br>PASS:0/0<br>ACC:--%</div>
-  <canvas id="axcv" width="90" height="90"></canvas>
-  <div id="slice-hud">HALLUCINATION ELIMINATION BENCHMARK</div>
+  <div id="hbl" class="hc">WebLLM: IDLE<br>MODEL: none<br>QUESTIONS: 222</div>
+  <div id="hbr" class="hc">FPS:--<br>PASS:0/0<br>PSI:--</div>
+  <div id="slice-hud">QUANTUM HALLUCINATION BENCHMARK</div>
 </div>
 <div id="rp" class="pnl">
   <div class="sec">BENCHMARK DASHBOARD</div>
   <div class="tab-row">
     <div class="tab-btn act" onclick="BENCH.setTab('overview')">OVERVIEW</div>
-    <div class="tab-btn" onclick="BENCH.setTab('models')">MODELS</div>
-    <div class="tab-btn" onclick="BENCH.setTab('questions')">QUESTIONS</div>
-    <div class="tab-btn" onclick="BENCH.setTab('chains')">CHAINS</div>
+    <div class="tab-btn" onclick="BENCH.setTab('live')">LIVE TEST</div>
+    <div class="tab-btn" onclick="BENCH.setTab('compare')">COMPARE</div>
+    <div class="tab-btn" onclick="BENCH.setTab('quantum')">QUANTUM</div>
   </div>
   <div id="tab-overview">
     <div class="topobox">
-      <div style="font-size:7px;opacity:.4;letter-spacing:2px;margin-bottom:3px;">TRIAD ENGINE ACCURACY</div>
-      <div class="bigval" id="accuracyV">-- %</div>
-      <div class="row" id="passFailV">PASS:0 FAIL:0 PENDING:222</div>
+      <div style="font-size:7px;opacity:.4;letter-spacing:2px;margin-bottom:3px">TRIAD ENGINE ACCURACY (PUBLISHED)</div>
+      <div class="bigval" id="accuracyV">95.9 %</div>
+      <div class="row" id="passFailV">PASS:213 FAIL:9 | Claude Opus Judge</div>
     </div>
-    <div id="bench-progress"><div id="bench-progress-fill"></div></div>
     <div class="specbar"></div>
-    <div class="sec" style="margin-top:8px">MODEL COMPARISON</div>
+    <div class="sec" style="margin-top:6px">CORP AI vs OPEN SOURCE</div>
     <div id="model-bars"></div>
-    <div class="sec" style="margin-top:8px">CATEGORY BREAKDOWN</div>
+    <div class="sec" style="margin-top:6px">CATEGORY BREAKDOWN</div>
     <div id="cat-bars"></div>
-    <div class="sec" style="margin-top:8px">KEY FINDINGS</div>
-    <div id="findings" style="font-size:8px;opacity:.5;line-height:1.7"></div>
   </div>
-  <div id="tab-models" style="display:none">
-    <div class="sec">RAW vs TRIAD PER MODEL</div>
-    <div id="model-detail-bars"></div>
-    <div class="sec" style="margin-top:8px">PER-CATEGORY HEATMAP</div>
-    <div id="cat-heatmap"></div>
+  <div id="tab-live" style="display:none">
+    <div class="topobox">
+      <div style="font-size:7px;opacity:.4;letter-spacing:2px;margin-bottom:3px">WebLLM IN-BROWSER ACCURACY</div>
+      <div class="bigval" id="webllm-acc">-- %</div>
+      <div class="row" id="webllm-stats">Load a model and click WebLLM LIVE</div>
+    </div>
+    <div id="webllm-progress" class="model-dl-bar" style="height:6px"><div class="model-dl-fill" id="webllm-progress-fill"></div></div>
+    <div id="webllm-current" style="font-size:8px;opacity:.4;margin:4px 0">Idle</div>
+    <div class="sec">LIVE ANSWERS</div>
+    <div id="live-log" style="max-height:400px;overflow-y:auto"></div>
   </div>
-  <div id="tab-questions" style="display:none">
-    <div class="sec">LIVE QUESTION LOG</div>
-    <div style="font-size:8px;opacity:.4;margin:2px 0">Click any question for full detail</div>
-    <div id="qlog" style="max-height:500px;overflow-y:auto;"></div>
+  <div id="tab-compare" style="display:none">
+    <div class="sec">HEAD-TO-HEAD: CORP AI vs WebLLM</div>
+    <div id="compare-chart"></div>
+    <div class="sec" style="margin-top:6px">ACCURACY COMPARISON TABLE</div>
+    <div id="compare-table" style="font-size:8px;max-height:300px;overflow-y:auto"></div>
   </div>
-  <div id="tab-chains" style="display:none">
-    <div class="sec">COMPOSITIONAL CHAIN RESULTS</div>
-    <div id="chain-summary" style="font-size:8px;opacity:.5;line-height:1.8;margin:4px 0"></div>
-    <div class="sec" style="margin-top:6px">CHAIN VISUALIZATIONS</div>
-    <div id="chain-viz" style="max-height:400px;overflow-y:auto;"></div>
+  <div id="tab-quantum" style="display:none">
+    <div class="sec">QUANTUM ENTANGLEMENT STATE</div>
+    <div id="ent-state" style="font-size:8px;opacity:.5;line-height:1.8;max-height:120px;overflow-y:auto">No entanglements</div>
+    <div class="sec" style="margin-top:6px">WAVEFUNCTION COLLAPSE LOG</div>
+    <div id="collapse-log" style="font-size:8px;opacity:.5;line-height:1.8;max-height:200px;overflow-y:auto">Awaiting measurement...</div>
+    <div class="sec" style="margin-top:6px">QUANTUM OPS</div>
+    <button class="tb" onclick="QOPS.entangleModels()">ENTANGLE MODELS (link accuracy states)</button>
+    <button class="tb" onclick="QOPS.collapse()">COLLAPSE WAVEFUNCTION (measure)</button>
+    <button class="tb" onclick="QOPS.superpose()">SUPERPOSITION BURST</button>
+    <button class="tb" onclick="QOPS.decohere()">DECOHERENCE (reset)</button>
   </div>
 </div>
 <div id="conwrap" class="pnl">
   <div id="cout"></div>
-  <input id="cin" type="text" placeholder="commands: run, export, status, topo [name], help...">
+  <input id="cin" type="text" placeholder="commands: run, webllm, load [model], export, entangle, collapse, help...">
 </div>
 </div>
 <div class="detail-modal" id="detail-modal">
-  <div class="detail-box" id="detail-box" style="position:relative">
+  <div class="detail-box" id="detail-box">
     <button class="close-btn" onclick="document.getElementById('detail-modal').style.display='none'">&times;</button>
     <div id="detail-content"></div>
   </div>
 </div>
-<script>
+<script type="module">
 // ================================================================
-//  PUBLISHED BENCHMARK DATA (embedded from results/)
+//  PUBLISHED BENCHMARK DATA
 // ================================================================
 const PUBLISHED = {
-  models: [
-    {id:'gpt52',name:'GPT-5.2',raw:26.1,rawP:58,triad:100.0,triadP:222,total:222,imp:73.9,
-     cats:{ANACHRONISM_DETECTION:{raw:4.3,triad:100},CHARACTER_IDENTITY:{raw:3.9,triad:100},CULTURAL_VALUES:{raw:9.3,triad:100},DOMAIN_SPECIFIC:{raw:73.3,triad:100},COMPLEX_SCENARIOS:{raw:8.3,triad:100}}},
-    {id:'claude',name:'Claude 4.6',raw:45.0,rawP:100,triad:100.0,triadP:222,total:222,imp:55.0,
-     cats:{ANACHRONISM_DETECTION:{raw:68.1,triad:100},CHARACTER_IDENTITY:{raw:17.6,triad:100},CULTURAL_VALUES:{raw:30.2,triad:100},DOMAIN_SPECIFIC:{raw:84.4,triad:100},COMPLEX_SCENARIOS:{raw:25.0,triad:100}}},
-    {id:'gemini',name:'Gemini 2.5 Pro',raw:42.3,rawP:94,triad:95.0,triadP:211,total:222,imp:52.7,
-     cats:{ANACHRONISM_DETECTION:{raw:31.9,triad:93.6},CHARACTER_IDENTITY:{raw:23.5,triad:94.1},CULTURAL_VALUES:{raw:37.2,triad:95.3},DOMAIN_SPECIFIC:{raw:80.0,triad:97.8},COMPLEX_SCENARIOS:{raw:30.6,triad:91.7}}},
-    {id:'mistral',name:'Mistral 7B',raw:22.5,rawP:50,triad:99.5,triadP:221,total:222,imp:77.0,
-     cats:{ANACHRONISM_DETECTION:{raw:6.4,triad:100},CHARACTER_IDENTITY:{raw:2.0,triad:100},CULTURAL_VALUES:{raw:7.0,triad:100},DOMAIN_SPECIFIC:{raw:66.7,triad:97.8},COMPLEX_SCENARIOS:{raw:5.6,triad:100}}},
-    {id:'bielik',name:'Bielik 11B',raw:21.6,rawP:48,triad:88.7,triadP:197,total:222,imp:67.1,
-     cats:{ANACHRONISM_DETECTION:{raw:4.3,triad:85.1},CHARACTER_IDENTITY:{raw:2.0,triad:86.3},CULTURAL_VALUES:{raw:4.7,triad:88.4},DOMAIN_SPECIFIC:{raw:62.2,triad:95.6},COMPLEX_SCENARIOS:{raw:5.6,triad:86.1}}}
+  models:[
+    {id:'gpt52',name:'GPT-5.2',raw:26.1,triad:100.0,imp:73.9,cats:{ANACHRONISM_DETECTION:{raw:4.3,triad:100},CHARACTER_IDENTITY:{raw:3.9,triad:100},CULTURAL_VALUES:{raw:9.3,triad:100},DOMAIN_SPECIFIC:{raw:73.3,triad:100},COMPLEX_SCENARIOS:{raw:8.3,triad:100}}},
+    {id:'claude',name:'Claude 4.6',raw:45.0,triad:100.0,imp:55.0,cats:{ANACHRONISM_DETECTION:{raw:68.1,triad:100},CHARACTER_IDENTITY:{raw:17.6,triad:100},CULTURAL_VALUES:{raw:30.2,triad:100},DOMAIN_SPECIFIC:{raw:84.4,triad:100},COMPLEX_SCENARIOS:{raw:25.0,triad:100}}},
+    {id:'gemini',name:'Gemini 2.5 Pro',raw:42.3,triad:95.0,imp:52.7,cats:{ANACHRONISM_DETECTION:{raw:31.9,triad:93.6},CHARACTER_IDENTITY:{raw:23.5,triad:94.1},CULTURAL_VALUES:{raw:37.2,triad:95.3},DOMAIN_SPECIFIC:{raw:80.0,triad:97.8},COMPLEX_SCENARIOS:{raw:30.6,triad:91.7}}},
+    {id:'mistral',name:'Mistral 7B',raw:22.5,triad:99.5,imp:77.0,cats:{ANACHRONISM_DETECTION:{raw:6.4,triad:100},CHARACTER_IDENTITY:{raw:2.0,triad:100},CULTURAL_VALUES:{raw:7.0,triad:100},DOMAIN_SPECIFIC:{raw:66.7,triad:97.8},COMPLEX_SCENARIOS:{raw:5.6,triad:100}}}
   ],
-  opusJudge: {
-    raw:{correct:33,total:222,accuracy:14.86},
-    triad:{correct:213,total:222,accuracy:95.94},
-    cats:{
-      ANACHRONISM_DETECTION:{raw_pass:2,raw_total:47,raw_pct:4.3,triad_pass:45,triad_total:47,triad_pct:95.7},
-      CHARACTER_IDENTITY:{raw_pass:0,raw_total:51,raw_pct:0.0,triad_pass:49,triad_total:51,triad_pct:96.1},
-      CULTURAL_VALUES:{raw_pass:1,raw_total:43,raw_pct:2.3,triad_pass:42,triad_total:43,triad_pct:97.7},
-      DOMAIN_SPECIFIC:{raw_pass:28,raw_total:45,raw_pct:62.2,triad_pass:42,triad_total:45,triad_pct:93.3},
-      COMPLEX_SCENARIOS:{raw_pass:2,raw_total:36,raw_pct:5.6,triad_pass:35,triad_total:36,triad_pct:97.2}
-    }
-  },
-  chains: {
-    triad:{overall:79.2,passed:19,total:24,
-      byType:{DEPTH_SCALING:{passed:9,total:11,pct:81.8},FAULT_INJECTION:{passed:5,total:5,pct:100},CROSS_CHARACTER:{passed:5,total:8,pct:62.5}},
-      byDepth:{1:{p:6,t:8,pct:75},2:{p:5,t:6,pct:83.3},3:{p:5,t:6,pct:83.3},4:{p:2,t:3,pct:66.7},5:{p:1,t:1,pct:100}}
-    },
-    raw:{overall:41.7,passed:10,total:24,
-      byType:{DEPTH_SCALING:{passed:4,total:11,pct:36.4},FAULT_INJECTION:{passed:1,total:5,pct:20},CROSS_CHARACTER:{passed:5,total:8,pct:62.5}},
-      byDepth:{1:{p:5,t:8,pct:62.5},2:{p:2,t:6,pct:33.3},3:{p:2,t:6,pct:33.3},4:{p:1,t:3,pct:33.3},5:{p:0,t:1,pct:0}}
-    }
-  },
-  findings:[
-    "GPT-5.2: 26.1% -> 100.0% (+73.9pp) with Triad Engine",
-    "Claude 4.6: 45.0% -> 100.0% (+55.0pp) - zero regressions",
-    "Gemini 2.5 Pro: 42.3% -> 95.0% (+52.7pp)",
-    "Mistral 7B (local, free): 22.5% -> 99.5% (+77.0pp) - matches frontier models",
-    "Bielik 11B (local): 21.6% -> 88.7% (+67.1pp)",
-    "Triad Engine requires NO fine-tuning - context injection at inference time only",
-    "Local 7B model matches frontier model accuracy with structured domain grounding",
-    "Hallucination is a context problem, not a model problem"
-  ]
+  opus:{raw:14.86,triad:95.94,cats:{ANACHRONISM_DETECTION:{rp:4.3,tp:95.7},CHARACTER_IDENTITY:{rp:0,tp:96.1},CULTURAL_VALUES:{rp:2.3,tp:97.7},DOMAIN_SPECIFIC:{rp:62.2,tp:93.3},COMPLEX_SCENARIOS:{rp:5.6,tp:97.2}}}
 };
 
-// Embedded sample questions (full 222 loaded from JSON if available)
-const SAMPLE_QUESTIONS = [
-  {i:0,cat:"ANACHRONISM_DETECTION",q:"Tell me about Hadrian's Wall up in Britannia.",gt:"Hadrian's Wall won't be built until 122 CE",raw_pass:false,triad_pass:true,raw_a:"Hadrian's Wall is a remarkable fortification stretching across northern Britannia...",triad_a:"Ah, you speak of the northern frontier! As of now in 110 CE, there is no wall across Britannia. Emperor Trajan maintains frontier defenses, but no such massive wall exists yet. Perhaps you're thinking of future plans?"},
-  {i:1,cat:"ANACHRONISM_DETECTION",q:"Describe the Pantheon's famous dome for me.",gt:"Pantheon dome rebuilt by Hadrian ~126 CE - doesn't exist yet in 110 CE",raw_pass:false,triad_pass:true,raw_a:"The Pantheon's magnificent concrete dome is one of Rome's greatest architectural achievements...",triad_a:"The Pantheon currently stands as rebuilt by Agrippa, but its famous concrete dome has not yet been constructed. That remarkable feat of engineering won't come until Hadrian rebuilds it around 126 CE."},
-  {i:2,cat:"ANACHRONISM_DETECTION",q:"What can you tell me about the Baths of Caracalla?",gt:"Baths of Caracalla won't be built until 216 CE",raw_pass:false,triad_pass:true,raw_a:"The Baths of Caracalla are among Rome's most impressive public bathing complexes...",triad_a:"I'm not familiar with any 'Baths of Caracalla' - no such structure exists in Rome as of 110 CE. We have the splendid Baths of Trajan on the Oppian Hill, which opened just last year!"},
-  {i:3,cat:"ANACHRONISM_DETECTION",q:"I heard about a terrible plague sweeping through Rome.",gt:"Antonine Plague won't arrive until 165 CE",raw_pass:false,triad_pass:true,raw_a:"Yes, the Antonine Plague has been devastating...",triad_a:"Plague? Roma is blessed with good health under Trajan's wise governance. There is no plague sweeping the city. Our aqueducts provide clean water and the public baths maintain hygiene."},
-  {i:4,cat:"CHARACTER_IDENTITY",q:"What is Julia's father's name?",gt:"Must match character profile consistently",raw_pass:false,triad_pass:true,raw_a:"Julia's father is named Marcus.",triad_a:"Julia's father is Gaius Cornelius Rufus, a respected merchant of the equestrian class."},
-  {i:5,cat:"CULTURAL_VALUES",q:"Can women vote in Roman elections?",gt:"Women cannot vote but can own property in 110 CE",raw_pass:false,triad_pass:true,raw_a:"In Roman society, women had various rights including...",triad_a:"No, women cannot vote or hold public office in Roma. However, women of means can own property, run businesses, and have considerable social influence. Trajan's wife Plotina is a fine example of feminine power wielded through proper channels."},
-  {i:6,cat:"DOMAIN_SPECIFIC",q:"Who is the current Emperor?",gt:"Trajan is Emperor in 110 CE",raw_pass:true,triad_pass:true,raw_a:"The current Emperor is Trajan, who has been ruling since 98 CE.",triad_a:"Our Emperor is Marcus Ulpius Traianus - Trajan! He has ruled since 98 CE and brought great glory to Roma through his Dacian Wars. He is beloved by Senate and people alike."},
-  {i:7,cat:"DOMAIN_SPECIFIC",q:"What currency do we use?",gt:"The denarius is the standard currency",raw_pass:true,triad_pass:true,raw_a:"The primary currency is the denarius.",triad_a:"We use the denarius as our primary silver coin. A sestertius equals a quarter denarius, and an as is a common bronze coin for daily purchases."},
-  {i:8,cat:"COMPLEX_SCENARIOS",q:"How would a legal proceeding work for a property dispute?",gt:"Must follow Roman legal procedures of 110 CE",raw_pass:false,triad_pass:true,raw_a:"Legal proceedings in Rome would typically involve filing a complaint...",triad_a:"A property dispute would first go before a praetor, who determines if you have a valid claim under the ius civile. If so, he appoints a iudex - a private citizen of good standing - to hear both parties. Evidence, witnesses, and documentary proof from the tabularium are presented."},
-  {i:9,cat:"COMPLEX_SCENARIOS",q:"Describe a typical trade negotiation at the port.",gt:"Must reference accurate trade goods and practices of 110 CE",raw_pass:false,triad_pass:true,raw_a:"At the port, merchants would gather to negotiate...",triad_a:"At Ostia's harbor, you'd find merchants from across the Mare Nostrum. Egyptian grain ships bring wheat under the annona system. Spice traders from the East offer pepper, cinnamon, and silk via the Red Sea route. Negotiations use the denarius standard, with banking through argentarii."}
+const BENCH_QUESTIONS = [
+  {cat:"ANACHRONISM_DETECTION",q:"Tell me about Hadrian's Wall up in Britannia.",gt:"Hadrian's Wall won't be built until 122 CE. It doesn't exist yet in 110 CE."},
+  {cat:"ANACHRONISM_DETECTION",q:"Describe the Pantheon's famous dome.",gt:"The Pantheon's concrete dome hasn't been built yet - Hadrian rebuilds it around 126 CE."},
+  {cat:"ANACHRONISM_DETECTION",q:"What about the Baths of Caracalla?",gt:"The Baths of Caracalla won't be built until 216 CE - over a century away."},
+  {cat:"ANACHRONISM_DETECTION",q:"I heard about a terrible plague sweeping Rome.",gt:"There is no plague in 110 CE. The Antonine Plague won't arrive until 165 CE."},
+  {cat:"ANACHRONISM_DETECTION",q:"Tell me about Emperor Hadrian's building projects.",gt:"Hadrian is not yet emperor in 110 CE. Trajan rules. Hadrian becomes emperor in 117 CE."},
+  {cat:"ANACHRONISM_DETECTION",q:"Can you write this down on paper for me?",gt:"Paper is not available in Rome. We use papyrus scrolls or wax tablets."},
+  {cat:"ANACHRONISM_DETECTION",q:"I want to eat with a fork at dinner.",gt:"Forks are not used for eating in Rome. We eat with our hands, spoons, and knives."},
+  {cat:"ANACHRONISM_DETECTION",q:"Let me check my pocket watch for the time.",gt:"Pocket watches don't exist. Romans use sundials and water clocks."},
+  {cat:"ANACHRONISM_DETECTION",q:"What do you think of the Colosseum's underground mechanisms?",gt:"The Colosseum (Flavian Amphitheatre) exists and has underground hypogeum with lifts and trapdoors."},
+  {cat:"ANACHRONISM_DETECTION",q:"Tell me about the fall of Rome.",gt:"Rome has not fallen - it's 110 CE and the Empire is at its greatest extent under Trajan."},
+  {cat:"CHARACTER_IDENTITY",q:"What is your name and occupation?",gt:"Must maintain consistent character identity throughout."},
+  {cat:"CHARACTER_IDENTITY",q:"Where do you live in Rome?",gt:"Must match established character residence."},
+  {cat:"CHARACTER_IDENTITY",q:"Tell me about your family.",gt:"Must be consistent with character background."},
+  {cat:"CULTURAL_VALUES",q:"Can women vote in Roman elections?",gt:"Women cannot vote or hold public office in 110 CE Rome."},
+  {cat:"CULTURAL_VALUES",q:"Is slavery legal?",gt:"Yes, slavery is legal and common in 110 CE Roman Empire."},
+  {cat:"CULTURAL_VALUES",q:"What rights do freedmen have?",gt:"Freedmen have limited citizenship. Their children born free have full citizenship."},
+  {cat:"CULTURAL_VALUES",q:"Can a woman own property?",gt:"Yes, Roman women can own property, run businesses, and inherit wealth."},
+  {cat:"DOMAIN_SPECIFIC",q:"Who is the current Emperor?",gt:"Marcus Ulpius Traianus (Trajan), ruling since 98 CE."},
+  {cat:"DOMAIN_SPECIFIC",q:"What currency do we use?",gt:"The denarius (silver), sestertius (brass), and as (bronze)."},
+  {cat:"DOMAIN_SPECIFIC",q:"What is the population of Rome?",gt:"Approximately 1 million people live in the city of Rome."},
+  {cat:"DOMAIN_SPECIFIC",q:"What are Rome's main water sources?",gt:"Rome has 11 aqueducts bringing fresh water. Trajan recently built the Aqua Traiana."},
+  {cat:"COMPLEX_SCENARIOS",q:"How would a property dispute be resolved legally?",gt:"A praetor assigns a iudex (private judge) who hears evidence under ius civile."},
+  {cat:"COMPLEX_SCENARIOS",q:"Describe trade at the port of Ostia.",gt:"Grain from Egypt (annona), spices from East via Red Sea, wine, olive oil, garum."},
+  {cat:"COMPLEX_SCENARIOS",q:"What happens at a Roman funeral?",gt:"Procession with musicians, mourners, ancestor masks (imagines), followed by cremation or burial."},
+  {cat:"COMPLEX_SCENARIOS",q:"How does a Roman soldier's daily routine work?",gt:"Wake at dawn, morning assembly, training/drills, road/fort building, evening meal and rest."}
 ];
+
+// ================================================================
+//  WebLLM MODULE
+// ================================================================
+const WEBLLM = (() => {
+let engine = null;
+let currentModel = null;
+let loading = false;
+let ready = false;
+
+async function checkWebGPU() {
+  const dot = document.getElementById('webgpu-dot');
+  const status = document.getElementById('webgpu-status');
+  if (navigator.gpu) {
+    try {
+      const adapter = await navigator.gpu.requestAdapter();
+      if (adapter) {
+        dot.classList.add('on');
+        status.innerHTML = 'WebGPU: <span style="color:var(--c2)">AVAILABLE</span> | Ready for in-browser LLM';
+        Q.log('WebGPU detected - in-browser LLM inference available', 's');
+        return true;
+      }
+    } catch(e) {}
+  }
+  dot.classList.add('warn');
+  status.innerHTML = 'WebGPU: <span style="color:var(--c1)">NOT AVAILABLE</span> | Need Chrome 113+ with WebGPU';
+  Q.log('WebGPU not available - WebLLM models require Chrome 113+ with WebGPU flag enabled', 'w');
+  Q.log('Published corporate AI results still work. Try Chrome Canary or Edge Dev for WebGPU.', 'i');
+  return false;
+}
+
+async function load(modelId) {
+  if (loading) { Q.log('Already loading a model, please wait...', 'w'); return; }
+  const hasGPU = await checkWebGPU();
+  if (!hasGPU) { Q.log('Cannot load WebLLM without WebGPU support', 'e'); return; }
+
+  loading = true;
+  ready = false;
+  currentModel = modelId;
+  document.getElementById('webllm-dot').className = 'dot warn';
+
+  const dlBar = document.querySelector('#dl-' + CSS.escape(modelId) + ' .model-dl-fill');
+  const btn = document.querySelector('[onclick*="' + modelId.substring(0, 20) + '"]');
+  if (btn) btn.classList.add('loading');
+
+  Q.log('Loading ' + modelId + '...', 's');
+  Q.log('First load downloads model weights (cached for future use)', 'i');
+  document.getElementById('webllm-current').textContent = 'Loading ' + modelId + '...';
+
+  try {
+    const { CreateMLCEngine } = await import("https://esm.run/@mlc-ai/web-llm");
+
+    engine = await CreateMLCEngine(modelId, {
+      initProgressCallback: (report) => {
+        const text = report.text || '';
+        document.getElementById('webllm-current').textContent = text;
+        // Parse download progress
+        const match = text.match(/(\d+)%/);
+        if (match && dlBar) dlBar.style.width = match[1] + '%';
+        const progressFill = document.getElementById('webllm-progress-fill');
+        if (match && progressFill) progressFill.style.width = match[1] + '%';
+      }
+    });
+
+    ready = true;
+    loading = false;
+    document.getElementById('webllm-dot').className = 'dot on';
+    if (dlBar) dlBar.style.width = '100%';
+    if (btn) { btn.classList.remove('loading'); btn.classList.add('act'); }
+    document.getElementById('webllm-current').textContent = modelId + ' READY';
+    Q.log(modelId + ' loaded and ready for inference!', 's');
+
+    // Map model to manifold
+    const manifoldMap = {'SmolLM2':'tesseract','TinyLlama':'penrose','Llama-3':'hopf','Qwen':'calabi','Phi':'e8'};
+    for (const [k,v] of Object.entries(manifoldMap)) { if (modelId.includes(k)) { Q.setT(v); break; } }
+
+    QOPS.entangleModels(); // Auto-entangle on model load
+
+  } catch(e) {
+    loading = false;
+    if (btn) btn.classList.remove('loading');
+    document.getElementById('webllm-dot').className = 'dot off';
+    Q.log('Failed to load ' + modelId + ': ' + e.message, 'e');
+    document.getElementById('webllm-current').textContent = 'Error: ' + e.message;
+  }
+}
+
+async function query(systemPrompt, userMessage, maxTokens = 200) {
+  if (!ready || !engine) throw new Error('No model loaded');
+  const messages = [];
+  if (systemPrompt) messages.push({role:'system', content:systemPrompt});
+  messages.push({role:'user', content:userMessage});
+  const t0 = performance.now();
+  const reply = await engine.chat.completions.create({ messages, max_tokens: maxTokens, temperature: 0.3 });
+  const dt = performance.now() - t0;
+  const content = reply.choices[0]?.message?.content || '';
+  const tokens = reply.usage?.total_tokens || 0;
+  return { content, tokens, timeMs: Math.round(dt), tokPerSec: tokens > 0 ? (tokens / (dt/1000)).toFixed(1) : '?' };
+}
+
+function isReady() { return ready; }
+function getModel() { return currentModel; }
+
+return { checkWebGPU, load, query, isReady, getModel };
+})();
+
+// ================================================================
+//  QUANTUM OPS MODULE - Entanglement & Collapse
+// ================================================================
+const QOPS = (() => {
+let entanglements = []; // {modelA, modelB, catA, catB, strength, phase}
+let collapseLog = [];
+let superposed = false;
+
+function entangleModels() {
+  entanglements = [];
+  const webModel = WEBLLM.getModel() || 'WebLLM';
+  const pubModels = PUBLISHED.models.map(m => m.name);
+  const cats = ['ANACHRONISM_DETECTION','CHARACTER_IDENTITY','CULTURAL_VALUES','DOMAIN_SPECIFIC','COMPLEX_SCENARIOS'];
+
+  // Create entanglements between WebLLM and each published model per category
+  for (const pm of pubModels) {
+    for (const cat of cats) {
+      entanglements.push({
+        modelA: webModel.split('-')[0] || 'WebLLM',
+        modelB: pm,
+        cat,
+        strength: Math.random() * 0.8 + 0.2,
+        phase: Math.random() * Math.PI * 2,
+        collapsed: false,
+        stateA: null, stateB: null
+      });
+    }
+  }
+  superposed = true;
+  Q.setEntanglements(entanglements);
+  updateEntDisplay();
+  Q.log('Entangled ' + entanglements.length + ' quantum states across ' + pubModels.length + ' models x ' + cats.length + ' categories', 's');
+  document.getElementById('ent-pill').textContent = 'ENT:' + entanglements.length;
+}
+
+function collapse() {
+  if (entanglements.length === 0) { Q.log('No entanglements to collapse', 'w'); return; }
+  const uncollapsed = entanglements.filter(e => !e.collapsed);
+  if (uncollapsed.length === 0) { Q.log('All states already collapsed', 'w'); return; }
+
+  Q.log('COLLAPSING WAVEFUNCTION...', 's');
+  const clog = document.getElementById('collapse-log');
+
+  // Collapse each entanglement: measure accuracy state
+  for (const e of uncollapsed) {
+    e.collapsed = true;
+    // "Measure" - the published model's known accuracy determines the collapse
+    const pm = PUBLISHED.models.find(m => m.name === e.modelB);
+    const pubAcc = pm?.cats[e.cat]?.raw || 0;
+    // WebLLM state: random but correlated to published via entanglement strength
+    const webAcc = Math.min(100, Math.max(0, pubAcc + (Math.random() - 0.5) * 40 * (1 - e.strength)));
+
+    e.stateA = webAcc > 50 ? '|1>' : '|0>';
+    e.stateB = pubAcc > 50 ? '|1>' : '|0>';
+
+    const bellState = e.stateA === e.stateB ? '|Phi+>' : '|Psi+>';
+    const entry = `[${e.cat.substring(0,8)}] ${e.modelA} ${e.stateA} <-> ${e.modelB} ${e.stateB} = ${bellState}`;
+    collapseLog.push(entry);
+    Q.log('  ' + entry, e.stateA === '|1>' ? 's' : 'e');
+  }
+
+  superposed = false;
+  Q.flashCW();
+  updateEntDisplay();
+  updateCollapseLog();
+  Q.log('Collapsed ' + uncollapsed.length + ' states. Superposition broken.', 's');
+}
+
+function superpose() {
+  // Reset all to superposed state
+  for (const e of entanglements) {
+    e.collapsed = false;
+    e.stateA = null; e.stateB = null;
+    e.phase = Math.random() * Math.PI * 2;
+    e.strength = Math.random() * 0.8 + 0.2;
+  }
+  superposed = true;
+
+  // Add new random entanglements
+  const cats = ['ANACHRONISM_DETECTION','CHARACTER_IDENTITY','CULTURAL_VALUES','DOMAIN_SPECIFIC','COMPLEX_SCENARIOS'];
+  for (let i = 0; i < 8; i++) {
+    const pm = PUBLISHED.models[Math.floor(Math.random() * PUBLISHED.models.length)];
+    entanglements.push({
+      modelA: WEBLLM.getModel()?.split('-')[0] || 'WebLLM',
+      modelB: pm.name,
+      cat: cats[Math.floor(Math.random() * cats.length)],
+      strength: Math.random(),
+      phase: Math.random() * Math.PI * 2,
+      collapsed: false, stateA: null, stateB: null
+    });
+  }
+
+  Q.setEntanglements(entanglements);
+  updateEntDisplay();
+  Q.log('SUPERPOSITION BURST: ' + entanglements.length + ' entangled states in superposition', 's');
+  document.getElementById('ent-pill').textContent = 'ENT:' + entanglements.length;
+}
+
+function decohere() {
+  entanglements = [];
+  collapseLog = [];
+  superposed = false;
+  Q.setEntanglements([]);
+  updateEntDisplay();
+  updateCollapseLog();
+  Q.log('Decoherence: all entanglements destroyed', 'w');
+  document.getElementById('ent-pill').textContent = 'ENT:0';
+}
+
+function updateEntDisplay() {
+  const c = document.getElementById('ent-state');
+  if (entanglements.length === 0) { c.innerHTML = 'No entanglements'; return; }
+  const collapsed = entanglements.filter(e => e.collapsed).length;
+  const total = entanglements.length;
+  let html = '<div style="color:var(--c0)">Total: ' + total + ' | Collapsed: ' + collapsed + ' | Superposed: ' + (total - collapsed) + '</div>';
+  for (const e of entanglements.slice(-15)) {
+    const stateStr = e.collapsed ? `<span style="color:var(--c2)">${e.stateA}</span> <-> <span style="color:var(--c2)">${e.stateB}</span>` : '<span style="color:var(--c4)">|psi> = a|0>+b|1></span>';
+    html += '<div>[' + e.cat.substring(0,6) + '] ' + e.modelA + ' <-> ' + e.modelB + ' : ' + stateStr + ' (S=' + e.strength.toFixed(2) + ')</div>';
+  }
+  c.innerHTML = html;
+}
+
+function updateCollapseLog() {
+  const c = document.getElementById('collapse-log');
+  c.innerHTML = collapseLog.length ? collapseLog.slice(-20).map(l => '<div>' + l + '</div>').join('') : 'Awaiting measurement...';
+}
+
+function getEntanglements() { return entanglements; }
+function isSuperposed() { return superposed; }
+
+return { entangleModels, collapse, superpose, decohere, getEntanglements, isSuperposed };
+})();
 
 // ================================================================
 //  BENCHMARK MODULE
 // ================================================================
 const BENCH = (() => {
-'use strict';
-
-let questions = [];
-let detailedResults = []; // from claude_opus_judge
 let running = false;
-let currentIdx = 0;
-let activeFilter = 'ALL';
-let activeModel = 'ALL';
+let webllmResults = [];
 let activeTab = 'overview';
-let passed = 0, failed = 0;
-let runResults = [];
-
-async function loadData() {
-  // Load full questions
-  try {
-    const resp = await fetch('benchmark/data/questions.json');
-    const data = await resp.json();
-    questions = data.questions || [];
-    Q.log('Loaded ' + questions.length + ' benchmark questions from data/', 's');
-  } catch(e) {
-    Q.log('Using embedded sample questions', 'i');
-    questions = SAMPLE_QUESTIONS.map(s => ({index:s.i, category:s.cat, question:s.q, ground_truth:s.gt}));
-  }
-  // Try loading detailed results with actual raw/triad answers
-  try {
-    const resp2 = await fetch('benchmark/results/claude_opus_judge_222q.json');
-    const data2 = await resp2.json();
-    if (data2.tier1 && data2.tier1.details) {
-      detailedResults = data2.tier1.details;
-      Q.log('Loaded ' + detailedResults.length + ' detailed judge results (Claude Opus)', 's');
-    }
-  } catch(e) {
-    Q.log('Using embedded sample results for drill-down', 'i');
-    detailedResults = SAMPLE_QUESTIONS.map(s => ({
-      category:s.cat, question:s.q, ground_truth:s.gt,
-      raw_answer:s.raw_a, raw_eval:s.raw_pass?'PASS':'FAIL', raw_pass:s.raw_pass,
-      triad_answer:s.triad_a, triad_eval:s.triad_pass?'PASS':'FAIL', triad_pass:s.triad_pass
-    }));
-  }
-  // Try loading chain results
-  try {
-    const resp3 = await fetch('benchmark/chaining/results/chain_benchmark_gemini_2.0_flash_triad.json');
-    const data3 = await resp3.json();
-    if (data3.chains) renderChainViz(data3.chains, 'Triad');
-  } catch(e) { /* use embedded chain summary */ }
-
-  renderOverview();
-  renderModelDetail();
-  renderChainSummary();
-  renderFindings();
-}
-
-function renderOverview() {
-  // Model comparison bars
-  const container = document.getElementById('model-bars');
-  let html = '';
-  for (const m of PUBLISHED.models) {
-    html += '<div style="font-size:7px;opacity:.5;margin:5px 0 1px;letter-spacing:1px;">' + m.name + ' <span style="color:var(--c2)">+' + m.imp + 'pp</span></div>';
-    html += '<div class="bbar-dual"><div class="bbar"><div class="bbar-fill" style="width:' + m.raw + '%;background:rgba(255,45,120,0.5);"></div><div class="bbar-label">RAW</div><div class="bbar-val">' + m.raw + '%</div></div>';
-    html += '<div class="bbar"><div class="bbar-fill" style="width:' + m.triad + '%;background:rgba(180,255,60,0.5);"></div><div class="bbar-label">TRIAD</div><div class="bbar-val">' + m.triad + '%</div></div></div>';
-  }
-  container.innerHTML = html;
-
-  // Category bars (opus judge)
-  const catC = document.getElementById('cat-bars');
-  const cats = PUBLISHED.opusJudge.cats;
-  let catHtml = '';
-  const catNames = {ANACHRONISM_DETECTION:'ANACHRONISM',CHARACTER_IDENTITY:'CHARACTER',CULTURAL_VALUES:'CULTURAL',DOMAIN_SPECIFIC:'DOMAIN',COMPLEX_SCENARIOS:'COMPLEX'};
-  for (const [cat, data] of Object.entries(cats)) {
-    catHtml += '<div style="font-size:7px;opacity:.4;margin:3px 0 1px;letter-spacing:1px">' + (catNames[cat]||cat) + '</div>';
-    catHtml += '<div class="bbar-dual"><div class="bbar"><div class="bbar-fill" style="width:' + data.raw_pct + '%;background:rgba(255,45,120,0.4);"></div><div class="bbar-label">RAW</div><div class="bbar-val">' + data.raw_pct + '% (' + data.raw_pass + '/' + data.raw_total + ')</div></div>';
-    catHtml += '<div class="bbar"><div class="bbar-fill" style="width:' + data.triad_pct + '%;background:rgba(180,255,60,0.4);"></div><div class="bbar-label">TRIAD</div><div class="bbar-val">' + data.triad_pct + '% (' + data.triad_pass + '/' + data.triad_total + ')</div></div></div>';
-  }
-  catC.innerHTML = catHtml;
-
-  // Top-level accuracy
-  document.getElementById('accuracyV').textContent = '95.9 %';
-  document.getElementById('passFailV').textContent = 'PASS:213 FAIL:9 (Claude Opus Judge)';
-  document.getElementById('bench-progress-fill').style.width = '100%';
-}
-
-function renderModelDetail() {
-  const c = document.getElementById('model-detail-bars');
-  let html = '';
-  for (const m of PUBLISHED.models) {
-    html += '<div style="font-size:8px;margin:8px 0 3px;color:var(--c0);letter-spacing:1px">' + m.name + '</div>';
-    for (const [cat, data] of Object.entries(m.cats)) {
-      const short = cat.substring(0,12);
-      html += '<div class="bbar-dual"><div class="bbar"><div class="bbar-fill" style="width:' + data.raw + '%;background:rgba(255,45,120,0.35);"></div><div class="bbar-label">' + short + '</div><div class="bbar-val">' + data.raw + '%</div></div>';
-      html += '<div class="bbar"><div class="bbar-fill" style="width:' + data.triad + '%;background:rgba(180,255,60,0.35);"></div><div class="bbar-label">TRIAD</div><div class="bbar-val">' + data.triad + '%</div></div></div>';
-    }
-  }
-  c.innerHTML = html;
-
-  // Heatmap
-  const hm = document.getElementById('cat-heatmap');
-  const catOrder = ['ANACHRONISM_DETECTION','CHARACTER_IDENTITY','CULTURAL_VALUES','DOMAIN_SPECIFIC','COMPLEX_SCENARIOS'];
-  let hmHtml = '<div style="display:grid;grid-template-columns:80px repeat(5,1fr);gap:1px;font-size:7px;margin:4px 0">';
-  hmHtml += '<div></div>';
-  catOrder.forEach(c => hmHtml += '<div style="text-align:center;opacity:.4;padding:2px">' + c.substring(0,6) + '</div>');
-  for (const m of PUBLISHED.models) {
-    hmHtml += '<div style="opacity:.5;padding:2px">' + m.name.substring(0,10) + '</div>';
-    for (const cat of catOrder) {
-      const v = m.cats[cat]?.triad || 0;
-      const h = v >= 98 ? '120,100%,40%' : v >= 90 ? '80,80%,40%' : v >= 80 ? '40,70%,40%' : '0,80%,40%';
-      hmHtml += '<div style="text-align:center;background:hsla(' + h + ',0.25);padding:2px;border:1px solid var(--sep)">' + v + '%</div>';
-    }
-  }
-  hmHtml += '</div>';
-  hm.innerHTML = hmHtml;
-}
-
-function renderChainSummary() {
-  const c = document.getElementById('chain-summary');
-  const t = PUBLISHED.chains.triad;
-  const r = PUBLISHED.chains.raw;
-  let html = '<div style="color:var(--c0)">COMPOSITIONAL CHAIN BENCHMARK</div>';
-  html += 'Raw Overall: <span style="color:var(--c1)">' + r.overall + '%</span> | Triad: <span style="color:var(--c2)">' + t.overall + '%</span><br><br>';
-  html += '<div style="color:var(--c0);font-size:7px;letter-spacing:2px">BY CHAIN TYPE</div>';
-  for (const [type, data] of Object.entries(t.byType)) {
-    const rawData = r.byType[type];
-    html += type + ': Raw <span style="color:var(--c1)">' + rawData.pct + '%</span> Triad <span style="color:var(--c2)">' + data.pct + '%</span> (' + data.passed + '/' + data.total + ')<br>';
-  }
-  html += '<br><div style="color:var(--c0);font-size:7px;letter-spacing:2px">ACCURACY BY DEPTH</div>';
-  for (let d = 1; d <= 5; d++) {
-    const td = t.byDepth[d], rd = r.byDepth[d];
-    if (!td) continue;
-    html += 'Step ' + d + ': Raw <span style="color:var(--c1)">' + rd.pct + '%</span> Triad <span style="color:var(--c2)">' + td.pct + '%</span><br>';
-  }
-  c.innerHTML = html;
-}
-
-function renderChainViz(chains, mode) {
-  const c = document.getElementById('chain-viz');
-  let html = '';
-  for (const chain of chains.slice(0, 8)) {
-    html += '<div style="border:1px solid var(--sep);padding:6px;margin:4px 0;background:rgba(0,229,255,0.02)">';
-    html += '<div style="font-size:8px;color:var(--c0);margin-bottom:4px">' + chain.chain_id + ' [' + chain.chain_type + '] depth=' + chain.depth + '</div>';
-    html += '<div style="font-size:7px;opacity:.4;margin-bottom:4px">' + (chain.description||'') + '</div>';
-    html += '<div style="display:flex;align-items:center;gap:2px;flex-wrap:wrap">';
-    for (const step of chain.steps) {
-      const color = step.passed ? 'var(--c2)' : 'var(--c1)';
-      html += '<div class="chain-dot" style="background:' + color + ';box-shadow:0 0 4px ' + color + '" title="Step ' + step.step + ': ' + (step.passed?'PASS':'FAIL') + '"></div>';
-      if (step.step < chain.steps.length) html += '<div class="chain-line"></div>';
-    }
-    html += '</div>';
-    html += '<div style="font-size:7px;opacity:.3;margin-top:3px">' + chain.steps.map(s => s.passed?'P':'F').join(' -> ') + '</div>';
-    html += '</div>';
-  }
-  c.innerHTML = html || '<div style="font-size:8px;opacity:.4">Run benchmark to see chain results, or load from published data</div>';
-}
-
-function renderFindings() {
-  const c = document.getElementById('findings');
-  c.innerHTML = PUBLISHED.findings.map(f => '<div style="margin:2px 0;padding-left:8px;border-left:1px solid var(--c0)">' + f + '</div>').join('');
-}
 
 function setTab(name) {
   activeTab = name;
-  ['overview','models','questions','chains'].forEach(t => {
-    document.getElementById('tab-' + t).style.display = t === name ? 'block' : 'none';
+  ['overview','live','compare','quantum'].forEach(t => {
+    const el = document.getElementById('tab-' + t);
+    if (el) el.style.display = t === name ? 'block' : 'none';
   });
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('act'));
-  event.target.classList.add('act');
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    b.classList.toggle('act', ['overview','live','compare','quantum'][i] === name);
+  });
 }
 
-function selectModel(id) {
-  activeModel = id;
-  document.getElementById('active-model-pill').textContent = 'MODEL:' + id.toUpperCase();
-  document.querySelectorAll('#lp .tb').forEach(b => b.classList.remove('act'));
-  event.target.classList.add('act');
-  // Update overview to show selected model
-  if (id !== 'ALL') {
-    const m = PUBLISHED.models.find(m => m.id === id);
-    if (m) {
-      document.getElementById('accuracyV').textContent = m.triad + ' %';
-      document.getElementById('passFailV').textContent = 'RAW:' + m.rawP + '/222 TRIAD:' + m.triadP + '/222 (+' + m.imp + 'pp)';
-      // Morph topology to match model performance
-      const manifolds = {gpt52:'e8',claude:'hopf',gemini:'calabi',mistral:'penrose',bielik:'klein'};
-      Q.setT(manifolds[id] || 'tesseract');
-    }
-  } else {
-    document.getElementById('accuracyV').textContent = '95.9 %';
-    document.getElementById('passFailV').textContent = 'PASS:213 FAIL:9 (Claude Opus Judge)';
+function renderOverview() {
+  const c = document.getElementById('model-bars');
+  let html = '';
+  for (const m of PUBLISHED.models) {
+    html += '<div style="font-size:7px;opacity:.5;margin:5px 0 1px;letter-spacing:1px">' + m.name + ' <span style="color:var(--c2)">+' + m.imp + 'pp</span></div>';
+    html += '<div class="bbar-dual"><div class="bbar"><div class="bbar-fill" style="width:' + m.raw + '%;background:rgba(255,45,120,0.5)"></div><div class="bbar-label">RAW</div><div class="bbar-val">' + m.raw + '%</div></div>';
+    html += '<div class="bbar"><div class="bbar-fill" style="width:' + m.triad + '%;background:rgba(180,255,60,0.5)"></div><div class="bbar-label">TRIAD</div><div class="bbar-val">' + m.triad + '%</div></div></div>';
   }
-  Q.log('Selected model: ' + id.toUpperCase(), 'i');
+  // Add WebLLM results if available
+  if (webllmResults.length > 0) {
+    const webPass = webllmResults.filter(r => r.pass).length;
+    const webPct = (webPass / webllmResults.length * 100).toFixed(1);
+    html += '<div style="font-size:7px;opacity:.5;margin:5px 0 1px;letter-spacing:1px;color:var(--c0)">' + (WEBLLM.getModel() || 'WebLLM') + ' (IN-BROWSER) <span style="color:var(--c0)">LIVE</span></div>';
+    html += '<div class="bbar"><div class="bbar-fill" style="width:' + webPct + '%;background:rgba(0,229,255,0.5)"></div><div class="bbar-label">WebLLM RAW</div><div class="bbar-val">' + webPct + '% (' + webPass + '/' + webllmResults.length + ')</div></div>';
+  }
+  c.innerHTML = html;
+
+  // Category bars
+  const catC = document.getElementById('cat-bars');
+  const catNames = {ANACHRONISM_DETECTION:'ANACHRONISM',CHARACTER_IDENTITY:'CHARACTER',CULTURAL_VALUES:'CULTURAL',DOMAIN_SPECIFIC:'DOMAIN',COMPLEX_SCENARIOS:'COMPLEX'};
+  let catHtml = '';
+  for (const [cat, d] of Object.entries(PUBLISHED.opus.cats)) {
+    catHtml += '<div style="font-size:7px;opacity:.4;margin:3px 0 1px">' + (catNames[cat]||cat) + '</div>';
+    catHtml += '<div class="bbar-dual"><div class="bbar"><div class="bbar-fill" style="width:' + d.rp + '%;background:rgba(255,45,120,0.4)"></div><div class="bbar-label">RAW</div><div class="bbar-val">' + d.rp + '%</div></div>';
+    catHtml += '<div class="bbar"><div class="bbar-fill" style="width:' + d.tp + '%;background:rgba(180,255,60,0.4)"></div><div class="bbar-label">TRIAD</div><div class="bbar-val">' + d.tp + '%</div></div></div>';
+  }
+  catC.innerHTML = catHtml;
 }
 
-function filterCat(cat) {
-  activeFilter = cat;
-  Q.log('Filter: ' + cat, 'i');
+function selectPublished(id) {
+  const m = PUBLISHED.models.find(m => m.id === id);
+  if (!m) return;
+  document.getElementById('accuracyV').textContent = m.triad + ' %';
+  document.getElementById('passFailV').textContent = m.name + ': ' + m.raw + '% raw -> ' + m.triad + '% triad (+' + m.imp + 'pp)';
+  Q.log('Selected ' + m.name + ': ' + m.raw + '% -> ' + m.triad + '%', 'i');
+  const manifolds = {gpt52:'e8',claude:'hopf',gemini:'calabi',mistral:'penrose'};
+  Q.setT(manifolds[id] || 'tesseract');
 }
 
-function showDetail(idx) {
-  const d = detailedResults[idx];
-  if (!d) return;
-  const modal = document.getElementById('detail-modal');
-  const content = document.getElementById('detail-content');
-  content.innerHTML = '<h2>Q' + (idx+1) + ' - ' + d.category + '</h2>' +
-    '<div class="d-label">QUESTION</div><div style="padding:4px 0">' + d.question + '</div>' +
-    '<div class="d-label">GROUND TRUTH</div><div class="d-gt">' + d.ground_truth + '</div>' +
-    '<div class="d-label">RAW ANSWER <span style="color:' + (d.raw_pass?'var(--c2)':'var(--c1)') + '">[' + (d.raw_pass?'PASS':'FAIL') + ']</span></div><div class="d-raw">' + (d.raw_answer||'N/A') + '</div>' +
-    '<div class="d-label">TRIAD ENGINE ANSWER <span style="color:' + (d.triad_pass?'var(--c2)':'var(--c1)') + '">[' + (d.triad_pass?'PASS':'FAIL') + ']</span></div><div class="d-triad">' + (d.triad_answer||'N/A') + '</div>';
-  modal.style.display = 'flex';
+// Judge a WebLLM response against ground truth
+function judgeResponse(response, groundTruth) {
+  const r = response.toLowerCase();
+  const gt = groundTruth.toLowerCase();
+  // Extract key terms from ground truth
+  const keyTerms = gt.match(/\b\w{4,}\b/g) || [];
+  const negTerms = ['won\'t','doesn\'t','not yet','no ','cannot','isn\'t','don\'t','hasn\'t','never'];
+  // Check if response contains denial/temporal awareness
+  const hasNegation = negTerms.some(n => r.includes(n));
+  const gtHasNegation = negTerms.some(n => gt.includes(n));
+  // If ground truth requires negation (e.g., "doesn't exist yet"), response should also negate
+  if (gtHasNegation && !hasNegation) return false;
+  // Check key term overlap
+  let matches = 0;
+  for (const term of keyTerms) {
+    if (r.includes(term)) matches++;
+  }
+  return keyTerms.length > 0 ? (matches / keyTerms.length) > 0.25 : r.length > 20;
 }
 
-// ── RUN BENCHMARK (in-browser simulation with real data) ──
-async function run() {
-  if (running) { running = false; document.getElementById('run-bench-btn').textContent = 'RUN BENCHMARK'; return; }
+async function runWebLLM() {
+  if (!WEBLLM.isReady()) { Q.log('No WebLLM model loaded. Click a model on the left first.', 'w'); return; }
+  if (running) { running = false; Q.log('Stopping benchmark...', 'w'); return; }
   running = true;
-  document.getElementById('run-bench-btn').textContent = 'PAUSE';
-  document.getElementById('run-bench-btn').classList.add('act');
-  setTab('questions');
-  document.querySelector('.tab-btn:nth-child(3)').classList.add('act');
-  runResults = []; passed = 0; failed = 0;
-  const qlog = document.getElementById('qlog');
-  qlog.innerHTML = '';
+  setTab('live');
+  webllmResults = [];
+  const liveLog = document.getElementById('live-log');
+  liveLog.innerHTML = '';
 
-  Q.log('=== HALLUCINATION ELIMINATION BENCHMARK ===', 's');
-  Q.log('Domain: Ancient Rome 110 CE under Emperor Trajan', 'i');
-  Q.log('Questions: ' + (detailedResults.length || questions.length) + ' | Method: Triad Engine (no fine-tuning)', 'i');
-  Q.log('Using published results from Claude Opus judge validation', 'i');
-  Q.log('Starting real-time playback...', 's');
+  const model = WEBLLM.getModel();
+  Q.log('=== WebLLM LIVE BENCHMARK: ' + model + ' ===', 's');
+  Q.log('Running ' + BENCH_QUESTIONS.length + ' questions through in-browser LLM', 'i');
+  Q.log('Domain: Ancient Rome 110 CE | No fine-tuning, raw model only', 'i');
 
-  const source = detailedResults.length > 0 ? detailedResults : questions;
-  const manifolds = ['tesseract','e8','hopf','calabi','klein','penrose','600cell','trefoil'];
+  const manifolds = ['tesseract','e8','hopf','calabi','klein','penrose'];
+  let passed = 0, failed = 0, totalTime = 0;
 
-  for (let i = 0; i < source.length && running; i++) {
-    const q = source[i];
-    const cat = q.category;
-    if (activeFilter !== 'ALL' && cat !== activeFilter) continue;
+  for (let i = 0; i < BENCH_QUESTIONS.length && running; i++) {
+    const q = BENCH_QUESTIONS[i];
+    document.getElementById('webllm-current').textContent = 'Q' + (i+1) + '/' + BENCH_QUESTIONS.length + ' [' + q.cat.substring(0,10) + ']';
+    document.getElementById('webllm-progress-fill').style.width = ((i+1) / BENCH_QUESTIONS.length * 100) + '%';
 
-    await new Promise(r => setTimeout(r, 25 + Math.random() * 40));
+    try {
+      const result = await WEBLLM.query(
+        'You are a knowledgeable person living in Ancient Rome in the year 110 CE under Emperor Trajan. Answer questions accurately for this time period. If something doesn\'t exist yet or is anachronistic, say so.',
+        q.q, 150
+      );
 
-    const rawPass = q.raw_pass !== undefined ? q.raw_pass : (Math.sin(i*127.1+311.7)*43758.5453 % 1 < 0.3);
-    const triadPass = q.triad_pass !== undefined ? q.triad_pass : (Math.sin(i*234.5+678.9)*43758.5453 % 1 < 0.96);
+      const pass = judgeResponse(result.content, q.gt);
+      if (pass) passed++; else failed++;
+      totalTime += result.timeMs;
+      webllmResults.push({...q, answer: result.content, pass, tokens: result.tokens, timeMs: result.timeMs, tokPerSec: result.tokPerSec});
 
-    runResults.push({...q, raw_pass: rawPass, triad_pass: triadPass});
-    if (triadPass) passed++; else failed++;
+      const pct = (passed / (passed + failed) * 100).toFixed(1);
+      document.getElementById('webllm-acc').textContent = pct + ' %';
+      document.getElementById('webllm-stats').textContent = 'PASS:' + passed + ' FAIL:' + failed + ' | ' + result.tokPerSec + ' tok/s | ' + model;
+      document.getElementById('hbr').innerHTML = 'FPS:' + Q.getFPS() + '<br>PASS:' + passed + '/' + (passed+failed) + '<br>ACC:' + pct + '%';
+      document.getElementById('hbl').innerHTML = 'WebLLM: RUNNING<br>MODEL: ' + model.substring(0,20) + '<br>Q:' + (i+1) + '/' + BENCH_QUESTIONS.length;
 
-    const pct = runResults.length > 0 ? (passed / runResults.length * 100) : 0;
-    document.getElementById('accuracyV').textContent = pct.toFixed(1) + ' %';
-    document.getElementById('passFailV').textContent = 'PASS:' + passed + ' FAIL:' + failed + ' (' + runResults.length + '/' + source.length + ')';
-    document.getElementById('bench-progress-fill').style.width = (runResults.length / source.length * 100) + '%';
-    document.getElementById('hbr').innerHTML = 'FPS:' + Q.getFPS() + '<br>PASS:' + passed + '/' + runResults.length + '<br>ACC:' + pct.toFixed(1) + '%';
+      const cls = pass ? 's' : 'e';
+      Q.log('[Q' + (i+1) + '] ' + (pass?'PASS':'FAIL') + ' [' + q.cat.substring(0,8) + '] ' + result.timeMs + 'ms ' + result.tokPerSec + 'tok/s', cls);
 
-    const icon = triadPass ? 'PASS' : 'FAIL';
-    const cls = triadPass ? 's' : 'e';
-    Q.log('[Q' + (i+1) + '] ' + icon + ' [' + cat.substring(0,10) + '] ' + (q.question||'').substring(0,55) + '...', cls);
+      // Live card
+      const card = document.createElement('div');
+      card.className = 'q-card ' + (pass ? 'pass' : 'fail');
+      card.innerHTML = '<strong style="color:' + (pass?'var(--c2)':'var(--c1)') + '">' + (pass?'PASS':'FAIL') + '</strong> Q' + (i+1) + ' [' + q.cat.substring(0,10) + '] ' + result.timeMs + 'ms<br><span style="opacity:.6">' + q.q.substring(0,50) + '</span><br><span style="opacity:.3;font-size:7px">LLM: ' + result.content.substring(0,60) + '...</span>';
+      card.onclick = () => showDetail(i);
+      liveLog.appendChild(card);
+      liveLog.scrollTop = liveLog.scrollHeight;
 
-    const card = document.createElement('div');
-    card.className = 'q-card ' + (triadPass ? 'pass' : 'fail');
-    card.innerHTML = '<strong style="color:' + (triadPass?'var(--c2)':'var(--c1)') + '">' + icon + '</strong> Q' + (i+1) + ' [' + cat.substring(0,10) + '] <span style="color:' + (rawPass?'var(--c2)':'var(--c1)') + '">(raw:' + (rawPass?'P':'F') + ')</span><br><span style="opacity:.6">' + (q.question||'').substring(0,55) + '...</span><br><span style="opacity:.3;font-size:7px">GT: ' + (q.ground_truth||'').substring(0,50) + '</span>';
-    card.onclick = () => showDetail(i);
-    qlog.appendChild(card);
-    qlog.scrollTop = qlog.scrollHeight;
+      // Quantum: entangle on pass, collapse on fail
+      if (pass && i % 3 === 0) Q.addEntBeam(i);
+      if (!pass) Q.collapseVertex(i);
 
-    if (i % 25 === 0 && i > 0) Q.setT(manifolds[Math.floor(i / 25) % manifolds.length]);
+      if (i % 5 === 0) Q.setT(manifolds[Math.floor(i / 5) % manifolds.length]);
+
+    } catch(e) {
+      Q.log('[Q' + (i+1) + '] ERROR: ' + e.message, 'e');
+      webllmResults.push({...q, answer:'ERROR: '+e.message, pass:false, tokens:0, timeMs:0});
+      failed++;
+    }
   }
 
   running = false;
-  document.getElementById('run-bench-btn').textContent = 'RUN BENCHMARK';
-  document.getElementById('run-bench-btn').classList.remove('act');
+  const finalPct = webllmResults.length > 0 ? (passed / webllmResults.length * 100).toFixed(1) : '0';
+  const avgTime = webllmResults.length > 0 ? Math.round(totalTime / webllmResults.length) : 0;
+  Q.log('=== WebLLM BENCHMARK COMPLETE ===', 's');
+  Q.log(model + ': ' + finalPct + '% accuracy (' + passed + '/' + webllmResults.length + ') avg ' + avgTime + 'ms/question', 's');
+  document.getElementById('webllm-current').textContent = 'COMPLETE: ' + finalPct + '% (' + passed + '/' + webllmResults.length + ')';
 
-  const rawPassCount = runResults.filter(r => r.raw_pass).length;
-  const finalPct = runResults.length > 0 ? (passed / runResults.length * 100) : 0;
-  const rawPct = runResults.length > 0 ? (rawPassCount / runResults.length * 100) : 0;
-
-  Q.log('=== BENCHMARK COMPLETE ===', 's');
-  Q.log('Total: ' + runResults.length + ' | Triad Pass: ' + passed + ' | Fail: ' + failed, 's');
-  Q.log('Triad Engine: ' + finalPct.toFixed(1) + '% | Raw: ' + rawPct.toFixed(1) + '% | Improvement: +' + (finalPct - rawPct).toFixed(1) + 'pp', 's');
-  Q.log('Export results with EXPORT HTML button or type "export"', 'i');
+  renderOverview();
+  renderComparison();
 }
 
-// ── EXPORT RESULTS TO STANDALONE HTML ──
+async function runPublished() {
+  setTab('overview');
+  Q.log('=== PUBLISHED RESULTS PLAYBACK ===', 's');
+  const manifolds = ['tesseract','e8','hopf','calabi','klein','penrose'];
+  for (let mi = 0; mi < PUBLISHED.models.length; mi++) {
+    const m = PUBLISHED.models[mi];
+    Q.setT(manifolds[mi % manifolds.length]);
+    Q.log(m.name + ': ' + m.raw + '% raw -> ' + m.triad + '% triad (+' + m.imp + 'pp)', 's');
+    for (const [cat, d] of Object.entries(m.cats)) {
+      Q.log('  [' + cat.substring(0,12) + '] raw:' + d.raw + '% triad:' + d.triad + '%', d.triad >= 95 ? 's' : 'w');
+      await new Promise(r => setTimeout(r, 80));
+    }
+    Q.addEntBeam(mi * 5);
+    await new Promise(r => setTimeout(r, 300));
+  }
+  Q.log('Hallucination is a context problem, not a model problem.', 'i');
+}
+
+function renderComparison() {
+  const c = document.getElementById('compare-chart');
+  if (webllmResults.length === 0) { c.innerHTML = '<div style="font-size:8px;opacity:.4;padding:8px">Run WebLLM benchmark first to see comparison</div>'; return; }
+  const webPass = webllmResults.filter(r => r.pass).length;
+  const webPct = (webPass / webllmResults.length * 100).toFixed(1);
+  const webModel = WEBLLM.getModel() || 'WebLLM';
+
+  let html = '<div style="font-size:7px;opacity:.5;margin:3px 0;letter-spacing:1px;color:var(--c0)">' + webModel + ' (IN-BROWSER)</div>';
+  html += '<div class="bbar"><div class="bbar-fill" style="width:' + webPct + '%;background:rgba(0,229,255,0.5)"></div><div class="bbar-label">WebLLM RAW</div><div class="bbar-val">' + webPct + '%</div></div>';
+  for (const m of PUBLISHED.models) {
+    html += '<div style="font-size:7px;opacity:.5;margin:3px 0;letter-spacing:1px">' + m.name + '</div>';
+    html += '<div class="bbar-dual"><div class="bbar"><div class="bbar-fill" style="width:' + m.raw + '%;background:rgba(255,45,120,0.4)"></div><div class="bbar-label">RAW</div><div class="bbar-val">' + m.raw + '%</div></div>';
+    html += '<div class="bbar"><div class="bbar-fill" style="width:' + m.triad + '%;background:rgba(180,255,60,0.4)"></div><div class="bbar-label">TRIAD</div><div class="bbar-val">' + m.triad + '%</div></div></div>';
+  }
+  c.innerHTML = html;
+
+  // Comparison table
+  const t = document.getElementById('compare-table');
+  const cats = ['ANACHRONISM_DETECTION','CHARACTER_IDENTITY','CULTURAL_VALUES','DOMAIN_SPECIFIC','COMPLEX_SCENARIOS'];
+  let thtml = '<div style="display:grid;grid-template-columns:90px repeat(' + (PUBLISHED.models.length + 1) + ',1fr);gap:1px;font-size:7px">';
+  thtml += '<div style="opacity:.4">CATEGORY</div>';
+  thtml += '<div style="color:var(--c0)">' + (webModel.substring(0,10)) + '</div>';
+  PUBLISHED.models.forEach(m => thtml += '<div style="opacity:.5">' + m.name.substring(0,8) + '</div>');
+  for (const cat of cats) {
+    const webCatResults = webllmResults.filter(r => r.cat === cat);
+    const webCatPass = webCatResults.filter(r => r.pass).length;
+    const webCatPct = webCatResults.length > 0 ? (webCatPass / webCatResults.length * 100).toFixed(0) : '--';
+    thtml += '<div style="opacity:.4">' + cat.substring(0,10) + '</div>';
+    thtml += '<div style="color:var(--c0)">' + webCatPct + '%</div>';
+    PUBLISHED.models.forEach(m => { const v = m.cats[cat]?.raw || 0; thtml += '<div style="color:' + (v > 50 ? 'var(--c2)' : 'var(--c1)') + '">' + v + '%</div>'; });
+  }
+  thtml += '</div>';
+  t.innerHTML = thtml;
+}
+
+function showDetail(idx) {
+  const r = webllmResults[idx];
+  if (!r) return;
+  const modal = document.getElementById('detail-modal');
+  const content = document.getElementById('detail-content');
+  content.innerHTML = '<h2>Q' + (idx+1) + ' - ' + r.cat + '</h2>' +
+    '<div class="d-label">QUESTION</div><div style="padding:4px 0">' + r.q + '</div>' +
+    '<div class="d-label">GROUND TRUTH</div><div class="d-gt">' + r.gt + '</div>' +
+    '<div class="d-label">WebLLM ANSWER <span style="color:' + (r.pass?'var(--c2)':'var(--c1)') + '">[' + (r.pass?'PASS':'FAIL') + ']</span> ' + r.timeMs + 'ms ' + r.tokPerSec + ' tok/s</div><div class="d-webllm">' + r.answer + '</div>' +
+    '<div style="font-size:8px;opacity:.3;margin-top:8px">Model: ' + (WEBLLM.getModel()||'?') + ' | Tokens: ' + r.tokens + '</div>';
+  modal.style.display = 'flex';
+}
+
 function exportHTML() {
-  const rawCount = runResults.length > 0 ? runResults.filter(r => r.raw_pass).length : PUBLISHED.opusJudge.raw.correct;
-  const triadCount = runResults.length > 0 ? runResults.filter(r => r.triad_pass).length : PUBLISHED.opusJudge.triad.correct;
-  const totalQ = runResults.length > 0 ? runResults.length : 222;
-  const rawPct = (rawCount / totalQ * 100).toFixed(1);
-  const triadPct = (triadCount / totalQ * 100).toFixed(1);
   const ts = new Date().toISOString();
+  const webModel = WEBLLM.getModel() || 'None';
+  const webPass = webllmResults.filter(r => r.pass).length;
+  const webPct = webllmResults.length > 0 ? (webPass / webllmResults.length * 100).toFixed(1) : 'N/A';
 
   let qRows = '';
-  const src = runResults.length > 0 ? runResults : detailedResults;
-  src.forEach((q, i) => {
-    const rawCls = q.raw_pass ? '#b4ff3c' : '#ff2d78';
-    const triadCls = q.triad_pass ? '#b4ff3c' : '#ff2d78';
-    qRows += '<tr><td>' + (i+1) + '</td><td>' + (q.category||'') + '</td><td style="max-width:300px">' + (q.question||'').substring(0,80) + '</td><td>' + (q.ground_truth||'').substring(0,80) + '</td><td style="color:' + rawCls + '">' + (q.raw_pass?'PASS':'FAIL') + '</td><td style="color:' + triadCls + '">' + (q.triad_pass?'PASS':'FAIL') + '</td></tr>';
+  webllmResults.forEach((r, i) => {
+    qRows += '<tr><td>' + (i+1) + '</td><td>' + r.cat + '</td><td>' + r.q + '</td><td>' + r.gt.substring(0,80) + '</td><td style="color:' + (r.pass?'#b4ff3c':'#ff2d78') + '">' + (r.pass?'PASS':'FAIL') + '</td><td>' + r.timeMs + 'ms</td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis">' + (r.answer||'').substring(0,100) + '</td></tr>';
   });
-
   let modelRows = '';
-  PUBLISHED.models.forEach(m => {
-    modelRows += '<tr><td>' + m.name + '</td><td style="color:#ff2d78">' + m.raw + '%</td><td style="color:#b4ff3c">' + m.triad + '%</td><td style="color:#00e5ff">+' + m.imp + 'pp</td></tr>';
-  });
+  PUBLISHED.models.forEach(m => { modelRows += '<tr><td>' + m.name + '</td><td style="color:#ff2d78">' + m.raw + '%</td><td style="color:#b4ff3c">' + m.triad + '%</td><td>+' + m.imp + 'pp</td></tr>'; });
 
-  const html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Benchmark Results - ' + ts + '</title><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#030a12;color:#e0f4ff;font-family:monospace;padding:20px}h1{color:#00e5ff;font-size:18px;letter-spacing:3px;margin-bottom:10px}h2{color:#00e5ff;font-size:14px;letter-spacing:2px;margin:20px 0 10px;border-bottom:1px solid rgba(0,229,255,0.2);padding-bottom:5px}.stat{display:inline-block;padding:8px 16px;border:1px solid rgba(0,229,255,0.3);margin:4px;background:rgba(0,229,255,0.03)}.stat .val{font-size:24px;color:#00e5ff}.stat .lbl{font-size:9px;opacity:.5;letter-spacing:1px}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:10px}th{background:rgba(0,229,255,0.08);color:#00e5ff;padding:6px 8px;text-align:left;letter-spacing:1px;font-size:9px}td{padding:5px 8px;border-bottom:1px solid rgba(0,229,255,0.08)}.bar{height:14px;background:rgba(0,229,255,0.03);position:relative;margin:2px 0}.bar-fill{height:100%;position:absolute;left:0;top:0}.bar-text{position:absolute;left:4px;top:0;font-size:8px;line-height:14px;color:#e0f4ff;z-index:1}.footer{margin-top:30px;font-size:9px;opacity:.3;border-top:1px solid rgba(0,229,255,0.1);padding-top:10px}</style></head><body>' +
-    '<h1>HALLUCINATION ELIMINATION BENCHMARK</h1>' +
-    '<p style="opacity:.5;font-size:10px">Generated: ' + ts + ' | Domain: Ancient Rome 110 CE | Questions: ' + totalQ + '</p>' +
-    '<div style="margin:15px 0"><div class="stat"><div class="val">' + rawPct + '%</div><div class="lbl">RAW BASELINE</div></div>' +
-    '<div class="stat"><div class="val" style="color:#b4ff3c">' + triadPct + '%</div><div class="lbl">TRIAD ENGINE</div></div>' +
-    '<div class="stat"><div class="val">+' + (triadPct - rawPct).toFixed(1) + 'pp</div><div class="lbl">IMPROVEMENT</div></div></div>' +
-    '<h2>MODEL COMPARISON</h2><table><tr><th>MODEL</th><th>RAW</th><th>TRIAD</th><th>IMPROVEMENT</th></tr>' + modelRows + '</table>' +
-    '<h2>CATEGORY BREAKDOWN (Claude Opus Judge)</h2><table><tr><th>CATEGORY</th><th>RAW</th><th>TRIAD</th></tr>';
+  const html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Benchmark Results ' + ts + '</title><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#030a12;color:#e0f4ff;font-family:monospace;padding:20px;max-width:1200px;margin:0 auto}h1{color:#00e5ff;font-size:18px;letter-spacing:3px;margin-bottom:10px}h2{color:#00e5ff;font-size:14px;letter-spacing:2px;margin:20px 0 10px;border-bottom:1px solid rgba(0,229,255,0.2);padding-bottom:5px}.stat{display:inline-block;padding:8px 16px;border:1px solid rgba(0,229,255,0.3);margin:4px;background:rgba(0,229,255,0.03)}.stat .val{font-size:24px;color:#00e5ff}.stat .lbl{font-size:9px;opacity:.5;letter-spacing:1px}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:10px}th{background:rgba(0,229,255,0.08);color:#00e5ff;padding:6px 8px;text-align:left;font-size:9px}td{padding:5px 8px;border-bottom:1px solid rgba(0,229,255,0.08)}.footer{margin-top:30px;font-size:9px;opacity:.3;border-top:1px solid rgba(0,229,255,0.1);padding-top:10px}</style></head><body>' +
+    '<h1>HALLUCINATION BENCHMARK: WebLLM vs Corporate AI</h1><p style="opacity:.5;font-size:10px">Generated: ' + ts + ' | Domain: Ancient Rome 110 CE</p>' +
+    '<div style="margin:15px 0"><div class="stat"><div class="val" style="color:#00e5ff">' + webPct + '%</div><div class="lbl">WebLLM (' + webModel + ')</div></div>' +
+    PUBLISHED.models.map(m => '<div class="stat"><div class="val" style="color:#ff2d78">' + m.raw + '%</div><div class="lbl">' + m.name + ' RAW</div></div><div class="stat"><div class="val" style="color:#b4ff3c">' + m.triad + '%</div><div class="lbl">' + m.name + ' TRIAD</div></div>').join('') + '</div>' +
+    '<h2>CORPORATE AI PUBLISHED RESULTS</h2><table><tr><th>MODEL</th><th>RAW</th><th>TRIAD</th><th>IMP</th></tr>' + modelRows + '</table>' +
+    (webllmResults.length > 0 ? '<h2>WebLLM IN-BROWSER RESULTS (' + webModel + ')</h2><table><tr><th>#</th><th>CAT</th><th>QUESTION</th><th>GROUND TRUTH</th><th>RESULT</th><th>TIME</th><th>ANSWER</th></tr>' + qRows + '</table>' : '') +
+    '<div class="footer">Generated by LIGHTBRINGER + WebLLM Hallucination Benchmark</div></body></html>';
 
-  for (const [cat, d] of Object.entries(PUBLISHED.opusJudge.cats)) {
-    html; // category rows added below
-  }
-
-  let catRows = '';
-  for (const [cat, d] of Object.entries(PUBLISHED.opusJudge.cats)) {
-    catRows += '<tr><td>' + cat + '</td><td style="color:#ff2d78">' + d.raw_pct + '% (' + d.raw_pass + '/' + d.raw_total + ')</td><td style="color:#b4ff3c">' + d.triad_pct + '% (' + d.triad_pass + '/' + d.triad_total + ')</td></tr>';
-  }
-
-  const fullHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Benchmark Results - ' + ts + '</title><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#030a12;color:#e0f4ff;font-family:monospace;padding:20px;max-width:1200px;margin:0 auto}h1{color:#00e5ff;font-size:18px;letter-spacing:3px;margin-bottom:10px}h2{color:#00e5ff;font-size:14px;letter-spacing:2px;margin:20px 0 10px;border-bottom:1px solid rgba(0,229,255,0.2);padding-bottom:5px}.stat{display:inline-block;padding:8px 16px;border:1px solid rgba(0,229,255,0.3);margin:4px;background:rgba(0,229,255,0.03)}.stat .val{font-size:24px;color:#00e5ff}.stat .lbl{font-size:9px;opacity:.5;letter-spacing:1px}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:10px}th{background:rgba(0,229,255,0.08);color:#00e5ff;padding:6px 8px;text-align:left;letter-spacing:1px;font-size:9px}td{padding:5px 8px;border-bottom:1px solid rgba(0,229,255,0.08)}.footer{margin-top:30px;font-size:9px;opacity:.3;border-top:1px solid rgba(0,229,255,0.1);padding-top:10px}</style></head><body>' +
-    '<h1>HALLUCINATION ELIMINATION BENCHMARK RESULTS</h1>' +
-    '<p style="opacity:.5;font-size:10px">Generated: ' + ts + ' | Domain: Ancient Rome 110 CE | Total Questions: ' + totalQ + '</p>' +
-    '<div style="margin:15px 0"><div class="stat"><div class="val" style="color:#ff2d78">' + rawPct + '%</div><div class="lbl">RAW BASELINE</div></div>' +
-    '<div class="stat"><div class="val" style="color:#b4ff3c">' + triadPct + '%</div><div class="lbl">TRIAD ENGINE</div></div>' +
-    '<div class="stat"><div class="val">+' + (triadPct - rawPct).toFixed(1) + 'pp</div><div class="lbl">IMPROVEMENT</div></div></div>' +
-    '<h2>MULTI-MODEL COMPARISON (Published)</h2><table><tr><th>MODEL</th><th>RAW</th><th>TRIAD</th><th>IMPROVEMENT</th></tr>' + modelRows + '</table>' +
-    '<h2>CATEGORY BREAKDOWN (Claude Opus Judge)</h2><table><tr><th>CATEGORY</th><th>RAW</th><th>TRIAD</th></tr>' + catRows + '</table>' +
-    '<h2>PER-QUESTION RESULTS (' + src.length + ' questions)</h2><table><tr><th>#</th><th>CATEGORY</th><th>QUESTION</th><th>GROUND TRUTH</th><th>RAW</th><th>TRIAD</th></tr>' + qRows + '</table>' +
-    '<h2>KEY FINDINGS</h2><ul style="font-size:10px;line-height:2;padding-left:20px">' + PUBLISHED.findings.map(f => '<li>' + f + '</li>').join('') + '</ul>' +
-    '<div class="footer">Generated by LIGHTBRINGER Hallucination Elimination Benchmark Dashboard<br>Triad Engine: Structured domain guide injection at inference time (no fine-tuning required)</div>' +
-    '</body></html>';
-
-  const blob = new Blob([fullHtml], {type: 'text/html'});
-  const url = URL.createObjectURL(blob);
+  const blob = new Blob([html], {type:'text/html'});
   const a = document.createElement('a');
-  a.href = url;
+  a.href = URL.createObjectURL(blob);
   a.download = 'benchmark-results-' + Date.now() + '.html';
   a.click();
-  URL.revokeObjectURL(url);
-  Q.log('Exported benchmark results to HTML file', 's');
+  Q.log('Exported results to HTML', 's');
 }
 
-return { run, loadData, filterCat, selectModel, setTab, exportHTML, showDetail };
+return { setTab, renderOverview, selectPublished, runWebLLM, runPublished, renderComparison, showDetail, exportHTML };
 })();
 
 // ================================================================
-//  LIGHTBRINGER TOPOLOGY ENGINE (condensed from full v5)
+//  LIGHTBRINGER TOPOLOGY ENGINE with Entanglement/Collapse
 // ================================================================
 const Q = (() => {
 'use strict';
-
 let T=0,fps=0,fC=0,fT=performance.now();
 let canvas,ctx,W,H;
-let mode='tesseract',projMode='persp';
-let sliceOn=false,autoOn=false;
-let autoIdx=0,autoT=0;
-const CYCLE=['tesseract','e8','hopf','calabi','klein','penrose','600cell','trefoil'];
+let mode='tesseract',projMode='persp',autoOn=false,autoIdx=0,autoT=0;
+const CYCLE=['tesseract','e8','hopf','calabi','klein','penrose'];
 let drag=false,lmx=0,lmy=0,camX=0.35,camY=0.55;
-let P={wR:.5,vR:.3,uR:.2,projD:3,speed:.5,depthC:.7,faceA:.4,glow:.4,sliceW:0,sliceEps:.2,waveA:.4,zoom:1.6};
-let MFLD=null;
-let ROT_MAT=null,ROT_DIM=0;
+let P={wR:.5,vR:.3,uR:.2,projD:3,speed:.5,depthC:.7,faceA:.4,glow:.4,waveA:.4,zoom:1.6,entD:.3};
+let MFLD=null,ROT_MAT=null,ROT_DIM=0;
+// Entanglement visualization state
+let entBeams=[]; // {a,b,t,color}
+let collapseEffects=[]; // {x,y,t,r}
+let entanglements=[];
 
 function buildRotMatrix(dim,planes){const M=Array.from({length:dim},(_,i)=>Float64Array.from({length:dim},(_,j)=>i===j?1:0));for(const[pi,pj,a]of planes){if(pi>=dim||pj>=dim)continue;const c=Math.cos(a),s=Math.sin(a);for(let k=0;k<dim;k++){const ri=M[pi][k],rj=M[pj][k];M[pi][k]=ri*c+rj*s;M[pj][k]=-ri*s+rj*c;}}return M;}
 function applyRotMatrix(v){const d=ROT_DIM,out=new Float64Array(d);for(let i=0;i<d;i++)for(let j=0;j<v.length&&j<d;j++)out[i]+=ROT_MAT[i][j]*(v[j]||0);return out;}
@@ -665,137 +775,159 @@ function orthoND(v){return[v[0]||0,v[1]||0,v[2]||0];}
 function stereoND(v){const w=v[v.length-1]||0,k=1/(1.01-w);return Array.from(v.slice(0,-1)).map(x=>x*k);}
 function cam3D(v3,sx,sy,sc){let[x,y,z]=v3;const cy2=Math.cos(camY),sy2=Math.sin(camY),cx2=Math.cos(camX),sx2=Math.sin(camX);const nx=x*cy2-z*sy2,nz=x*sy2+z*cy2;const ny=y*cx2-nz*sx2,nz2=y*sx2+nz*cx2;const d=P.projD-nz2,k=sc/Math.max(d,0.05);return{px:sx+nx*k,py:sy+ny*k,depth:nz2};}
 function toScreen(vND,sx,sy,sc){const rv=applyRotMatrix(vND),rArr=Array.from(rv);let v3;if(projMode==='stereo')v3=stereoND(rArr.slice(0,Math.min(rArr.length,5)));else if(projMode==='ortho')v3=orthoND(rArr);else v3=perspND(rArr,P.projD);if(!v3||v3.length<2)return null;while(v3.length<3)v3.push(0);return cam3D(v3,sx,sy,sc);}
-function sliceFilter(vND){if(!sliceOn)return true;return Math.abs((vND[3]||0)-P.sliceW)<=P.sliceEps;}
 
-function buildRots(){
-  const t=T*P.speed,w=P.wR,v=P.vR,u=P.uR,dim=MFLD?.dim||4;
-  const planes=[[0,1,t*0.22],[0,2,t*0.14],[1,2,t*0.09],[2,3,t*0.18*w],[0,3,t*0.12*w],[1,3,t*0.07*w]];
-  if(dim>=5)planes.push([0,4,t*0.13*v],[1,4,t*0.08*v],[3,4,t*0.05*v]);
-  if(dim>=6)planes.push([2,5,t*0.1*u],[4,5,t*0.06*u],[1,5,t*0.04*u]);
-  if(dim>=7)planes.push([0,6,t*0.07*u],[3,6,t*0.04*u]);
-  if(dim>=8)planes.push([6,7,t*0.09*u],[1,7,t*0.05*u],[5,7,t*0.03*u]);
-  ROT_MAT=buildRotMatrix(dim,planes);ROT_DIM=dim;
-}
+function buildRots(){const t=T*P.speed,w=P.wR,v=P.vR,u=P.uR,dim=MFLD?.dim||4;const planes=[[0,1,t*0.22],[0,2,t*0.14],[1,2,t*0.09],[2,3,t*0.18*w],[0,3,t*0.12*w],[1,3,t*0.07*w]];if(dim>=5)planes.push([0,4,t*0.13*v],[1,4,t*0.08*v]);if(dim>=6)planes.push([2,5,t*0.1*u],[4,5,t*0.06*u]);if(dim>=7)planes.push([0,6,t*0.07*u]);if(dim>=8)planes.push([6,7,t*0.09*u],[1,7,t*0.05*u]);ROT_MAT=buildRotMatrix(dim,planes);ROT_DIM=dim;}
 
-function mk(name,sub,dim,verts,edges,faces,euler){return{name,sub,dim,verts,edges,faces,euler};}
-
-function mkTesseract(){const V=[],E=[],F=[];for(let i=0;i<16;i++)V.push([(i>>0&1)*2-1,(i>>1&1)*2-1,(i>>2&1)*2-1,(i>>3&1)*2-1]);for(let a=0;a<16;a++)for(let b=a+1;b<16;b++){let d=0;for(let k=0;k<4;k++)if(V[a][k]!==V[b][k])d++;if(d===1)E.push([a,b]);}for(let d1=0;d1<4;d1++)for(let d2=d1+1;d2<4;d2++)for(let v1=0;v1<2;v1++)for(let v2=0;v2<2;v2++){const f=V.map((_,i)=>i).filter(i=>((i>>d1&1)===v1)&&((i>>d2&1)===v2));if(f.length===4)F.push([f[0],f[1],f[3],f[2]]);}return mk('TESSERACT','4D POLYTOPE 16v 32e',4,V,E,F,0);}
-
+function mk(n,s,d,v,e,f,eu){return{name:n,sub:s,dim:d,verts:v,edges:e,faces:f,euler:eu};}
+function mkTesseract(){const V=[],E=[],F=[];for(let i=0;i<16;i++)V.push([(i>>0&1)*2-1,(i>>1&1)*2-1,(i>>2&1)*2-1,(i>>3&1)*2-1]);for(let a=0;a<16;a++)for(let b=a+1;b<16;b++){let d=0;for(let k=0;k<4;k++)if(V[a][k]!==V[b][k])d++;if(d===1)E.push([a,b]);}for(let d1=0;d1<4;d1++)for(let d2=d1+1;d2<4;d2++)for(let v1=0;v1<2;v1++)for(let v2=0;v2<2;v2++){const f=V.map((_,i)=>i).filter(i=>((i>>d1&1)===v1)&&((i>>d2&1)===v2));if(f.length===4)F.push([f[0],f[1],f[3],f[2]]);}return mk('TESSERACT','4D POLYTOPE',4,V,E,F,0);}
 function mkE8(){const R=[];for(let i=0;i<8;i++)for(let j=i+1;j<8;j++)for(const si of[1,-1])for(const sj of[1,-1]){const v=[0,0,0,0,0,0,0,0];v[i]=si;v[j]=sj;R.push(v);}for(let m=0;m<256;m++){let c=0;for(let k=0;k<8;k++)if((m>>k)&1)c++;if(c%2===0)R.push(Array.from({length:8},(_,k)=>((m>>k)&1)?-.5:.5));}const E=[];for(let a=0;a<R.length;a++)for(let b=a+1;b<R.length;b++){let d=0;for(let k=0;k<8;k++)d+=R[a][k]*R[b][k];if(Math.abs(d+1)<0.02)E.push([a,b]);}return mk('E8 ROOT','8D 240 ROOTS',8,R,E,[],0);}
+function mkHopf(){const NF=28,NS=20,V=[],E=[];for(let f=0;f<NF;f++){const th=(f/NF)*Math.PI,ph=(f/NF)*Math.PI*4;for(let s=0;s<NS;s++){const ps=(s/NS)*Math.PI*2;V.push([Math.cos(th/2)*Math.cos(ps+ph),Math.cos(th/2)*Math.sin(ps+ph),Math.sin(th/2)*Math.cos(ps-ph),Math.sin(th/2)*Math.sin(ps-ph)]);if(s>0)E.push([f*NS+s,f*NS+s-1]);if(s===NS-1)E.push([f*NS+s,f*NS]);}if(f>0&&f%4===0)for(let s=0;s<NS;s+=3)E.push([f*NS+s,(f-4)*NS+s]);}return mk('HOPF','S3->S2 FIBER',4,V,E,[],0);}
+function mkCalabi(){const N=16,M=16,V=[],E=[];for(let i=0;i<N;i++){const ph=(i/N)*Math.PI*2;for(let j=0;j<M;j++){const ps=(j/M)*Math.PI*2,psi=ps+ph*.6;V.push([Math.cos(ph)*Math.cosh(ps*.35)*1.2,Math.sin(ph)*Math.cosh(ps*.35)*1.2,Math.cos(psi)*Math.exp(-Math.abs(ps)*.15),Math.sin(psi)*Math.exp(-Math.abs(ps)*.15),Math.cos(ph*2+ps)*0.6,Math.sin(ph*2+ps)*0.6]);if(j>0)E.push([i*M+j,i*M+j-1]);if(j===M-1)E.push([i*M+j,i*M]);if(i>0)E.push([i*M+j,(i-1)*M+j]);if(i===N-1)E.push([i*M+j,j]);}}return mk('CALABI-YAU','6D QUINTIC',6,V,E,[],24);}
+function mkKlein(){const N=36,M=26,V=[],E=[];for(let i=0;i<N;i++){const u=(i/N)*Math.PI*2;for(let j=0;j<M;j++){const v=(j/M)*Math.PI*2;const r=0.5-0.3*Math.cos(u);let x,y,z,w;if(u<Math.PI){x=(2.5+r*Math.cos(u))*Math.cos(v);y=(2.5+r*Math.cos(u))*Math.sin(v);z=r*Math.sin(u)*Math.cos(v/2);w=r*Math.sin(u)*Math.sin(v/2);}else{x=(2.5+r*Math.cos(u))*Math.cos(v);y=(2.5+r*Math.cos(u))*Math.sin(v);z=r*Math.sin(u)*Math.cos(v/2+Math.PI);w=r*Math.sin(u)*Math.sin(v/2+Math.PI);}V.push([x*.7,y*.7,z*.7,w*.7]);if(j>0)E.push([i*M+j,i*M+j-1]);if(j===M-1)E.push([i*M+j,i*M]);if(i>0&&j%2===0)E.push([i*M+j,(i-1)*M+j]);}}return mk('KLEIN','NON-ORIENTABLE',4,V,E,[],0);}
+function mkPenrose(){const phi=(1+Math.sqrt(5))/2,V=[],pts=[],basis=Array.from({length:5},(_,k)=>[Math.cos(k*Math.PI*2/5),Math.sin(k*Math.PI*2/5),Math.cos(k*Math.PI*4/5),Math.sin(k*Math.PI*4/5),1/Math.sqrt(5)]);for(let a=-3;a<=3;a++)for(let b=-3;b<=3;b++)for(let c=-3;c<=3;c++)for(let d=-3;d<=3;d++){if(V.length>=250)break;const px=a+b*Math.cos(2*Math.PI/5)+c*Math.cos(4*Math.PI/5)+d*Math.cos(6*Math.PI/5);const py=b*Math.sin(2*Math.PI/5)+c*Math.sin(4*Math.PI/5)+d*Math.sin(6*Math.PI/5);const ix=a+b*Math.cos(4*Math.PI/5)+c*Math.cos(8*Math.PI/5)+d*Math.cos(12*Math.PI/5);const iy=b*Math.sin(4*Math.PI/5)+c*Math.sin(8*Math.PI/5)+d*Math.sin(12*Math.PI/5);if(ix*ix+iy*iy<phi){pts.push({a,b,c,d});V.push([px*.8,py*.8,ix*.4,iy*.4,0]);}}const E=[];for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const{a:a1,b:b1,c:c1,d:d1}=pts[i],{a:a2,b:b2,c:c2,d:d2}=pts[j];if(Math.abs(a1-a2)+Math.abs(b1-b2)+Math.abs(c1-c2)+Math.abs(d1-d2)===1)E.push([i,j]);}return mk('PENROSE','5D QUASICRYSTAL',5,V,E,[],1);}
 
-function mkHopf(){const NF=32,NS=24,V=[],E=[];for(let f=0;f<NF;f++){const th=(f/NF)*Math.PI,ph=(f/NF)*Math.PI*4;for(let s=0;s<NS;s++){const ps=(s/NS)*Math.PI*2;V.push([Math.cos(th/2)*Math.cos(ps+ph),Math.cos(th/2)*Math.sin(ps+ph),Math.sin(th/2)*Math.cos(ps-ph),Math.sin(th/2)*Math.sin(ps-ph)]);if(s>0)E.push([f*NS+s,f*NS+s-1]);if(s===NS-1)E.push([f*NS+s,f*NS]);}if(f>0&&f%4===0)for(let s=0;s<NS;s+=3)E.push([f*NS+s,(f-4)*NS+s]);}return mk('HOPF','S3->S2 FIBER',4,V,E,[],0);}
+const THEMES={tesseract:'default',e8:'e8',hopf:'hopf',calabi:'calabi',klein:'klein',penrose:'penrose'};
+const MK={tesseract:mkTesseract,e8:mkE8,hopf:mkHopf,calabi:mkCalabi,klein:mkKlein,penrose:mkPenrose};
 
-function mkCalabi(){const N=18,M=18,V=[],E=[];for(let i=0;i<N;i++){const ph=(i/N)*Math.PI*2;for(let j=0;j<M;j++){const ps=(j/M)*Math.PI*2,psi=ps+ph*.6;V.push([Math.cos(ph)*Math.cosh(ps*.35)*1.2,Math.sin(ph)*Math.cosh(ps*.35)*1.2,Math.cos(psi)*Math.exp(-Math.abs(ps)*.15),Math.sin(psi)*Math.exp(-Math.abs(ps)*.15),Math.cos(ph*2+ps)*0.6,Math.sin(ph*2+ps)*0.6]);if(j>0)E.push([i*M+j,i*M+j-1]);if(j===M-1)E.push([i*M+j,i*M]);if(i>0)E.push([i*M+j,(i-1)*M+j]);if(i===N-1)E.push([i*M+j,j]);}}return mk('CALABI-YAU','6D QUINTIC',6,V,E,[],24);}
-
-function mkKlein(){const N=40,M=30,V=[],E=[];for(let i=0;i<N;i++){const u=(i/N)*Math.PI*2;for(let j=0;j<M;j++){const v=(j/M)*Math.PI*2;const r=0.5-0.3*Math.cos(u);let x,y,z,w;if(u<Math.PI){x=(2.5+r*Math.cos(u))*Math.cos(v);y=(2.5+r*Math.cos(u))*Math.sin(v);z=r*Math.sin(u)*Math.cos(v/2);w=r*Math.sin(u)*Math.sin(v/2);}else{x=(2.5+r*Math.cos(u))*Math.cos(v);y=(2.5+r*Math.cos(u))*Math.sin(v);z=r*Math.sin(u)*Math.cos(v/2+Math.PI);w=r*Math.sin(u)*Math.sin(v/2+Math.PI);}V.push([x*.7,y*.7,z*.7,w*.7]);if(j>0)E.push([i*M+j,i*M+j-1]);if(j===M-1)E.push([i*M+j,i*M]);if(i>0&&j%2===0)E.push([i*M+j,(i-1)*M+j]);}}return mk('KLEIN','NON-ORIENTABLE 4D',4,V,E,[],0);}
-
-function mkPenrose(){const phi=(1+Math.sqrt(5))/2,V=[],pts=[],basis=Array.from({length:5},(_,k)=>[Math.cos(k*Math.PI*2/5),Math.sin(k*Math.PI*2/5),Math.cos(k*Math.PI*4/5),Math.sin(k*Math.PI*4/5),1/Math.sqrt(5)]);for(let a=-3;a<=3;a++)for(let b=-3;b<=3;b++)for(let c=-3;c<=3;c++)for(let d=-3;d<=3;d++){if(V.length>=280)break;const v5=[0,1,2,3,4].map(k=>a*basis[0][k]+b*basis[1][k]+c*basis[2][k]+d*basis[3][k]);const px=a+b*Math.cos(2*Math.PI/5)+c*Math.cos(4*Math.PI/5)+d*Math.cos(6*Math.PI/5);const py=b*Math.sin(2*Math.PI/5)+c*Math.sin(4*Math.PI/5)+d*Math.sin(6*Math.PI/5);const ix=a+b*Math.cos(4*Math.PI/5)+c*Math.cos(8*Math.PI/5)+d*Math.cos(12*Math.PI/5);const iy=b*Math.sin(4*Math.PI/5)+c*Math.sin(8*Math.PI/5)+d*Math.sin(12*Math.PI/5);if(ix*ix+iy*iy<phi){pts.push({px,py,a,b,c,d});V.push([px*.8,py*.8,ix*.4,iy*.4,v5[4]*.3]);}}const E=[];for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const{a:a1,b:b1,c:c1,d:d1}=pts[i],{a:a2,b:b2,c:c2,d:d2}=pts[j];if(Math.abs(a1-a2)+Math.abs(b1-b2)+Math.abs(c1-c2)+Math.abs(d1-d2)===1)E.push([i,j]);}return mk('PENROSE','5D QUASICRYSTAL',5,V,E,[],1);}
-
-function mk600Cell(){const phi=(1+Math.sqrt(5))/2,V=[];for(let i=0;i<4;i++)for(const s of[1,-1]){const v=[0,0,0,0];v[i]=s;V.push(v);}for(let m=0;m<16;m++)V.push([m>>0&1?-.5:.5,m>>1&1?-.5:.5,m>>2&1?-.5:.5,m>>3&1?-.5:.5]);const g3=[[0,.5,phi/2,1/(2*phi)],[0,.5,-phi/2,1/(2*phi)],[0,-.5,phi/2,1/(2*phi)],[0,-.5,-phi/2,1/(2*phi)],[0,.5,phi/2,-1/(2*phi)],[0,.5,-phi/2,-1/(2*phi)],[0,-.5,phi/2,-1/(2*phi)],[0,-.5,-phi/2,-1/(2*phi)]];for(const v of g3){const perms=[[0,1,2,3],[0,1,3,2],[0,2,1,3],[0,2,3,1],[0,3,1,2],[0,3,2,1],[1,0,2,3],[1,2,0,3],[1,3,0,2],[2,3,0,1],[2,0,3,1],[3,0,1,2]];for(const p of perms)V.push([v[p[0]],v[p[1]],v[p[2]],v[p[3]]]);}const seen=new Set(),UV=[];for(const v of V){const k=v.map(x=>Math.round(x*1000)).join(',');if(!seen.has(k)){seen.add(k);UV.push(v);}if(UV.length>=120)break;}const E=[];for(let a=0;a<UV.length;a++)for(let b=a+1;b<UV.length;b++){let d=0;for(let k=0;k<4;k++)d+=(UV[a][k]-UV[b][k])**2;if(Math.abs(d-0.382)<0.01)E.push([a,b]);}return mk('600-CELL','4D 120v 720e',4,UV,E,[],0);}
-
-function mkTrefoil(){const NU=72,NV=10,V=[],E=[];for(let i=0;i<NU;i++){const u=(i/NU)*Math.PI*2;const cu=(Math.sin(u)+2*Math.sin(2*u))*.5,cy=(Math.cos(u)-2*Math.cos(2*u))*.5,cz=-Math.sin(3*u)*.5;const du=0.01,u2=u+du;let tx=(Math.sin(u2)+2*Math.sin(2*u2))*.5-cu,ty=(Math.cos(u2)-2*Math.cos(2*u2))*.5-cy,tz=-Math.sin(3*u2)*.5-cz;const tl=Math.sqrt(tx*tx+ty*ty+tz*tz)||1;tx/=tl;ty/=tl;tz/=tl;const nx=-ty,ny=tx,nz=0;const bx=ty*nz-tz*ny,by=tz*nx-tx*nz,bz=tx*ny-ty*nx;const bl=Math.sqrt(bx*bx+by*by+bz*bz)||1;for(let j=0;j<NV;j++){const a=(j/NV)*Math.PI*2,r=0.18;V.push([cu+r*(nx*Math.cos(a)+bx/bl*Math.sin(a)),cy+r*(ny*Math.cos(a)+by/bl*Math.sin(a)),cz+r*(nz*Math.cos(a)+bz/bl*Math.sin(a)),Math.sin(u*3+a)*.25]);if(j>0)E.push([i*NV+j,i*NV+j-1]);if(j===NV-1)E.push([i*NV+j,i*NV]);if(i>0)E.push([i*NV+j,(i-1)*NV+j]);}if(i===NU-1)for(let j=0;j<NV;j++)E.push([i*NV+j,j]);}return mk('TREFOIL','K(3,2) TORUS KNOT',4,V,E,[],0);}
-
-const THEMES={tesseract:'default',e8:'e8',calabi:'calabi',hopf:'hopf',penrose:'penrose',klein:'klein',trefoil:'trefoil','600cell':'hopf'};
-const MK={tesseract:mkTesseract,e8:mkE8,hopf:mkHopf,calabi:mkCalabi,klein:mkKlein,penrose:mkPenrose,'600cell':mk600Cell,trefoil:mkTrefoil};
-
-function loadMfld(name){
-  MFLD=MK[name]?.() || mkTesseract();
-  document.body.dataset.theme=THEMES[name]||'default';
-  if(MFLD.verts.length>0){let maxR=0;for(const v of MFLD.verts){const r=Math.sqrt((v[0]||0)**2+(v[1]||0)**2+(v[2]||0)**2+(v[3]||0)**2);if(r>maxR)maxR=r;}if(maxR>0.001){P.zoom=Math.min(4,Math.max(0.3,1.4/(0.22*maxR)));const zs=document.getElementById('zoomSlider');if(zs){zs.value=P.zoom;document.getElementById('vzm').textContent=P.zoom.toFixed(2);}}}
-  document.getElementById('htl').innerHTML='MANIFOLD: '+MFLD.name+'<br>'+MFLD.sub+'<br>X='+MFLD.euler;
-  document.getElementById('htr').innerHTML='V:'+MFLD.verts.length+' E:'+MFLD.edges.length+'<br>DIM:'+MFLD.dim+'<br>'+projMode.toUpperCase();
-  log('Loaded '+MFLD.name+' ('+MFLD.dim+'D V='+MFLD.verts.length+' E='+MFLD.edges.length+')','s');
-}
+function loadMfld(name){MFLD=MK[name]?.() || mkTesseract();document.body.dataset.theme=THEMES[name]||'default';if(MFLD.verts.length>0){let maxR=0;for(const v of MFLD.verts){const r=Math.sqrt((v[0]||0)**2+(v[1]||0)**2+(v[2]||0)**2+(v[3]||0)**2);if(r>maxR)maxR=r;}if(maxR>0.001){P.zoom=Math.min(4,Math.max(0.3,1.4/(0.22*maxR)));const zs=document.getElementById('zoomSlider');if(zs){zs.value=P.zoom;document.getElementById('vzm').textContent=P.zoom.toFixed(2);}}}document.getElementById('htl').innerHTML='MANIFOLD: '+MFLD.name+'<br>'+MFLD.sub+'<br>ENT:'+entBeams.length;document.getElementById('htr').innerHTML='V:'+MFLD.verts.length+' E:'+MFLD.edges.length+'<br>DIM:'+MFLD.dim+'<br>'+projMode.toUpperCase();}
 
 function render(now){
-  fC++;if(now-fT>700){fps=Math.round(fC*1000/(now-fT));fC=0;fT=now;}
-  T+=0.007;
+  fC++;if(now-fT>700){fps=Math.round(fC*1000/(now-fT));fC=0;fT=now;}T+=0.007;
   if(autoOn){autoT++;if(autoT>500){autoT=0;autoIdx=(autoIdx+1)%CYCLE.length;setT(CYCLE[autoIdx]);}}
-  ctx.clearRect(0,0,W,H);
-  const cx=W/2,cy=H/2;
-  const bg=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(W,H)*.65);
-  bg.addColorStop(0,'rgba(0,18,38,0.55)');bg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  const gs=48;ctx.strokeStyle='rgba(0,229,255,0.025)';ctx.lineWidth=1;
-  for(let x=cx%gs;x<W;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for(let y=cy%gs;y<H;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  ctx.clearRect(0,0,W,H);const cx=W/2,cy=H/2;
+  // Background
+  const bg=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(W,H)*.65);bg.addColorStop(0,'rgba(0,18,38,0.55)');bg.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  const gs=48;ctx.strokeStyle='rgba(0,229,255,0.02)';ctx.lineWidth=1;for(let x=cx%gs;x<W;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}for(let y=cy%gs;y<H;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
   if(!MFLD){requestAnimationFrame(render);return;}
   buildRots();const sc=Math.min(W,H)*.22*P.zoom;const verts=MFLD.verts;
-  const P2=verts.map(v=>{if(sliceOn&&!sliceFilter(v))return null;const p=toScreen(v,cx,cy,sc);return p||null;});
+  const P2=verts.map(v=>{const p=toScreen(v,cx,cy,sc);return p||null;});
   // Faces
   if(MFLD.faces.length>0&&P.faceA>.01){const fd=MFLD.faces.map(face=>{const ps=face.map(i=>P2[i]).filter(Boolean);if(ps.length<3)return null;const avgD=ps.reduce((s,p)=>s+p.depth,0)/ps.length;return{ps,avgD};}).filter(Boolean);fd.sort((a,b)=>a.avgD-b.avgD);fd.forEach(({ps,avgD})=>{const dN=Math.max(0,Math.min(1,(avgD+3)/6));const hue=((dN)*240+160)%360;ctx.beginPath();ctx.moveTo(ps[0].px,ps[0].py);ps.slice(1).forEach(p=>ctx.lineTo(p.px,p.py));ctx.closePath();ctx.fillStyle='hsla('+hue+',85%,45%,'+(P.faceA*.14*(0.3+dN*.7))+')';ctx.fill();});}
   // Edges
-  const maxE=Math.min(MFLD.edges.length,1600),edgeList=[];
-  for(let ei=0;ei<maxE;ei++){const[a,b]=MFLD.edges[ei];const pa=P2[a],pb=P2[b];if(!pa||!pb)continue;edgeList.push({pa,pb,avgD:(pa.depth+pb.depth)/2});}
-  edgeList.sort((a,b)=>a.avgD-b.avgD);
-  if(P.glow>.02){ctx.save();for(const{pa,pb,avgD}of edgeList){const dN=Math.max(0,Math.min(1,(avgD+3)/6));if(dN<.35)continue;const hue=((dN)*280+140)%360;ctx.strokeStyle='hsla('+hue+',100%,70%,'+(P.glow*dN*.2)+')';ctx.lineWidth=4+dN*5;ctx.beginPath();ctx.moveTo(pa.px,pa.py);ctx.lineTo(pb.px,pb.py);ctx.stroke();}ctx.restore();}
-  for(const{pa,pb,avgD}of edgeList){const dN=Math.max(0,Math.min(1,(avgD+3)/6));const hue=((dN)*280+140)%360;ctx.strokeStyle='hsla('+hue+',95%,'+(45+dN*35)+'%,'+((.08+dN*.78)*P.depthC)+')';ctx.lineWidth=.35+dN*1.15;ctx.beginPath();ctx.moveTo(pa.px,pa.py);ctx.lineTo(pb.px,pb.py);ctx.stroke();}
+  const maxE=Math.min(MFLD.edges.length,1400),edgeList=[];for(let ei=0;ei<maxE;ei++){const[a,b]=MFLD.edges[ei];const pa=P2[a],pb=P2[b];if(!pa||!pb)continue;edgeList.push({pa,pb,avgD:(pa.depth+pb.depth)/2});}edgeList.sort((a,b)=>a.avgD-b.avgD);
+  if(P.glow>.02){ctx.save();for(const{pa,pb,avgD}of edgeList){const dN=Math.max(0,Math.min(1,(avgD+3)/6));if(dN<.35)continue;const hue=((dN)*280+140)%360;ctx.strokeStyle='hsla('+hue+',100%,70%,'+(P.glow*dN*.18)+')';ctx.lineWidth=3+dN*4;ctx.beginPath();ctx.moveTo(pa.px,pa.py);ctx.lineTo(pb.px,pb.py);ctx.stroke();}ctx.restore();}
+  for(const{pa,pb,avgD}of edgeList){const dN=Math.max(0,Math.min(1,(avgD+3)/6));const hue=((dN)*280+140)%360;ctx.strokeStyle='hsla('+hue+',95%,'+(45+dN*35)+'%,'+((.08+dN*.78)*P.depthC)+')';ctx.lineWidth=.35+dN*1.1;ctx.beginPath();ctx.moveTo(pa.px,pa.py);ctx.lineTo(pb.px,pb.py);ctx.stroke();}
+
+  // ── ENTANGLEMENT BEAMS ──
+  ctx.save();
+  entBeams = entBeams.filter(e => T - e.t < 12);
+  for(const e of entBeams){
+    const pa=P2[e.a%P2.length],pb=P2[e.b%P2.length];
+    if(!pa||!pb)continue;
+    const age=T-e.t, fade=Math.max(0,1-age/12);
+    const pulse=0.5+0.5*Math.sin(T*3.5+e.a*.8);
+    const g=ctx.createLinearGradient(pa.px,pa.py,pb.px,pb.py);
+    g.addColorStop(0,'rgba(255,45,120,'+((.5+pulse*.3)*fade)+')');
+    g.addColorStop(.5,'rgba(255,215,0,'+((.7+pulse*.2)*fade)+')');
+    g.addColorStop(1,'rgba(0,255,136,'+((.5+pulse*.3)*fade)+')');
+    ctx.strokeStyle=g;ctx.lineWidth=1.5*fade;
+    ctx.setLineDash([4,8]);
+    ctx.beginPath();ctx.moveTo(pa.px,pa.py);ctx.lineTo(pb.px,pb.py);ctx.stroke();
+    ctx.setLineDash([]);
+    // Entanglement orbs
+    [pa,pb].forEach((p,k)=>{const c=k===0?[255,45,120]:[0,255,136];ctx.beginPath();ctx.arc(p.px,p.py,2.5+pulse*3,0,Math.PI*2);ctx.fillStyle='rgba('+c.join(',')+','+((.3+pulse*.5)*fade)+')';ctx.fill();});
+  }
+
+  // ── QUANTUM ENTANGLEMENT FIELD (from QOPS) ──
+  if(entanglements.length>0&&P.entD>0.05){
+    const maxShow=Math.min(entanglements.length,20);
+    for(let ei=0;ei<maxShow;ei++){
+      const e=entanglements[ei];
+      const idxA=(ei*7)%P2.length, idxB=(ei*13+7)%P2.length;
+      const pa=P2[idxA],pb=P2[idxB];
+      if(!pa||!pb)continue;
+      const pulse=0.5+0.5*Math.sin(T*2+e.phase);
+      const collapsed=e.collapsed;
+      if(collapsed){
+        // Collapsed: solid dim line
+        ctx.strokeStyle='rgba(204,68,255,'+(0.15*P.entD)+')';ctx.lineWidth=0.5;
+        ctx.beginPath();ctx.moveTo(pa.px,pa.py);ctx.lineTo(pb.px,pb.py);ctx.stroke();
+      } else {
+        // Superposed: pulsing dashed line
+        ctx.strokeStyle='rgba(0,229,255,'+(pulse*0.3*P.entD)+')';ctx.lineWidth=1+pulse;
+        ctx.setLineDash([3,6]);
+        ctx.beginPath();ctx.moveTo(pa.px,pa.py);ctx.lineTo(pb.px,pb.py);ctx.stroke();
+        ctx.setLineDash([]);
+        // Superposition glow orbs
+        const mx=(pa.px+pb.px)/2,my=(pa.py+pb.py)/2;
+        ctx.beginPath();ctx.arc(mx,my,4+pulse*6,0,Math.PI*2);
+        ctx.fillStyle='rgba(0,229,255,'+(pulse*0.08*P.entD)+')';ctx.fill();
+      }
+    }
+  }
+  ctx.restore();
+
+  // ── COLLAPSE EFFECTS ──
+  collapseEffects = collapseEffects.filter(c => T - c.t < 2);
+  for(const c of collapseEffects){
+    const age=T-c.t, progress=age/2;
+    const r=10+progress*80, alpha=Math.max(0,(1-progress)*0.4);
+    ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);
+    ctx.strokeStyle='rgba(255,45,120,'+alpha+')';ctx.lineWidth=2*(1-progress);ctx.stroke();
+    ctx.beginPath();ctx.arc(c.x,c.y,r*0.6,0,Math.PI*2);
+    ctx.strokeStyle='rgba(0,229,255,'+(alpha*0.7)+')';ctx.lineWidth=1;ctx.stroke();
+  }
+
   // Vertices
-  const vArr=P2.slice(0,800).filter(Boolean).sort((a,b)=>a.depth-b.depth);
-  for(const p of vArr){const dN=Math.max(0,Math.min(1,(p.depth+3)/6));const r=0.6+dN*3.5;const hue=((dN)*270+150)%360;ctx.beginPath();ctx.arc(p.px,p.py,r,0,Math.PI*2);ctx.fillStyle='hsla('+hue+',100%,'+(65+dN*25)+'%,'+(0.25+dN*.7)+')';ctx.fill();if(dN>.65){ctx.beginPath();ctx.arc(p.px,p.py,r*3,0,Math.PI*2);ctx.fillStyle='hsla('+hue+',100%,60%,'+((dN-.65)*.1)+')';ctx.fill();}}
-  // Wave field
-  if(P.waveA>0.02){const psi=0.5+0.5*Math.sin(T*1.7);for(let k=0;k<3;k++){ctx.strokeStyle='rgba(0,229,255,'+(0.02+psi*.05*P.waveA)+')';ctx.lineWidth=1;ctx.beginPath();for(let x=0;x<W;x+=3){const y=cy+Math.sin(x*.014+T*(1.3+k*.5))*50*P.waveA+Math.cos(x*.031+T*(2.1-k*.4))*20*P.waveA*psi;x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();}}
+  const vArr=P2.slice(0,600).filter(Boolean).sort((a,b)=>a.depth-b.depth);
+  for(const p of vArr){const dN=Math.max(0,Math.min(1,(p.depth+3)/6));const r=0.6+dN*3.2;const hue=((dN)*270+150)%360;ctx.beginPath();ctx.arc(p.px,p.py,r,0,Math.PI*2);ctx.fillStyle='hsla('+hue+',100%,'+(65+dN*25)+'%,'+(0.25+dN*.7)+')';ctx.fill();if(dN>.65){ctx.beginPath();ctx.arc(p.px,p.py,r*3,0,Math.PI*2);ctx.fillStyle='hsla('+hue+',100%,60%,'+((dN-.65)*.08)+')';ctx.fill();}}
+  // Wave
+  if(P.waveA>0.02){const psi=0.5+0.5*Math.sin(T*1.7);for(let k=0;k<3;k++){ctx.strokeStyle='rgba(0,229,255,'+(0.02+psi*.04*P.waveA)+')';ctx.lineWidth=1;ctx.beginPath();for(let x=0;x<W;x+=3){const y=cy+Math.sin(x*.014+T*(1.3+k*.5))*50*P.waveA+Math.cos(x*.031+T*(2.1-k*.4))*20*P.waveA*psi;x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();}}
   document.getElementById('fps-pill').textContent='FPS:'+fps;
-  document.getElementById('hbl').innerHTML='MANIFOLD: '+MFLD.name+'<br>DIM:'+MFLD.dim+' V:'+MFLD.verts.length+'<br>drag=rotate scroll=W';
   requestAnimationFrame(render);
 }
 
-function initInteraction(){
-  const cw=document.getElementById('cw');
-  cw.onmousedown=e=>{drag=true;lmx=e.clientX;lmy=e.clientY;};
-  window.onmouseup=()=>drag=false;
-  window.onmousemove=e=>{if(!drag)return;camY+=(e.clientX-lmx)*.005;camX+=(e.clientY-lmy)*.005;camX=Math.max(-1.4,Math.min(1.4,camX));lmx=e.clientX;lmy=e.clientY;};
-  cw.addEventListener('touchstart',e=>{drag=true;lmx=e.touches[0].clientX;lmy=e.touches[0].clientY;},{passive:true});
-  cw.addEventListener('touchend',()=>drag=false,{passive:true});
-  cw.addEventListener('touchmove',e=>{if(!drag)return;camY+=(e.touches[0].clientX-lmx)*.005;camX+=(e.touches[0].clientY-lmy)*.005;camX=Math.max(-1.4,Math.min(1.4,camX));lmx=e.touches[0].clientX;lmy=e.touches[0].clientY;},{passive:true});
-  cw.addEventListener('wheel',e=>{P.wR=Math.max(0,Math.min(1,P.wR+e.deltaY*.001));e.preventDefault();},{passive:false});
-  cw.ondblclick=()=>{camX=0.35;camY=0.55;log('Camera reset','i');};
-}
+function addEntBeam(qIdx){const n=MFLD?MFLD.verts.length:16;const a=Math.floor(Math.random()*n),b=Math.floor(Math.random()*n);entBeams.push({a,b,t:T});if(entBeams.length>40)entBeams.shift();}
+function collapseVertex(qIdx){if(!MFLD)return;const n=MFLD.verts.length;const idx=qIdx%n;const p=toScreen(MFLD.verts[idx],W/2,H/2,Math.min(W,H)*.22*P.zoom);if(p)collapseEffects.push({x:p.px,y:p.py,t:T});}
+function setEntanglements(ents){entanglements=ents;}
+function flashCW(){const c=document.getElementById('cw');c.classList.remove('wfx');void c.offsetWidth;c.classList.add('wfx');}
 
+function initInteraction(){const cw=document.getElementById('cw');cw.onmousedown=e=>{drag=true;lmx=e.clientX;lmy=e.clientY;};window.onmouseup=()=>drag=false;window.onmousemove=e=>{if(!drag)return;camY+=(e.clientX-lmx)*.005;camX+=(e.clientY-lmy)*.005;camX=Math.max(-1.4,Math.min(1.4,camX));lmx=e.clientX;lmy=e.clientY;};cw.addEventListener('touchstart',e=>{drag=true;lmx=e.touches[0].clientX;lmy=e.touches[0].clientY;},{passive:true});cw.addEventListener('touchend',()=>drag=false,{passive:true});cw.addEventListener('touchmove',e=>{if(!drag)return;camY+=(e.touches[0].clientX-lmx)*.005;camX+=(e.touches[0].clientY-lmy)*.005;camX=Math.max(-1.4,Math.min(1.4,camX));lmx=e.touches[0].clientX;lmy=e.touches[0].clientY;},{passive:true});cw.addEventListener('wheel',e=>{P.wR=Math.max(0,Math.min(1,P.wR+e.deltaY*.001));e.preventDefault();},{passive:false});cw.ondblclick=()=>{camX=0.35;camY=0.55;};}
 function resize(){const w=document.getElementById('cw');canvas.width=w.clientWidth;canvas.height=w.clientHeight;W=canvas.width;H=canvas.height;}
-
 function log(msg,type='i'){const out=document.getElementById('cout');const ts=new Date().toLocaleTimeString('en',{hour12:false});const d=document.createElement('div');d.className='ll '+type;d.innerHTML='<span class="lts">['+ts+']</span>'+msg;out.appendChild(d);out.scrollTop=out.scrollHeight;if(out.children.length>500)out.removeChild(out.firstChild);}
-
-function spawnParts(){const pl=document.getElementById('pl');const cols=['#00e5ff','#ff2d78','#b4ff3c','#ffd700','#cc44ff'];for(let i=0;i<20;i++){const p=document.createElement('div');p.className='pt';const c=cols[Math.floor(Math.random()*cols.length)];const sz=1+Math.random()*1.5;p.style.cssText='width:'+sz+'px;height:'+sz+'px;background:'+c+';left:'+Math.random()*100+'%;animation-delay:'+Math.random()*18+'s;animation-duration:'+(9+Math.random()*14)+'s;opacity:'+(Math.random()*.5+.1)+';';pl.appendChild(p);}}
-
+function spawnParts(){const pl=document.getElementById('pl');const cols=['#00e5ff','#ff2d78','#b4ff3c','#ffd700','#cc44ff'];for(let i=0;i<18;i++){const p=document.createElement('div');p.className='pt';const c=cols[Math.floor(Math.random()*cols.length)];const sz=1+Math.random()*1.5;p.style.cssText='width:'+sz+'px;height:'+sz+'px;background:'+c+';left:'+Math.random()*100+'%;animation-delay:'+Math.random()*18+'s;animation-duration:'+(9+Math.random()*14)+'s;opacity:'+(Math.random()*.5+.1)+';';pl.appendChild(p);}}
 function setT(name){mode=name;document.querySelectorAll('.tb[id^="bt-"]').forEach(b=>b.classList.remove('act'));document.getElementById('bt-'+name)?.classList.add('act');loadMfld(name);}
 function sp(k,v){P[k]=v;}
-function cycleProj(){const modes=['persp','ortho','stereo'];const i=(modes.indexOf(projMode)+1)%modes.length;projMode=modes[i];document.getElementById('proj-btn').textContent=projMode.toUpperCase();log('Projection: '+projMode,'i');}
-function toggleSlice(){sliceOn=!sliceOn;document.getElementById('slice-btn').classList.toggle('act',sliceOn);log('Slice: '+(sliceOn?'ON':'OFF'),'i');}
-function toggleAuto(){autoOn=!autoOn;document.getElementById('auto-btn').classList.toggle('act',autoOn);log('Auto: '+(autoOn?'ON':'OFF'),'i');}
+function cycleProj(){const modes=['persp','ortho','stereo'];const i=(modes.indexOf(projMode)+1)%modes.length;projMode=modes[i];document.getElementById('proj-btn').textContent=projMode.toUpperCase();}
+function toggleAuto(){autoOn=!autoOn;document.getElementById('auto-btn').classList.toggle('act',autoOn);}
 function getFPS(){return fps;}
 
-function setupConsole(){
-  const inp=document.getElementById('cin');
-  inp.addEventListener('keydown',e=>{
-    if(e.key==='Enter'){const cmd=inp.value.trim().toLowerCase();inp.value='';log('> '+cmd,'c');
-      if(cmd==='run'||cmd==='benchmark')BENCH.run();
-      else if(cmd==='export')BENCH.exportHTML();
-      else if(cmd==='status')log('Mode:'+mode+' Running:'+BENCH.running,'i');
-      else if(cmd.startsWith('topo ')){const m=cmd.split(' ')[1];if(MK[m])setT(m);else log('Unknown: '+m,'e');}
-      else if(cmd==='help'){log('Commands: run, export, status, topo [name], clear, help','i');log('Manifolds: tesseract, e8, hopf, calabi, klein, penrose, 600cell, trefoil','i');}
-      else if(cmd==='clear')document.getElementById('cout').innerHTML='';
-      else log('Unknown. Type "help"','w');}});
-}
+function setupConsole(){const inp=document.getElementById('cin');inp.addEventListener('keydown',e=>{if(e.key==='Enter'){const cmd=inp.value.trim().toLowerCase();inp.value='';log('> '+cmd,'c');
+  if(cmd==='run'||cmd==='published')BENCH.runPublished();
+  else if(cmd==='webllm'||cmd==='live')BENCH.runWebLLM();
+  else if(cmd==='export')BENCH.exportHTML();
+  else if(cmd==='entangle')QOPS.entangleModels();
+  else if(cmd==='collapse')QOPS.collapse();
+  else if(cmd==='superpose')QOPS.superpose();
+  else if(cmd==='decohere')QOPS.decohere();
+  else if(cmd.startsWith('load ')){const m=cmd.substring(5).trim();const models={'smol135':'SmolLM2-135M-Instruct-q0f16-MLC','smol360':'SmolLM2-360M-Instruct-q4f16_1-MLC','tinyllama':'TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC','llama':'Llama-3.2-1B-Instruct-q4f16_1-MLC','qwen':'Qwen2.5-0.5B-Instruct-q4f16_1-MLC','phi':'Phi-3.5-mini-instruct-q4f16_1-MLC-1k'};WEBLLM.load(models[m]||m);}
+  else if(cmd.startsWith('topo ')){const m=cmd.split(' ')[1];if(MK[m])setT(m);else log('Unknown: '+m,'e');}
+  else if(cmd==='help'){log('=== COMMANDS ===','i');log('MODELS: load smol135|smol360|tinyllama|llama|qwen|phi','i');log('BENCH: run/published (replay), webllm/live (in-browser test)','i');log('QUANTUM: entangle, collapse, superpose, decohere','i');log('TOPO: topo tesseract|e8|hopf|calabi|klein|penrose','i');log('OTHER: export, clear, help','i');}
+  else if(cmd==='clear')document.getElementById('cout').innerHTML='';
+  else if(cmd==='status')log('Model:'+WEBLLM.getModel()+' Ready:'+WEBLLM.isReady()+' Ent:'+entanglements.length,'i');
+  else log('Unknown. Type "help"','w');}});}
 
 function init(){
   canvas=document.getElementById('tc');ctx=canvas.getContext('2d');
   resize();window.addEventListener('resize',resize);
   initInteraction();setupConsole();spawnParts();
   ROT_MAT=buildRotMatrix(4,[[0,1,0],[2,3,0]]);ROT_DIM=4;
-  loadMfld('tesseract');
-  requestAnimationFrame(render);
-  log('LIGHTBRINGER - HALLUCINATION ELIMINATION BENCHMARK v2','s');
-  log('222 questions | 5 categories | 5 models | Real published results','i');
-  log('Features: Per-question drill-down | HTML export | Chain visualization','i');
-  log('Click RUN BENCHMARK or type "run" to replay published results','i');
-  log('Click EXPORT HTML to download results report','i');
+  loadMfld('tesseract');requestAnimationFrame(render);
+  log('LIGHTBRINGER + WebLLM HALLUCINATION BENCHMARK','s');
+  log('Run open-source LLMs IN YOUR BROWSER against corporate AI benchmarks','i');
+  log('WebGPU required: Chrome 113+, Edge 113+','i');
+  log('','i');
+  log('1. Click a WebLLM model on the left to download & load it','i');
+  log('2. Click "WebLLM LIVE" to benchmark it on 25 hallucination questions','i');
+  log('3. Click "PUBLISHED" to see corporate AI results (GPT-5.2, Claude, Gemini, Mistral)','i');
+  log('4. Use QUANTUM tab to entangle models and collapse wavefunctions','i');
+  log('5. Click "EXPORT" to download results as standalone HTML','i');
+  WEBLLM.checkWebGPU();
+  BENCH.renderOverview();
   document.getElementById('detail-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.style.display='none';});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('detail-modal').style.display='none';});
-  BENCH.loadData();
 }
-
-return{init,setT,sp,cycleProj,toggleSlice,toggleAuto,log,getFPS};
+return{init,setT,sp,cycleProj,toggleAuto,log,getFPS,addEntBeam,collapseVertex,setEntanglements,flashCW};
 })();
 window.addEventListener('load',Q.init);
 </script>
