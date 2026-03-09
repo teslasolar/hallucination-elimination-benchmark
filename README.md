@@ -8,7 +8,9 @@
 
 ![Triad Engine Architecture](figures/triad_engine_architecture.svg)
 
-This repository contains the full benchmark suite, question sets, results, and evaluation code for the paper above.
+This repository contains the full benchmark suite, question sets, results, evaluation code, and the **KONOMI Standard** — a self-defining industrial standards compression system where UDTs define UDTs and tags drive behavior.
+
+> **This README is executable.** UDT tags embedded in HTML comments let you run, test, validate, and crosswalk directly from this file. See [Executable README](#executable-readme) below.
 
 ---
 
@@ -91,46 +93,376 @@ The domain guide is the only thing that changes between deployments. Rome is the
 
 ```
 hallucination-elimination-benchmark/
-├── README.md
+├── README.md                        ← YOU ARE HERE (executable)
 ├── LICENSE                          # MIT — evaluation code
-├── CASCADE_CASE_STUDY.md            # Windsurf/Cascade coding domain validation (40%→40%→100%)
+├── CASCADE_CASE_STUDY.md            # Windsurf/Cascade coding domain validation
 │
 ├── PAPER/
-│   └── Domain_Grounding_Hallucination_Elimination_Benchmark.pdf
+│   └── Domain_Grounding_...pdf      # Full research paper
 │
 ├── data/
-│   └── questions.json               # Full 222 benchmark questions with ground truth
+│   └── questions.json               # 222 benchmark questions with ground truth
 │
-├── runners/                         # Ready-to-run scripts (any model, any provider)
-│   ├── README.md
+├── runners/                         # Ready-to-run model scripts
 │   ├── run_anthropic.py             # Claude (all versions)
-│   ├── run_openai.py                # GPT-4o, GPT-4o-mini, etc.
+│   ├── run_openai.py                # GPT-4o, GPT-5.2
 │   ├── run_gemini.py                # Gemini 2.0/2.5/1.5
-│   └── run_ollama.py                # Any local model via Ollama (Mistral, Bielik, LLaMA)
+│   └── run_ollama.py                # Local models via Ollama
 │
-├── results/
-│   ├── summary.json                 # All results at a glance
-│   ├── cascade_coding_benchmark.json  # Windsurf/Cascade qualitative coding benchmark (40%→100%)
-│   ├── claude_opus_judge_222q.json  # Full results: Claude Opus judge (all tiers)
-│   ├── mistral_judge_222q.json      # Full results: Mistral-Small judge
-│   ├── gpt52_raw.json               # GPT-5.2 raw baseline (26.1%)
-│   ├── gpt52_triad.json             # GPT-5.2 + Triad Engine (100.0%)
-│   ├── gemini_25_pro_raw.json       # Gemini 2.5 Pro raw baseline (42.3%)
-│   ├── gemini_25_pro_triad.json     # Gemini 2.5 Pro + Triad Engine (95.0%)
-│   ├── mistral_7b_raw.json          # Mistral 7B raw baseline (22.5%)
-│   ├── mistral_7b_triad.json        # Mistral 7B + Triad Engine (99.5%)
-│   ├── bielik_11b_raw.json          # Bielik 11B raw baseline (21.6%)
-│   └── bielik_11b_triad_v6.json     # Bielik 11B + Triad Engine v6 (88.7%)
-│
-├── questions/
-│   └── benchmark_questions.py       # All 222 questions + adversarial + consistency sets
+├── results/                         # JSON result files for all models
+│   ├── summary.json
+│   ├── claude_opus_judge_222q.json
+│   ├── gpt52_triad.json
+│   └── ...
 │
 ├── evaluation/
-│   ├── run_benchmark.py             # Benchmark runner — plug in your own grounded system
-│   └── analyze_results.py           # Deep analysis: categories, failure modes, winding numbers
+│   ├── run_benchmark.py             # Benchmark runner
+│   └── analyze_results.py           # Category breakdown + failure modes
+│
+├── konomi/                          # KONOMI Standard system
+│   ├── core.py                      # Layer 0: Meta-UDT (UDTs define UDTs)
+│   ├── readme_exec.py               # README executor — runs UDT tags
+│   ├── standards/                   # Layers 1-9 (<520 tokens each)
+│   │   ├── base_udts.py             # Layer 1: Identifier, Timestamp, Quality...
+│   │   ├── isa_95.py                # Layer 2: Enterprise↔Control
+│   │   ├── isa_88.py                # Layer 3: Batch Process Control
+│   │   ├── isa_101.py               # Layer 4: HMI Design
+│   │   ├── isa_18_2.py              # Layer 5: Alarm Management
+│   │   ├── opc_ua.py                # Layer 6: OPC-UA
+│   │   ├── mqtt_sparkplug.py        # Layer 7: MQTT/Sparkplug B
+│   │   ├── modbus.py                # Layer 8: Modbus
+│   │   └── kpi.py                   # Layer 9: KPIs (OEE, MTBF, MTTR)
+│   ├── crosswalks/
+│   │   └── engine.py                # Inter-standard mapping engine
+│   └── api/
+│       ├── server.py                # HTTP API with --demo flag
+│       └── generate_pages.py        # Static JSON generator for Pages
+│
+├── docs/
+│   ├── index.html                   # Main benchmark dashboard
+│   └── konomi/                      # KONOMI Standards dashboard (GitHub Pages)
+│       ├── index.html               # Interactive standard browser
+│       ├── standards.json           # Standard index
+│       ├── udts.json                # All UDT definitions
+│       ├── crosswalks.json          # Inter-standard mappings
+│       └── isa_*.json, kpi.json...  # Per-standard data
 │
 └── cultural_guide_schema/
-    └── example_guide.json           # Schema for building your own domain guide
+    └── example_guide.json           # Schema for building domain guides
+```
+
+---
+
+## KONOMI Standard — Self-Defining Industrial Standards Compression v1.0
+
+The KONOMI Standard is a **meta-standard** where Layer 0 defines how all other layers are structured. Every standard is expressed as UDTs (User-Defined Types) with tags that drive behavior — states, transitions, validation rules, color palettes, and crosswalks between standards.
+
+### Layer Architecture
+
+| Layer | Standard | UDTs | Scope |
+|-------|----------|------|-------|
+| 0 | **Meta** | STD, UDT, LEVEL, STATE_MACHINE, ENTITY, RULE, CROSSWALK | How standards define themselves |
+| 1 | **Base** | Identifier, Timestamp, Quality, Value, Range, Quantity, Duration, Status | Primitives all standards share |
+| 2 | **ISA-95** | PhysicalAsset, Equipment, Material, Personnel, ProcessSegment | Enterprise↔Control integration |
+| 3 | **ISA-88** | ProcessCell, Unit, Phase, Recipe, Batch | Batch process control |
+| 4 | **ISA-101** | HMI_Layer, ColorMeaning, Faceplate | HMI design standards |
+| 5 | **ISA-18.2** | AlarmPriority, Alarm | Alarm management lifecycle |
+| 6 | **OPC-UA** | OPC_Node, OPC_Variable, OPC_Method, OPC_Subscription | Industrial interoperability |
+| 7 | **Sparkplug** | MQTT_Topic, SparkplugPayload | Lightweight pub/sub |
+| 8 | **Modbus** | ModbusRegister, ModbusMap | Field device communication |
+| 9 | **KPI** | OEE, MTBF, MTTR, CycleTime, Throughput, EnergyKPI | Operational metrics |
+
+### Tags Drive Behavior
+
+Every UDT carries a `tags` dictionary. Downstream systems read tags to determine states, transitions, validation rules, palettes — without hardcoding behavior:
+
+```python
+from konomi import KS, UDT
+
+phase = UDT.get("Phase")
+phase.tagged("states")       # ['IDLE','RUNNING','COMPLETE','HOLDING',...]
+phase.tagged("transitions")  # [('IDLE','RUNNING','start'), ('RUNNING','COMPLETE','done'), ...]
+
+alarm = UDT.get("Alarm")
+alarm.tagged("types")        # ['HI','HIHI','LO','LOLO','DEV','ROG','DISC']
+alarm.tagged("states")       # ['NORM','UNACK','ACKED','RTN_UNACK','SHELVED','OUT_OF_SERVICE']
+
+color = UDT.get("ColorMeaning")
+color.tagged("palette")      # [('Normal','Gray','#808080'), ('Running','Green','#00AA00'), ...]
+```
+
+### Crosswalks
+
+Map entities between any two standards:
+
+```python
+from konomi import KS
+
+# ISA-95 WorkCenter → ISA-88 ProcessCell
+mapped = KS.crosswalk({"_udt": "WorkCenter", "name": "Cell1"}, "ISA-95", "ISA-88")
+# → {'mapped': True, 'entity': {'_udt': 'ProcessCell', 'name': 'Cell1', '_crosswalk': {...}}}
+```
+
+| From | Entity | → | To | Entity | Mapping |
+|------|--------|---|----|---------|---------|
+| ISA-95 | WorkCenter | → | ISA-88 | ProcessCell | exact |
+| ISA-95 | WorkUnit | → | ISA-88 | S88_Unit | exact |
+| ISA-95 | ProcessSegment | → | ISA-88 | Operation | exact |
+| ISA-95 | Equipment | → | OPC-UA | OPC_Node | exact |
+| ISA-88 | RUNNING | → | PackML | EXECUTE | exact |
+| OPC-UA | OPC_Variable | → | Sparkplug | Metric | exact |
+| ISA-101 | ColorMeaning | → | ISA-18.2 | Priority | partial |
+
+### API Server
+
+```bash
+# Start with demo flag (all validations pass)
+python -m konomi.api.server --demo --port 8095
+
+# Endpoints:
+#   GET  /api/standards          — list all standards
+#   GET  /api/standards/{id}     — expand a standard
+#   GET  /api/udts               — list all UDTs
+#   GET  /api/expand/{id}        — full expansion with hierarchy
+#   GET  /api/crosswalks         — all inter-standard mappings
+#   GET  /api/generate/{udt}     — generate Python class from UDT
+#   POST /api/validate           — validate entity against standard
+#   POST /api/crosswalk          — map entity between standards
+#   GET  /api/health             — health check + demo flag status
+```
+
+### GitHub Pages Dashboard
+
+Browse all standards, UDTs, state machines, and crosswalks interactively at:
+
+**[docs/konomi/index.html](docs/konomi/index.html)** — append `?demo=1` for demo mode
+
+---
+
+## Executable README
+
+This README contains embedded **UDT tags** in HTML comments. The `readme_exec.py` parser finds them and runs them — turning this file into a live repo control surface.
+
+### Tag Types
+
+| Tag | Purpose | Example |
+|-----|---------|---------|
+| `@run` | Execute shell command | CLI calls, builds |
+| `@test` | Run and assert exit code 0 | Automated tests |
+| `@path` | Verify file/directory exists | Structural checks |
+| `@udt` | Load and inspect a UDT | Type verification |
+| `@validate` | Validate entity against standard | Compliance check |
+| `@crosswalk` | Map entity between standards | Inter-standard mapping |
+| `@state` | Log state machine reference | Audit trail |
+
+### How to Run
+
+```bash
+# Run all tags (dry-run first)
+python -m konomi.readme_exec --dry-run
+
+# Run all tags for real
+python -m konomi.readme_exec
+
+# Run only test tags
+python -m konomi.readme_exec --tag test
+
+# Run only path checks
+python -m konomi.readme_exec --tag path
+
+# Logs written to .konomi/exec.log
+```
+
+### Embedded Tags
+
+The following tags are parsed and executed by `readme_exec.py`. On GitHub they render as invisible HTML comments. Locally they're your CI.
+
+#### Path Checks — Verify repo structure
+
+<!-- @path[questions] -->
+```
+data/questions.json
+```
+
+<!-- @path[results] -->
+```
+results/summary.json
+```
+
+<!-- @path[konomi_core] -->
+```
+konomi/core.py
+```
+
+<!-- @path[konomi_dashboard] -->
+```
+docs/konomi/index.html
+```
+
+<!-- @path[paper] -->
+```
+PAPER/Domain_Grounding_Hallucination_Elimination_Benchmark.pdf
+```
+
+#### Tests — Run and verify
+
+<!-- @test[konomi_import] -->
+```bash
+python -c "from konomi import KS, UDT; print('OK:', len(UDT.all()), 'UDTs')"
+```
+
+<!-- @test[standards_load] -->
+```bash
+python -c "
+from konomi.core import KS
+from konomi.standards import base_udts, isa_95, isa_88, isa_101, isa_18_2, opc_ua, mqtt_sparkplug, modbus, kpi
+base_udts.build_all()
+for m in [isa_95, isa_88, isa_101, isa_18_2, opc_ua, mqtt_sparkplug, modbus, kpi]: m.build()
+stds = KS.list_standards()
+assert len(stds) == 8, f'Expected 8, got {len(stds)}'
+print('OK:', stds)
+"
+```
+
+<!-- @test[crosswalk_engine] -->
+```bash
+python -c "
+from konomi.core import KS
+from konomi.standards import base_udts, isa_95, isa_88
+base_udts.build_all(); isa_95.build(); isa_88.build()
+r = KS.crosswalk({'_udt': 'WorkCenter', 'name': 'C1'}, 'ISA-95', 'ISA-88')
+assert r['mapped'], f'Crosswalk failed: {r}'
+print('OK: WorkCenter → ProcessCell')
+"
+```
+
+<!-- @test[udt_tags_drive_behavior] -->
+```bash
+python -c "
+from konomi.core import UDT
+from konomi.standards import base_udts, isa_88
+base_udts.build_all(); isa_88.build()
+phase = UDT.get('Phase')
+states = phase.tagged('states')
+trans = phase.tagged('transitions')
+assert 'IDLE' in states and 'RUNNING' in states
+assert ('IDLE', 'RUNNING', 'start') in trans
+print('OK: Phase states:', len(states), '/ transitions:', len(trans))
+"
+```
+
+<!-- @test[udt_inheritance] -->
+```bash
+python -c "
+from konomi.core import UDT
+from konomi.standards import base_udts, isa_95
+base_udts.build_all(); isa_95.build()
+equip = UDT.get('Equipment')
+fields = equip.resolved_fields
+names = [f['name'] for f in fields]
+assert 'id' in names and 'state' in names and 'capability' in names
+print('OK: Equipment has', len(fields), 'fields (inherited + own)')
+"
+```
+
+<!-- @test[demo_mode] -->
+```bash
+python -c "
+from konomi.core import KS, demo_mode
+from konomi.standards import base_udts, isa_18_2
+base_udts.build_all(); isa_18_2.build()
+demo_mode(True)
+r = KS.validate({'_udt': 'Alarm'}, 'ISA-18.2')
+assert r['valid'], 'Demo mode should pass all validations'
+print('OK: demo mode passes validation')
+"
+```
+
+<!-- @test[code_generation] -->
+```bash
+python -c "
+from konomi.core import KS
+from konomi.standards import base_udts, isa_88
+base_udts.build_all(); isa_88.build()
+code = KS.generate('ISA-88.Batch')
+assert 'class Batch' in code
+assert 'self.recipe' in code
+print('OK: generated Batch class')
+print(code)
+"
+```
+
+<!-- @test[pages_json] -->
+```bash
+python -c "
+import json, os
+base = 'docs/konomi'
+for f in ['standards.json', 'udts.json', 'crosswalks.json']:
+    path = os.path.join(base, f)
+    assert os.path.exists(path), f'Missing: {path}'
+    data = json.load(open(path))
+    assert len(data) > 0, f'Empty: {path}'
+print('OK: all GitHub Pages JSON files present and non-empty')
+"
+```
+
+#### UDT Inspections
+
+<!-- @udt[Equipment] -->
+```
+Equipment
+```
+
+<!-- @udt[Phase] -->
+```
+Phase
+```
+
+<!-- @udt[Alarm] -->
+```
+Alarm
+```
+
+<!-- @udt[OEE] -->
+```
+OEE
+```
+
+#### Repo Maintenance
+
+<!-- @run[clear_cache] -->
+```bash
+rm -rf .konomi/ __pycache__ konomi/__pycache__ konomi/standards/__pycache__ konomi/api/__pycache__ konomi/crosswalks/__pycache__ && echo "Cache cleared"
+```
+
+<!-- @run[regen_pages] -->
+```bash
+python -m konomi.api.generate_pages
+```
+
+#### State Machine References
+
+<!-- @state[udt=Phase] -->
+<!-- @state[udt=Alarm] -->
+<!-- @state[udt=Batch] -->
+
+#### Validate — Entity compliance
+
+<!-- @validate[std=ISA-95] -->
+```json
+{"_udt": "Equipment", "id": "EQ-001", "path": "Site1/Area2/Line3", "name": "Filler"}
+```
+
+<!-- @validate[std=ISA-18.2] -->
+```json
+{"_udt": "Alarm", "id": "ALM-101", "tag": "TT-101", "priority": 2, "type": "HI"}
+```
+
+#### Crosswalk — Map between standards
+
+<!-- @crosswalk[from=ISA-95, to=ISA-88] -->
+```json
+{"_udt": "WorkCenter", "name": "PackagingCell"}
 ```
 
 ---
@@ -310,7 +642,7 @@ Topological field theory applied to semantic analysis — zero training data.
 ## Contributors
 
 - **Kelly Hohman** — Triad Engine architecture, cultural grounding system, Sand Spreader truth optimization, benchmark design
-- **Thomas Frumkin** ([Konomi Systems](https://github.com/thomasfrumkin)) — MacCubeFACE recursive spatial equations, LookingGlass CPU-only mathematics framework, Konomi Systems equations
+- **Thomas Frumkin** ([Konomi Systems](https://github.com/thomasfrumkin)) — MacCubeFACE recursive spatial equations, LookingGlass CPU-only mathematics framework, Konomi Systems equations, KONOMI Standard
 - **Simon Gant** — Retrocausal temporal reasoning components
 - **Michal Wojtkow** — topoAGI topological analysis library (winding number classifier)
 

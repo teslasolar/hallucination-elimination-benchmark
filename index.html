@@ -2,18 +2,114 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="0;url=docs/index.html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hallucination Elimination Benchmark - LIGHTBRINGER</title>
 <style>
-body { background: #030a12; color: #00e5ff; font-family: monospace; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-a { color: #00e5ff; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#030a12;color:#e2e8f0;font-family:'SF Mono',Monaco,monospace;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}
+a{color:#00e5ff}
+.hub{display:flex;flex-direction:column;align-items:center;gap:20px;max-width:600px;padding:20px}
+h1{color:#00e5ff;font-size:1.4rem}
+.subtitle{color:#64748b;font-size:.8rem}
+.nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
+.nav-card{background:#111827;border:1px solid #1e293b;border-radius:8px;padding:16px;text-decoration:none;color:#e2e8f0;transition:border-color .2s}
+.nav-card:hover{border-color:#3b82f6}
+.nav-card h3{color:#06b6d4;font-size:.9rem;margin-bottom:4px}
+.nav-card p{color:#64748b;font-size:.7rem}
+.tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.tool-btn{background:#111827;border:1px solid #1e293b;border-radius:6px;padding:6px 14px;color:#e2e8f0;cursor:pointer;font-family:inherit;font-size:.75rem;transition:all .2s}
+.tool-btn:hover{background:#1e293b;border-color:#3b82f6}
+.tool-btn.danger{border-color:#7f1d1d}
+.tool-btn.danger:hover{background:#7f1d1d;border-color:#ef4444;color:#fca5a5}
+.status{color:#10b981;font-size:.7rem;margin-top:8px;min-height:1.2em}
 </style>
 </head>
 <body>
-<div style="text-align:center">
-<p>Redirecting to <a href="docs/index.html">LIGHTBRINGER Benchmark Dashboard</a>...</p>
-<script>window.location.href = 'docs/index.html';</script>
+<div class="hub">
+  <h1>LIGHTBRINGER</h1>
+  <div class="subtitle">Hallucination Elimination Benchmark + KONOMI Standard</div>
+
+  <div class="nav-grid">
+    <a class="nav-card" href="docs/index.html">
+      <h3>Benchmark Dashboard</h3>
+      <p>Results, categories, model comparisons, triad analysis</p>
+    </a>
+    <a class="nav-card" href="docs/konomi/index.html">
+      <h3>KONOMI Standards</h3>
+      <p>ISA-95/88/101/18.2, OPC-UA, Sparkplug, Modbus, KPIs</p>
+    </a>
+    <a class="nav-card" href="docs/konomi/index.html?demo=1">
+      <h3>KONOMI Demo Mode</h3>
+      <p>All validations pass — explore UDTs, crosswalks, state machines</p>
+    </a>
+    <a class="nav-card" href="PAPER/Domain_Grounding_Hallucination_Elimination_Benchmark.pdf">
+      <h3>Research Paper</h3>
+      <p>Domain Grounding Hallucination Elimination (PDF)</p>
+    </a>
+  </div>
+
+  <div class="tools">
+    <button class="tool-btn" onclick="clearCache()" title="Clear browser cache, localStorage, sessionStorage, and service workers">Clear Cache</button>
+    <button class="tool-btn" onclick="clearKonomiData()" title="Clear KONOMI cached JSON data">Clear KONOMI Data</button>
+    <button class="tool-btn danger" onclick="hardRefresh()" title="Force reload everything from server">Hard Refresh All</button>
+  </div>
+  <div class="status" id="status"></div>
 </div>
+
+<script>
+function status(msg) {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  setTimeout(() => { el.textContent = ''; }, 3000);
+}
+
+function clearCache() {
+  // Clear localStorage
+  const lsKeys = Object.keys(localStorage).length;
+  localStorage.clear();
+
+  // Clear sessionStorage
+  const ssKeys = Object.keys(sessionStorage).length;
+  sessionStorage.clear();
+
+  // Clear caches API (service worker caches)
+  let cachesCleared = 0;
+  if ('caches' in window) {
+    caches.keys().then(names => {
+      cachesCleared = names.length;
+      names.forEach(name => caches.delete(name));
+    });
+  }
+
+  // Unregister service workers
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(regs => {
+      regs.forEach(r => r.unregister());
+    });
+  }
+
+  status(`Cleared: ${lsKeys} localStorage + ${ssKeys} sessionStorage + caches + service workers`);
+}
+
+function clearKonomiData() {
+  // Clear any KONOMI-specific cached data
+  const keys = Object.keys(localStorage).filter(k => k.startsWith('konomi'));
+  keys.forEach(k => localStorage.removeItem(k));
+
+  // Also clear sessionStorage konomi keys
+  const skeys = Object.keys(sessionStorage).filter(k => k.startsWith('konomi'));
+  skeys.forEach(k => sessionStorage.removeItem(k));
+
+  status(`Cleared ${keys.length + skeys.length} KONOMI cached entries`);
+}
+
+function hardRefresh() {
+  clearCache();
+  // Force reload bypassing cache
+  setTimeout(() => {
+    window.location.reload(true);
+  }, 500);
+}
+</script>
 </body>
 </html>

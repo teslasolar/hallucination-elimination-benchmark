@@ -53,6 +53,8 @@ class UDT:
         return inst
 
     def validate(self, instance: dict) -> list[str]:
+        if DEMO:
+            return []
         errors = []
         for f in self.resolved_fields:
             if f.get("required") and f["name"] not in instance:
