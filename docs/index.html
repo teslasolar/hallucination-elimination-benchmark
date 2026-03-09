@@ -122,7 +122,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:8px;height
 <button class="tb" onclick="Q.setManifold('trefoil')">TREFOIL KNOT<span class="sub">Minimal crossing knot</span></button>
 
 <div class="sec">WEBLLM MODELS</div>
-<button class="tb" onclick="BENCH.selectModel('SmolLM2-135M-Instruct-q4f16_1-MLC')">SmolLM2-135M<span class="sub">135M params &bull; fastest</span></button>
+<button class="tb" onclick="BENCH.selectModel('SmolLM2-135M-Instruct-q0f16-MLC')">SmolLM2-135M<span class="sub">135M params &bull; fastest</span></button>
 <button class="tb" onclick="BENCH.selectModel('SmolLM2-360M-Instruct-q4f16_1-MLC')">SmolLM2-360M<span class="sub">360M params &bull; fast</span></button>
 <button class="tb" onclick="BENCH.selectModel('TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC-1k')">TinyLlama-1.1B<span class="sub">1.1B params &bull; balanced</span></button>
 <button class="tb" onclick="BENCH.selectModel('Llama-3.2-1B-Instruct-q4f16_1-MLC')">Llama-3.2-1B<span class="sub">1B params &bull; Meta</span></button>
@@ -429,7 +429,7 @@ const ISA = {
 // BENCHMARK & WEBLLM
 // ============================================================
 const BENCH = {
-  selectedModel: 'SmolLM2-135M-Instruct-q4f16_1-MLC',
+  selectedModel: 'SmolLM2-135M-Instruct-q0f16-MLC',
   engine: null,
   results: [],
   selectModel(id){this.selectedModel=id;CON.log('Model selected: '+id,'i');document.getElementById('webllm-info').textContent='Selected: '+id},
