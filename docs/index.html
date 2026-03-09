@@ -157,8 +157,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:8px;height
 <!-- Verification Tab -->
 <div id="tab-verify" class="tab-pane">
 <div class="topobox">
-<div class="bigval">ALL VERIFIED</div>
-<div class="row">10/10 result files &mdash; accuracy matches computed</div>
+<div class="bigval">VERIFIED</div>
+<div class="row">10/10 accuracy values match &mdash; 2 minor anomalies flagged</div>
 </div>
 <div class="isa-box">
 <div class="isa-title">RESULT FILE AUDIT <span class="verify-badge ok">ALL OK</span></div>
@@ -168,7 +168,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:8px;height
 <div class="isa-row pass">Claude 4.6 Triad: 100.0% (222/222) <span class="verify-badge ok">OK</span></div>
 <div class="isa-row pass">Gemini 2.5 Pro Raw: 42.3% (94/222) <span class="verify-badge ok">OK</span></div>
 <div class="isa-row pass">Gemini 2.5 Pro Triad: 95.0% (211/222) <span class="verify-badge ok">OK</span></div>
-<div class="isa-row pass">Mistral 7B Raw: 22.5% (50/222) <span class="verify-badge ok">OK</span></div>
+<div class="isa-row warn">Mistral 7B Raw: 22.5% (50/222) <span class="verify-badge note">P+F=221</span></div>
 <div class="isa-row pass">Mistral 7B Triad: 99.5% (221/222) <span class="verify-badge ok">OK</span></div>
 <div class="isa-row pass">Bielik 11B Raw: 21.6% (48/222) <span class="verify-badge ok">OK</span></div>
 <div class="isa-row pass">Bielik 11B Triad: 88.7% (197/222) <span class="verify-badge ok">OK</span></div>
@@ -195,6 +195,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:8px;height
 <div class="isa-row pass">Triad: FAULT_INJECT 100% (vs raw 71.4%)</div>
 <div class="isa-row fail">Triad: CROSS_CHAR 50% (vs raw 100%)</div>
 <div class="isa-row" style="opacity:.35;font-style:italic;margin-top:3px">Inverted strengths: Triad excels at fault tolerance, struggles with cross-character</div>
+</div>
+<div class="isa-box">
+<div class="isa-title">AUDIT ANOMALIES <span class="verify-badge note">2 FOUND</span></div>
+<div class="isa-row warn">Mistral 7B Raw: passed(50)+failed(171)=221, but completed=222 &mdash; 1 question unaccounted</div>
+<div class="isa-row warn">Gemini 2.5 Pro Raw: extreme category skew &mdash; 0% ANACHRONISM but 100% COMPLEX+DOMAIN_SPECIFIC</div>
+<div class="isa-row pass">Bielik 11B Raw: summary.json missing passed/total fields (accuracy_pct correct)</div>
 </div>
 </div>
 
