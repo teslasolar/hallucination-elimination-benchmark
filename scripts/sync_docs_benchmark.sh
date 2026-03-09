@@ -6,27 +6,34 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DEST="$ROOT/docs/benchmark"
 
+sync_dir() {
+  local src="$1" dst="$2"
+  # Remove old contents (except PLAN.md)
+  find "$dst" -maxdepth 1 -type f ! -name 'PLAN.md' -delete 2>/dev/null || true
+  # Copy new contents (excluding PLAN.md, __pycache__, *.pyc)
+  find "$src" -maxdepth 1 -type f ! -name 'PLAN.md' ! -name '*.pyc' -exec cp {} "$dst/" \;
+  # Sync subdirectories
+  for subdir in "$src"/*/; do
+    [ -d "$subdir" ] || continue
+    local name=$(basename "$subdir")
+    [ "$name" = "__pycache__" ] && continue
+    mkdir -p "$dst/$name"
+    sync_dir "$subdir" "$dst/$name"
+  done
+}
+
 dirs=(data evaluation figures questions results runners tools)
 
 for d in "${dirs[@]}"; do
   if [ -d "$ROOT/$d" ]; then
     mkdir -p "$DEST/$d"
-    rsync -a --delete \
-      --exclude='PLAN.md' \
-      --exclude='__pycache__' \
-      --exclude='*.pyc' \
-      "$ROOT/$d/" "$DEST/$d/"
+    sync_dir "$ROOT/$d" "$DEST/$d"
   fi
 done
 
-# Also sync chaining/ (only exists at root level as chaining/)
 if [ -d "$ROOT/chaining" ]; then
   mkdir -p "$DEST/chaining"
-  rsync -a --delete \
-    --exclude='PLAN.md' \
-    --exclude='__pycache__' \
-    --exclude='*.pyc' \
-    "$ROOT/chaining/" "$DEST/chaining/"
+  sync_dir "$ROOT/chaining" "$DEST/chaining"
 fi
 
 echo "docs/benchmark/ synced from root directories"

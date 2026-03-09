@@ -23,27 +23,23 @@ chaining/       8 files  380K  compositional chains + results
 cultural_guide/ 1 file   4K   domain guide schema template
 data/           2 files  60K  questions.json + guide sample
 docs/          58 files  1.4M GitHub Pages (dashboard+konomi+benchmark mirror)
-evaluation/     2 files  37K  legacy benchmark runner + analyzer
+evaluation/     1 file   1K   deprecated → konomi/triad/
 figures/        2 files  13K  SVG diagrams
-konomi/        30 files  70K  KONOMI Standard + Triad Engine (refactored)
+konomi/        30 files  80K  KONOMI Standard + Triad Engine (52 UDTs, 10 crosswalks)
 questions/      1 file   22K  222 question generator
 results/       14 files  900K model results (6 models, raw+triad)
-runners/        6 files  82K  legacy per-provider runners
-tools/          1 file   21K  legacy entropy gap detector
+runners/        1 file   2K   deprecated → konomi/triad/run.py
+tools/          1 file   1K   deprecated → konomi/tools/
 ```
 
-### Refactor Map
+### Refactor Map (completed — legacy files removed)
 ```
-OLD                              → NEW (konomi/)
-runners/run_{anthropic,openai,   → triad/providers/{anthropic,openai,
-  gemini,ollama,perplexity}.py     gemini,ollama,perplexity}.py
-  (shared: prompts,judge,save)   → triad/{engine,judge,lifecycle}.py
-  (CLI)                          → triad/run.py
-evaluation/run_benchmark.py T2   → triad/winding.py
-evaluation/run_benchmark.py T4   → triad/adversarial.py
-evaluation/analyze_results.py    → triad/analyze.py
-chaining/run_chain_benchmark.py  → triad/chain.py
-tools/entropy_gap_detector.py    → tools/__init__.py
+REMOVED                            → ACTIVE (konomi/)
+runners/run_*.py (×5, 82K)        → triad/providers/*.py + triad/run.py
+evaluation/run_benchmark.py (25K)  → triad/{winding,adversarial,lifecycle}.py
+evaluation/analyze_results.py (12K)→ triad/analyze.py
+chaining/run_chain_benchmark.py    → triad/chain.py
+tools/entropy_gap_detector.py (21K)→ tools/__init__.py
 ```
 
 ### CLI Entry Points
@@ -70,6 +66,5 @@ TOTAL: 36/36 PASSING
 ```
 
 ### Next Steps
-- [ ] Wire real API keys (ANTHROPIC/GEMINI/OPENAI) via GitHub secrets
-- [ ] Run full 222q benchmark through unified runner
-- [ ] Consider removing legacy runners/ once unified runner proven
+- [ ] Add GEMINI_API_KEY, ANTHROPIC_API_KEY, OPENAI_API_KEY as GitHub repo secrets
+- [ ] Run full 222q benchmark through unified runner (CI runs single-category on push to main)

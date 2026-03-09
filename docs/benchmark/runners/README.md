@@ -1,78 +1,42 @@
-# Benchmark Runners
+# Benchmark Runners (Deprecated)
 
-Scripts to run the 222-question Hallucination Elimination Benchmark against any model.
+> **These scripts have been removed.** Use the unified runner instead.
 
-## Quick Reference
+## Unified Runner
 
-| Script | Models | Requires |
-|--------|--------|---------|
-| `run_anthropic.py` | Claude (all versions) | `ANTHROPIC_API_KEY` + `GEMINI_API_KEY` |
-| `run_openai.py` | GPT-4o, GPT-4o-mini, etc. | `OPENAI_API_KEY` + `GEMINI_API_KEY` |
-| `run_gemini.py` | Gemini 2.0/2.5/1.5 | `GEMINI_API_KEY` |
-| `run_ollama.py` | Any local model | `GEMINI_API_KEY` + [Ollama](https://ollama.ai) |
+```bash
+# Instead of: python runners/run_anthropic.py --model claude-haiku-4-5-20251001 --triad
+python -m konomi.triad.run --provider anthropic --model claude-haiku-4-5-20251001 --triad
 
-## The `--triad` Flag
+# Instead of: python runners/run_openai.py --model gpt-4o --triad
+python -m konomi.triad.run --provider openai --model gpt-4o --triad
 
-Without `--triad`: minimal system prompt, model gets no cultural context.
+# Instead of: python runners/run_gemini.py --model gemini-2.0-flash --triad
+python -m konomi.triad.run --provider gemini --model gemini-2.0-flash --triad
 
-With `--triad`: full cultural guide injected as system prompt (the Triad Engine).
+# Instead of: python runners/run_ollama.py --model mistral:instruct --triad
+python -m konomi.triad.run --provider ollama --model mistral:instruct --triad
 
-This is the key comparison. Raw vs. Triad shows how much context injection improves hallucination resistance.
+# List all providers:
+python -m konomi.triad.run --list-providers
+```
 
 ## Environment Variables
 
 ```bash
-export GEMINI_API_KEY="..."     # Required for all runners (judge)
-export ANTHROPIC_API_KEY="..."  # Required for run_anthropic.py
-export OPENAI_API_KEY="..."     # Required for run_openai.py
-export OLLAMA_URL="..."         # Optional, default: http://localhost:11434/api/generate
-export JUDGE_MODEL="..."        # Optional for run_gemini.py, default: gemini-2.0-flash
+export GEMINI_API_KEY="..."     # Required for judge (all providers)
+export ANTHROPIC_API_KEY="..."  # Required for --provider anthropic
+export OPENAI_API_KEY="..."     # Required for --provider openai
 ```
 
-Get a free Gemini API key at: https://aistudio.google.com/app/apikey
+## Why Removed
 
-## Cost Estimates (as of Feb 2026)
+The 5 legacy per-provider scripts shared ~1,500 lines of duplicated code
+(prompt construction, judge calls, result saving, main loop). The unified
+runner in `konomi/triad/` eliminates this duplication:
 
-| Script | 222Q raw | 222Q + Triad |
-|--------|---------|-------------|
-| `run_anthropic.py --model claude-haiku-4-5-20251001` | ~$0.03 | ~$0.15 |
-| `run_openai.py --model gpt-4o-mini` | ~$0.01 | ~$0.08 |
-| `run_gemini.py --model gemini-2.0-flash` | ~$0 (free tier) | ~$0 |
-| `run_ollama.py` (any local model) | $0 | $0 |
-
-*Note: Gemini 2.0 Flash judge adds ~222 judge API calls per run, covered by the free tier.*
-
-## Output Format
-
-All runners produce a JSON file in `../results/`:
-
-```json
-{
-  "model": "model-name",
-  "mode": "Triad Engine",
-  "judge": "gemini-2.0-flash",
-  "benchmark_date": "2026-02-21 14:30:00",
-  "completed": 222,
-  "passed": 168,
-  "failed": 54,
-  "errors": 0,
-  "judge_failed": 0,
-  "accuracy_pct": 75.7,
-  "categories": {
-    "ANACHRONISM_DETECTION": {"passed": 44, "total": 47},
-    ...
-  },
-  "details": [
-    {
-      "index": 0,
-      "category": "ANACHRONISM_DETECTION",
-      "question": "Tell me about Hadrian's Wall...",
-      "ground_truth": "Hadrian's Wall won't be built until 122 CE",
-      "answer": "I don't know what you mean by Hadrian's Wall...",
-      "verdict": "PASS",
-      "passed": true
-    },
-    ...
-  ]
-}
-```
+- `konomi/triad/engine.py` — prompt construction
+- `konomi/triad/judge.py` — Gemini judge
+- `konomi/triad/lifecycle.py` — ISA-88 batch state machine
+- `konomi/triad/providers/` — thin API adapters (20-35 lines each)
+- `konomi/triad/run.py` — unified CLI

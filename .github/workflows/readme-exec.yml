@@ -58,3 +58,49 @@ jobs:
           if [ -n "$(git diff --name-only docs/)" ]; then
             echo "::warning::docs/ is out of date — run 'python -m konomi.api.generate_pages && bash scripts/sync_docs_benchmark.sh' and commit"
           fi
+
+  benchmark:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: readme-exec
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install numpy google-generativeai anthropic openai
+
+      - name: Check API keys available
+        id: check-keys
+        run: |
+          if [ -n "$GEMINI_KEY" ]; then echo "has_gemini=true" >> $GITHUB_OUTPUT; fi
+          if [ -n "$ANTHROPIC_KEY" ]; then echo "has_anthropic=true" >> $GITHUB_OUTPUT; fi
+          if [ -n "$OPENAI_KEY" ]; then echo "has_openai=true" >> $GITHUB_OUTPUT; fi
+        env:
+          GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+      - name: Run benchmark (Gemini, single category)
+        if: steps.check-keys.outputs.has_gemini == 'true'
+        run: python -m konomi.triad.run --provider gemini --model gemini-2.0-flash --triad --categories ANACHRONISM_DETECTION
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Run benchmark (Claude Haiku, single category)
+        if: steps.check-keys.outputs.has_anthropic == 'true' && steps.check-keys.outputs.has_gemini == 'true'
+        run: python -m konomi.triad.run --provider anthropic --model claude-haiku-4-5-20251001 --triad --categories ANACHRONISM_DETECTION
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: results/*.json
+          if-no-files-found: ignore
