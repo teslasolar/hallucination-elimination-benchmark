@@ -25,15 +25,33 @@ ModbusMap = UDT("ModbusMap", [
     {"name": "unit_id", "type": "int", "required": True},
     {"name": "register_type", "type": "str", "required": True},
     {"name": "addr", "type": "int", "required": True},
+    {"name": "count", "type": "int", "default": 1},
     {"name": "data_type", "type": "str", "default": "UINT16"},
     {"name": "scale", "type": "num", "default": 1},
     {"name": "offset", "type": "num", "default": 0},
     {"name": "byte_order", "type": "str", "default": "ABCD"},
-], tags={"isa": ["Modbus"]})
+    {"name": "protocol", "type": "str", "default": "TCP"},
+], tags={"isa": ["Modbus"],
+         "byte_orders": ["ABCD", "DCBA", "BADC", "CDAB"],
+         "protocols": ["TCP", "RTU", "ASCII"]})
 
 FUNCTION_CODES = {
     1: "Read Coils", 2: "Read DI", 3: "Read HR", 4: "Read IR",
     5: "Write Coil", 6: "Write HR", 15: "Write Multi Coil", 16: "Write Multi HR",
+}
+
+# Correct FC per register type (fc_read must match)
+FC_BY_TYPE = {
+    "Coil": (1, 5), "DiscreteInput": (2, None),
+    "HoldingReg": (3, 6), "InputReg": (4, None),
+}
+
+# Multi-register: count for 32/64-bit types
+REGISTER_COUNT = {
+    "BOOL": 1, "INT16": 1, "UINT16": 1,
+    "INT32": 2, "UINT32": 2, "FLOAT32": 2,
+    "INT64": 4, "UINT64": 4, "FLOAT64": 4,
+    "STRING": None,  # variable
 }
 
 EXCEPTION_CODES = {
@@ -43,5 +61,5 @@ EXCEPTION_CODES = {
 
 
 def build():
-    return Standard("Modbus", "simple field device communication",
+    return Standard("Modbus", "simple field device communication (Modbus/TCP+RTU)",
         udts=[ModbusRegister, ModbusMap])

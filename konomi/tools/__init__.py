@@ -39,33 +39,50 @@ def extract_leaves(obj, depth=0):
     return leaves
 
 
-def compute_section_entropy(section_data) -> dict:
-    """Score a section by its leaf count, depth, and word density."""
+def compute_section_entropy(section_data, word_threshold=200,
+                            leaf_threshold=20, sparse_threshold=0.65) -> dict:
+    """Score a section by its leaf count, depth, word density, and uniqueness."""
     leaves = extract_leaves(section_data)
     word_count = sum(len(l.split()) for l in leaves)
     leaf_count = len(leaves)
 
     if leaf_count == 0:
-        return {"entropy": 1.0, "leaves": 0, "words": 0, "sparse": True}
+        return {"entropy": 1.0, "leaves": 0, "words": 0,
+                "unique": 0, "diversity": 0, "sparse": True}
+
+    unique_leaves = len(set(leaves))
+    diversity = unique_leaves / leaf_count
 
     # Normalize: more leaves + more words = lower entropy (denser)
-    density = min(1.0, word_count / 200.0)
-    cardinality = min(1.0, leaf_count / 20.0)
-    entropy = 1.0 - (density * 0.6 + cardinality * 0.4)
+    density = min(1.0, word_count / word_threshold)
+    cardinality = min(1.0, leaf_count / leaf_threshold)
+    # Penalize homogeneous lists (low diversity)
+    entropy = 1.0 - (density * 0.5 + cardinality * 0.3 + diversity * 0.2)
 
     return {"entropy": round(entropy, 3), "leaves": leaf_count,
-            "words": word_count, "sparse": entropy > 0.65}
+            "words": word_count, "unique": unique_leaves,
+            "diversity": round(diversity, 3),
+            "sparse": entropy > sparse_threshold}
 
 
-def analyze_guide(guide: dict, threshold: float = 0.65) -> dict:
+def analyze_guide(guide: dict, threshold: float = 0.65,
+                  category_map: dict = None) -> dict:
     """Analyze all sections of a domain guide for entropy gaps."""
     results = {}
     for key, value in guide.items():
         if key.startswith("_"):
             continue
-        score = compute_section_entropy(value)
+        score = compute_section_entropy(value, sparse_threshold=threshold)
         score["key"] = key
         score["flagged"] = score["entropy"] > threshold
+        if value is None or value == [] or value == {}:
+            score["flagged"] = True
+            score["reason"] = "empty_section"
+        elif score["sparse"]:
+            score["reason"] = "sparse_content"
+        elif score.get("diversity", 1) < 0.3 and score["leaves"] > 5:
+            score["flagged"] = True
+            score["reason"] = "homogeneous_list"
         results[key] = score
     return results
 

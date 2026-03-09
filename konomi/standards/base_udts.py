@@ -52,6 +52,28 @@ Status = UDT("Status", [
     {"name": "severity", "type": "str", "default": "info"},
 ], tags={"severity": ["info", "warn", "error", "fatal"]})
 
+ErrorInfo = UDT("ErrorInfo", [
+    {"name": "code", "type": "int", "required": True},
+    {"name": "message", "type": "str", "required": True},
+    {"name": "source", "type": "str", "default": None},
+    {"name": "severity", "type": "str", "default": "error"},
+], tags={"severity": ["info", "warn", "error", "fatal"]})
+
+Measurement = UDT("Measurement", [
+    {"name": "value", "type": "num", "required": True},
+    {"name": "unit", "type": "str", "required": True},
+    {"name": "quality", "type": "int", "default": 192},
+    {"name": "timestamp", "type": "str", "default": None},
+    {"name": "uncertainty", "type": "num", "default": None},
+], tags={"si_base": ["m", "kg", "s", "A", "K", "mol", "cd"]})
+
+Enumeration = UDT("Enumeration", [
+    {"name": "name", "type": "str", "required": True},
+    {"name": "values", "type": "list", "required": True},
+    {"name": "default", "type": "str", "default": None},
+])
+
 
 def build_all():
-    return [Identifier, Timestamp, Quality, Value, Range, Quantity, Duration, Status]
+    return [Identifier, Timestamp, Quality, Value, Range, Quantity,
+            Duration, Status, ErrorInfo, Measurement, Enumeration]

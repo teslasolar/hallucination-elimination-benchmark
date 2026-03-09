@@ -1,6 +1,6 @@
 {
   "id": "MQTT-Sparkplug",
-  "scope": "lightweight pub/sub messaging",
+  "scope": "lightweight pub/sub messaging (Sparkplug B)",
   "udts": {
     "MQTT_Topic": {
       "name": "MQTT_Topic",
@@ -68,6 +68,78 @@
           "name": "seq",
           "type": "int",
           "default": 0
+        },
+        {
+          "name": "uuid",
+          "type": "str",
+          "default": null
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "Sparkplug"
+        ],
+        "qos": [
+          [
+            0,
+            "AtMostOnce"
+          ],
+          [
+            1,
+            "AtLeastOnce"
+          ],
+          [
+            2,
+            "ExactlyOnce"
+          ]
+        ]
+      }
+    },
+    "SparkplugMetric": {
+      "name": "SparkplugMetric",
+      "base": null,
+      "fields": [
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "alias",
+          "type": "int",
+          "default": null
+        },
+        {
+          "name": "datatype",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "any",
+          "default": null
+        },
+        {
+          "name": "timestamp",
+          "type": "int",
+          "default": null
+        },
+        {
+          "name": "is_historical",
+          "type": "bool",
+          "default": false
+        },
+        {
+          "name": "is_transient",
+          "type": "bool",
+          "default": false
+        },
+        {
+          "name": "properties",
+          "type": "dict",
+          "default": {}
         }
       ],
       "methods": [],
@@ -93,20 +165,6 @@
           "UUID",
           "DataSet",
           "Bytes"
-        ],
-        "qos": [
-          [
-            0,
-            "AtMostOnce"
-          ],
-          [
-            1,
-            "AtLeastOnce"
-          ],
-          [
-            2,
-            "ExactlyOnce"
-          ]
         ]
       }
     }
@@ -126,6 +184,12 @@
       "id": "R2",
       "condition": "True",
       "action": "seq increments 0-255 wrap",
+      "severity": "error"
+    },
+    {
+      "id": "R3",
+      "condition": "True",
+      "action": "metrics must include name, datatype; alias after BIRTH",
       "severity": "error"
     },
     {

@@ -29,9 +29,31 @@ OPC_Method = UDT("OPC_Method", [
 OPC_Subscription = UDT("OPC_Subscription", [
     {"name": "id", "type": "int", "required": True},
     {"name": "publishing_interval", "type": "num", "default": 1000},
+    {"name": "keep_alive_count", "type": "int", "default": 10},
+    {"name": "lifetime_count", "type": "int", "default": 100},
     {"name": "enabled", "type": "bool", "default": True},
     {"name": "monitored_items", "type": "list", "default": []},
 ], tags={"isa": ["OPC-UA"]})
+
+OPC_DataType = UDT("OPC_DataType", [
+    {"name": "name", "type": "str", "required": True},
+    {"name": "type_id", "type": "int", "required": True},
+    {"name": "encoding", "type": "str", "default": "Binary"},
+], tags={"isa": ["OPC-UA"],
+         "built_in": ["Boolean", "SByte", "Byte", "Int16", "UInt16",
+                       "Int32", "UInt32", "Int64", "UInt64", "Float",
+                       "Double", "String", "DateTime", "Guid", "ByteString",
+                       "NodeId", "StatusCode", "QualifiedName", "LocalizedText"]})
+
+OPC_SecurityPolicy = UDT("OPC_SecurityPolicy", [
+    {"name": "uri", "type": "str", "required": True},
+    {"name": "mode", "type": "str", "default": "SignAndEncrypt"},
+    {"name": "auth_type", "type": "str", "default": "Certificate"},
+], tags={"isa": ["OPC-UA"],
+         "policies": ["None", "Basic128Rsa15", "Basic256", "Basic256Sha256",
+                       "Aes128_Sha256_RsaOaep", "Aes256_Sha256_RsaPss"],
+         "modes": ["None", "Sign", "SignAndEncrypt"],
+         "auth_types": ["Anonymous", "UserName", "Certificate", "IssuedToken"]})
 
 ADDRESS_SPACE = {
     "Root": {
@@ -48,6 +70,7 @@ COMPANION_SPECS = {
 
 
 def build():
-    return Standard("OPC-UA", "industrial interoperability",
-        udts=[OPC_Node, OPC_Variable, OPC_Method, OPC_Subscription],
+    return Standard("OPC-UA", "industrial interoperability (IEC 62541)",
+        udts=[OPC_Node, OPC_Variable, OPC_Method, OPC_Subscription,
+              OPC_DataType, OPC_SecurityPolicy],
         hierarchy=[{"name": "Root"}, {"name": "Objects"}, {"name": "Types"}, {"name": "Views"}])

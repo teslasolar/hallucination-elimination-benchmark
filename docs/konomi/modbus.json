@@ -1,6 +1,6 @@
 {
   "id": "Modbus",
-  "scope": "simple field device communication",
+  "scope": "simple field device communication (Modbus/TCP+RTU)",
   "udts": {
     "ModbusRegister": {
       "name": "ModbusRegister",
@@ -111,6 +111,11 @@
           "required": true
         },
         {
+          "name": "count",
+          "type": "int",
+          "default": 1
+        },
+        {
           "name": "data_type",
           "type": "str",
           "default": "UINT16"
@@ -129,6 +134,11 @@
           "name": "byte_order",
           "type": "str",
           "default": "ABCD"
+        },
+        {
+          "name": "protocol",
+          "type": "str",
+          "default": "TCP"
         }
       ],
       "methods": [],
@@ -136,6 +146,17 @@
       "tags": {
         "isa": [
           "Modbus"
+        ],
+        "byte_orders": [
+          "ABCD",
+          "DCBA",
+          "BADC",
+          "CDAB"
+        ],
+        "protocols": [
+          "TCP",
+          "RTU",
+          "ASCII"
         ]
       }
     }

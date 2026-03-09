@@ -1,6 +1,6 @@
 {
   "id": "ISA-88",
-  "scope": "batch process control",
+  "scope": "batch process control (IEC 61512)",
   "udts": {
     "ProcessCell": {
       "name": "ProcessCell",
@@ -73,6 +73,86 @@
         ]
       }
     },
+    "EquipmentModule": {
+      "name": "EquipmentModule",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "control_modules",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "unit",
+          "type": "str",
+          "default": null
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-88"
+        ],
+        "layer": [
+          "equipment"
+        ],
+        "note": "groups CMs for coordinated action"
+      }
+    },
+    "ControlModule": {
+      "name": "ControlModule",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "io_type",
+          "type": "str",
+          "default": "AI"
+        },
+        {
+          "name": "tag_path",
+          "type": "str",
+          "default": null
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-88"
+        ],
+        "layer": [
+          "equipment"
+        ],
+        "io_types": [
+          "AI",
+          "AO",
+          "DI",
+          "DO",
+          "PID"
+        ]
+      }
+    },
     "Phase": {
       "name": "Phase",
       "base": null,
@@ -108,13 +188,16 @@
           "IDLE",
           "RUNNING",
           "COMPLETE",
+          "PAUSING",
+          "PAUSED",
           "HOLDING",
           "HELD",
           "RESTARTING",
           "STOPPING",
           "STOPPED",
           "ABORTING",
-          "ABORTED"
+          "ABORTED",
+          "RESETTING"
         ],
         "transitions": [
           [
@@ -129,6 +212,16 @@
           ],
           [
             "RUNNING",
+            "PAUSING",
+            "pause"
+          ],
+          [
+            "PAUSED",
+            "RUNNING",
+            "resume"
+          ],
+          [
+            "RUNNING",
             "HOLDING",
             "hold"
           ],
@@ -138,14 +231,54 @@
             "restart"
           ],
           [
+            "RESTARTING",
+            "RUNNING",
+            "done"
+          ],
+          [
+            "HOLDING",
+            "HELD",
+            "done"
+          ],
+          [
             "RUNNING",
             "STOPPING",
             "stop"
           ],
           [
+            "STOPPING",
+            "STOPPED",
+            "done"
+          ],
+          [
             "RUNNING",
             "ABORTING",
             "abort"
+          ],
+          [
+            "ABORTING",
+            "ABORTED",
+            "done"
+          ],
+          [
+            "COMPLETE",
+            "RESETTING",
+            "reset"
+          ],
+          [
+            "STOPPED",
+            "RESETTING",
+            "reset"
+          ],
+          [
+            "ABORTED",
+            "RESETTING",
+            "reset"
+          ],
+          [
+            "RESETTING",
+            "IDLE",
+            "done"
           ]
         ]
       }
@@ -201,6 +334,12 @@
           "Site",
           "Master",
           "Control"
+        ],
+        "procedure_model": [
+          "Procedure",
+          "UnitProcedure",
+          "Operation",
+          "Phase"
         ]
       }
     },
@@ -286,13 +425,16 @@
         "IDLE",
         "RUNNING",
         "COMPLETE",
+        "PAUSING",
+        "PAUSED",
         "HOLDING",
         "HELD",
         "RESTARTING",
         "STOPPING",
         "STOPPED",
         "ABORTING",
-        "ABORTED"
+        "ABORTED",
+        "RESETTING"
       ],
       "initial": "IDLE",
       "transitions": [
@@ -308,6 +450,16 @@
         ],
         [
           "RUNNING",
+          "PAUSING",
+          "pause"
+        ],
+        [
+          "PAUSED",
+          "RUNNING",
+          "resume"
+        ],
+        [
+          "RUNNING",
           "HOLDING",
           "hold"
         ],
@@ -317,14 +469,54 @@
           "restart"
         ],
         [
+          "RESTARTING",
+          "RUNNING",
+          "done"
+        ],
+        [
+          "HOLDING",
+          "HELD",
+          "done"
+        ],
+        [
           "RUNNING",
           "STOPPING",
           "stop"
         ],
         [
+          "STOPPING",
+          "STOPPED",
+          "done"
+        ],
+        [
           "RUNNING",
           "ABORTING",
           "abort"
+        ],
+        [
+          "ABORTING",
+          "ABORTED",
+          "done"
+        ],
+        [
+          "COMPLETE",
+          "RESETTING",
+          "reset"
+        ],
+        [
+          "STOPPED",
+          "RESETTING",
+          "reset"
+        ],
+        [
+          "ABORTED",
+          "RESETTING",
+          "reset"
+        ],
+        [
+          "RESETTING",
+          "IDLE",
+          "done"
         ]
       ]
     }

@@ -1,4 +1,4 @@
-"""LAYER 2: ISA-95 — Enterprise to Control Integration."""
+"""LAYER 2: ISA-95 — Enterprise to Control Integration (IEC 62264)."""
 from konomi.core import UDT, Standard, Rule
 from konomi.standards import base_udts
 base_udts.build_all()
@@ -32,8 +32,9 @@ Material = UDT("Material", [
     {"name": "id", "type": "str", "required": True},
     {"name": "name", "type": "str", "required": True},
     {"name": "lot", "type": "str", "default": None},
+    {"name": "sublot", "type": "str", "default": None},
     {"name": "props", "type": "dict", "default": {}},
-], tags={"isa": ["ISA-95"]})
+], tags={"isa": ["ISA-95"], "classes": ["Raw", "Intermediate", "Finished", "Consumable"]})
 
 Personnel = UDT("Personnel", [
     {"name": "id", "type": "str", "required": True},
@@ -48,8 +49,27 @@ ProcessSegment = UDT("ProcessSegment", [
     {"name": "equipment", "type": "list", "default": []},
     {"name": "materials_in", "type": "list", "default": []},
     {"name": "materials_out", "type": "list", "default": []},
+    {"name": "personnel", "type": "list", "default": []},
     {"name": "duration", "type": "num", "default": None},
 ], tags={"isa": ["ISA-95"]})
+
+OperationsSchedule = UDT("OperationsSchedule", [
+    {"name": "id", "type": "str", "required": True},
+    {"name": "start", "type": "str", "required": True},
+    {"name": "end", "type": "str", "required": True},
+    {"name": "ops_type", "type": "str", "default": "Production"},
+    {"name": "requests", "type": "list", "default": []},
+], tags={"isa": ["ISA-95"],
+         "ops_types": ["Production", "Maintenance", "Quality", "Inventory"]})
+
+ProductionCapability = UDT("ProductionCapability", [
+    {"name": "id", "type": "str", "required": True},
+    {"name": "equipment", "type": "list", "default": []},
+    {"name": "personnel", "type": "list", "default": []},
+    {"name": "material", "type": "list", "default": []},
+    {"name": "capability_type", "type": "str", "default": "Committed"},
+], tags={"isa": ["ISA-95"],
+         "capability_types": ["Committed", "Available", "Unattainable"]})
 
 HIERARCHY = [
     {"name": "Enterprise", "card": "1"},
@@ -69,7 +89,8 @@ DATA_FLOWS = {
 
 
 def build():
-    return Standard("ISA-95", "enterprise to control integration",
-        udts=[PhysicalAsset, Equipment, Material, Personnel, ProcessSegment],
+    return Standard("ISA-95", "enterprise to control integration (IEC 62264)",
+        udts=[PhysicalAsset, Equipment, Material, Personnel, ProcessSegment,
+              OperationsSchedule, ProductionCapability],
         hierarchy=HIERARCHY, entities=[{"name": "Equipment", "udt": "Equipment"}],
         relations=[{"type": "contains", "from": "Site", "to": "Area", "cardinality": "1:N"}])

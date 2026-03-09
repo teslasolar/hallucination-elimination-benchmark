@@ -35,7 +35,30 @@ EnergyKPI = UDT("EnergyKPI", [
     {"name": "kwh_per_unit", "type": "num", "required": True},
     {"name": "peak_demand", "type": "num", "default": None},
     {"name": "power_factor", "type": "num", "default": None},
+    {"name": "cost_per_unit", "type": "num", "default": None},
 ])
+
+FirstPassYield = UDT("FirstPassYield", [
+    {"name": "good_units", "type": "int", "required": True},
+    {"name": "total_units", "type": "int", "required": True},
+], tags={"formula": "fpy = good_units / total_units",
+         "isa": ["KPI", "ISO-22400"]})
+
+DefectRate = UDT("DefectRate", [
+    {"name": "defects", "type": "int", "required": True},
+    {"name": "units_produced", "type": "int", "required": True},
+    {"name": "category", "type": "str", "default": "all"},
+], tags={"formula": "rate = defects / units_produced",
+         "categories": ["scrap", "rework", "return", "all"]})
+
+Downtime = UDT("Downtime", [
+    {"name": "duration", "type": "num", "required": True},
+    {"name": "reason", "type": "str", "required": True},
+    {"name": "planned", "type": "bool", "default": False},
+    {"name": "equipment", "type": "str", "default": None},
+], tags={"isa": ["KPI"],
+         "reasons": ["Breakdown", "Setup", "Adjustment", "Startup",
+                      "Reduced Speed", "Idling", "Material", "Planned"]})
 
 KPI_TREE = {
     "OEE": {
@@ -47,5 +70,6 @@ KPI_TREE = {
 
 
 def build():
-    return Standard("KPI", "operational performance metrics",
-        udts=[OEE, MTBF, MTTR, CycleTime, Throughput, EnergyKPI])
+    return Standard("KPI", "operational performance metrics (ISO 22400)",
+        udts=[OEE, MTBF, MTTR, CycleTime, Throughput, EnergyKPI,
+              FirstPassYield, DefectRate, Downtime])

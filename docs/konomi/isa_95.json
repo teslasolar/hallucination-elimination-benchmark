@@ -1,6 +1,6 @@
 {
   "id": "ISA-95",
-  "scope": "enterprise to control integration",
+  "scope": "enterprise to control integration (IEC 62264)",
   "udts": {
     "PhysicalAsset": {
       "name": "PhysicalAsset",
@@ -102,6 +102,11 @@
           "default": null
         },
         {
+          "name": "sublot",
+          "type": "str",
+          "default": null
+        },
+        {
           "name": "props",
           "type": "dict",
           "default": {}
@@ -112,6 +117,12 @@
       "tags": {
         "isa": [
           "ISA-95"
+        ],
+        "classes": [
+          "Raw",
+          "Intermediate",
+          "Finished",
+          "Consumable"
         ]
       }
     },
@@ -178,6 +189,11 @@
           "default": []
         },
         {
+          "name": "personnel",
+          "type": "list",
+          "default": []
+        },
+        {
           "name": "duration",
           "type": "num",
           "default": null
@@ -188,6 +204,93 @@
       "tags": {
         "isa": [
           "ISA-95"
+        ]
+      }
+    },
+    "OperationsSchedule": {
+      "name": "OperationsSchedule",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "start",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "end",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "ops_type",
+          "type": "str",
+          "default": "Production"
+        },
+        {
+          "name": "requests",
+          "type": "list",
+          "default": []
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-95"
+        ],
+        "ops_types": [
+          "Production",
+          "Maintenance",
+          "Quality",
+          "Inventory"
+        ]
+      }
+    },
+    "ProductionCapability": {
+      "name": "ProductionCapability",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "equipment",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "personnel",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "material",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "capability_type",
+          "type": "str",
+          "default": "Committed"
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-95"
+        ],
+        "capability_types": [
+          "Committed",
+          "Available",
+          "Unattainable"
         ]
       }
     }

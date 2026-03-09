@@ -1,6 +1,6 @@
 {
   "id": "KPI",
-  "scope": "operational performance metrics",
+  "scope": "operational performance metrics (ISO 22400)",
   "udts": {
     "OEE": {
       "name": "OEE",
@@ -137,11 +137,116 @@
           "name": "power_factor",
           "type": "num",
           "default": null
+        },
+        {
+          "name": "cost_per_unit",
+          "type": "num",
+          "default": null
         }
       ],
       "methods": [],
       "constraints": [],
       "tags": {}
+    },
+    "FirstPassYield": {
+      "name": "FirstPassYield",
+      "base": null,
+      "fields": [
+        {
+          "name": "good_units",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "total_units",
+          "type": "int",
+          "required": true
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "formula": "fpy = good_units / total_units",
+        "isa": [
+          "KPI",
+          "ISO-22400"
+        ]
+      }
+    },
+    "DefectRate": {
+      "name": "DefectRate",
+      "base": null,
+      "fields": [
+        {
+          "name": "defects",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "units_produced",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "category",
+          "type": "str",
+          "default": "all"
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "formula": "rate = defects / units_produced",
+        "categories": [
+          "scrap",
+          "rework",
+          "return",
+          "all"
+        ]
+      }
+    },
+    "Downtime": {
+      "name": "Downtime",
+      "base": null,
+      "fields": [
+        {
+          "name": "duration",
+          "type": "num",
+          "required": true
+        },
+        {
+          "name": "reason",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "planned",
+          "type": "bool",
+          "default": false
+        },
+        {
+          "name": "equipment",
+          "type": "str",
+          "default": null
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "KPI"
+        ],
+        "reasons": [
+          "Breakdown",
+          "Setup",
+          "Adjustment",
+          "Startup",
+          "Reduced Speed",
+          "Idling",
+          "Material",
+          "Planned"
+        ]
+      }
     }
   },
   "hierarchy": [],

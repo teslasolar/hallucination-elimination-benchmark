@@ -228,6 +228,110 @@
       ]
     }
   },
+  "ErrorInfo": {
+    "name": "ErrorInfo",
+    "base": null,
+    "fields": [
+      {
+        "name": "code",
+        "type": "int",
+        "required": true
+      },
+      {
+        "name": "message",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "source",
+        "type": "str",
+        "default": null
+      },
+      {
+        "name": "severity",
+        "type": "str",
+        "default": "error"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "severity": [
+        "info",
+        "warn",
+        "error",
+        "fatal"
+      ]
+    }
+  },
+  "Measurement": {
+    "name": "Measurement",
+    "base": null,
+    "fields": [
+      {
+        "name": "value",
+        "type": "num",
+        "required": true
+      },
+      {
+        "name": "unit",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "quality",
+        "type": "int",
+        "default": 192
+      },
+      {
+        "name": "timestamp",
+        "type": "str",
+        "default": null
+      },
+      {
+        "name": "uncertainty",
+        "type": "num",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "si_base": [
+        "m",
+        "kg",
+        "s",
+        "A",
+        "K",
+        "mol",
+        "cd"
+      ]
+    }
+  },
+  "Enumeration": {
+    "name": "Enumeration",
+    "base": null,
+    "fields": [
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "values",
+        "type": "list",
+        "required": true
+      },
+      {
+        "name": "default",
+        "type": "str",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {}
+  },
   "PhysicalAsset": {
     "name": "PhysicalAsset",
     "base": null,
@@ -328,6 +432,11 @@
         "default": null
       },
       {
+        "name": "sublot",
+        "type": "str",
+        "default": null
+      },
+      {
         "name": "props",
         "type": "dict",
         "default": {}
@@ -338,6 +447,12 @@
     "tags": {
       "isa": [
         "ISA-95"
+      ],
+      "classes": [
+        "Raw",
+        "Intermediate",
+        "Finished",
+        "Consumable"
       ]
     }
   },
@@ -404,6 +519,11 @@
         "default": []
       },
       {
+        "name": "personnel",
+        "type": "list",
+        "default": []
+      },
+      {
         "name": "duration",
         "type": "num",
         "default": null
@@ -414,6 +534,93 @@
     "tags": {
       "isa": [
         "ISA-95"
+      ]
+    }
+  },
+  "OperationsSchedule": {
+    "name": "OperationsSchedule",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "start",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "end",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "ops_type",
+        "type": "str",
+        "default": "Production"
+      },
+      {
+        "name": "requests",
+        "type": "list",
+        "default": []
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-95"
+      ],
+      "ops_types": [
+        "Production",
+        "Maintenance",
+        "Quality",
+        "Inventory"
+      ]
+    }
+  },
+  "ProductionCapability": {
+    "name": "ProductionCapability",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "equipment",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "personnel",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "material",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "capability_type",
+        "type": "str",
+        "default": "Committed"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-95"
+      ],
+      "capability_types": [
+        "Committed",
+        "Available",
+        "Unattainable"
       ]
     }
   },
@@ -488,6 +695,86 @@
       ]
     }
   },
+  "EquipmentModule": {
+    "name": "EquipmentModule",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "control_modules",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "unit",
+        "type": "str",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-88"
+      ],
+      "layer": [
+        "equipment"
+      ],
+      "note": "groups CMs for coordinated action"
+    }
+  },
+  "ControlModule": {
+    "name": "ControlModule",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "io_type",
+        "type": "str",
+        "default": "AI"
+      },
+      {
+        "name": "tag_path",
+        "type": "str",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-88"
+      ],
+      "layer": [
+        "equipment"
+      ],
+      "io_types": [
+        "AI",
+        "AO",
+        "DI",
+        "DO",
+        "PID"
+      ]
+    }
+  },
   "Phase": {
     "name": "Phase",
     "base": null,
@@ -523,13 +810,16 @@
         "IDLE",
         "RUNNING",
         "COMPLETE",
+        "PAUSING",
+        "PAUSED",
         "HOLDING",
         "HELD",
         "RESTARTING",
         "STOPPING",
         "STOPPED",
         "ABORTING",
-        "ABORTED"
+        "ABORTED",
+        "RESETTING"
       ],
       "transitions": [
         [
@@ -544,6 +834,16 @@
         ],
         [
           "RUNNING",
+          "PAUSING",
+          "pause"
+        ],
+        [
+          "PAUSED",
+          "RUNNING",
+          "resume"
+        ],
+        [
+          "RUNNING",
           "HOLDING",
           "hold"
         ],
@@ -553,14 +853,54 @@
           "restart"
         ],
         [
+          "RESTARTING",
+          "RUNNING",
+          "done"
+        ],
+        [
+          "HOLDING",
+          "HELD",
+          "done"
+        ],
+        [
           "RUNNING",
           "STOPPING",
           "stop"
         ],
         [
+          "STOPPING",
+          "STOPPED",
+          "done"
+        ],
+        [
           "RUNNING",
           "ABORTING",
           "abort"
+        ],
+        [
+          "ABORTING",
+          "ABORTED",
+          "done"
+        ],
+        [
+          "COMPLETE",
+          "RESETTING",
+          "reset"
+        ],
+        [
+          "STOPPED",
+          "RESETTING",
+          "reset"
+        ],
+        [
+          "ABORTED",
+          "RESETTING",
+          "reset"
+        ],
+        [
+          "RESETTING",
+          "IDLE",
+          "done"
         ]
       ]
     }
@@ -616,6 +956,12 @@
         "Site",
         "Master",
         "Control"
+      ],
+      "procedure_model": [
+        "Procedure",
+        "UnitProcedure",
+        "Operation",
+        "Phase"
       ]
     }
   },
@@ -1147,6 +1493,16 @@
         "default": 1000
       },
       {
+        "name": "keep_alive_count",
+        "type": "int",
+        "default": 10
+      },
+      {
+        "name": "lifetime_count",
+        "type": "int",
+        "default": 100
+      },
+      {
         "name": "enabled",
         "type": "bool",
         "default": true
@@ -1162,6 +1518,102 @@
     "tags": {
       "isa": [
         "OPC-UA"
+      ]
+    }
+  },
+  "OPC_DataType": {
+    "name": "OPC_DataType",
+    "base": null,
+    "fields": [
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "type_id",
+        "type": "int",
+        "required": true
+      },
+      {
+        "name": "encoding",
+        "type": "str",
+        "default": "Binary"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "OPC-UA"
+      ],
+      "built_in": [
+        "Boolean",
+        "SByte",
+        "Byte",
+        "Int16",
+        "UInt16",
+        "Int32",
+        "UInt32",
+        "Int64",
+        "UInt64",
+        "Float",
+        "Double",
+        "String",
+        "DateTime",
+        "Guid",
+        "ByteString",
+        "NodeId",
+        "StatusCode",
+        "QualifiedName",
+        "LocalizedText"
+      ]
+    }
+  },
+  "OPC_SecurityPolicy": {
+    "name": "OPC_SecurityPolicy",
+    "base": null,
+    "fields": [
+      {
+        "name": "uri",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "mode",
+        "type": "str",
+        "default": "SignAndEncrypt"
+      },
+      {
+        "name": "auth_type",
+        "type": "str",
+        "default": "Certificate"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "OPC-UA"
+      ],
+      "policies": [
+        "None",
+        "Basic128Rsa15",
+        "Basic256",
+        "Basic256Sha256",
+        "Aes128_Sha256_RsaOaep",
+        "Aes256_Sha256_RsaPss"
+      ],
+      "modes": [
+        "None",
+        "Sign",
+        "SignAndEncrypt"
+      ],
+      "auth_types": [
+        "Anonymous",
+        "UserName",
+        "Certificate",
+        "IssuedToken"
       ]
     }
   },
@@ -1231,6 +1683,78 @@
         "name": "seq",
         "type": "int",
         "default": 0
+      },
+      {
+        "name": "uuid",
+        "type": "str",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "Sparkplug"
+      ],
+      "qos": [
+        [
+          0,
+          "AtMostOnce"
+        ],
+        [
+          1,
+          "AtLeastOnce"
+        ],
+        [
+          2,
+          "ExactlyOnce"
+        ]
+      ]
+    }
+  },
+  "SparkplugMetric": {
+    "name": "SparkplugMetric",
+    "base": null,
+    "fields": [
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "alias",
+        "type": "int",
+        "default": null
+      },
+      {
+        "name": "datatype",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "value",
+        "type": "any",
+        "default": null
+      },
+      {
+        "name": "timestamp",
+        "type": "int",
+        "default": null
+      },
+      {
+        "name": "is_historical",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "is_transient",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "properties",
+        "type": "dict",
+        "default": {}
       }
     ],
     "methods": [],
@@ -1256,20 +1780,6 @@
         "UUID",
         "DataSet",
         "Bytes"
-      ],
-      "qos": [
-        [
-          0,
-          "AtMostOnce"
-        ],
-        [
-          1,
-          "AtLeastOnce"
-        ],
-        [
-          2,
-          "ExactlyOnce"
-        ]
       ]
     }
   },
@@ -1382,6 +1892,11 @@
         "required": true
       },
       {
+        "name": "count",
+        "type": "int",
+        "default": 1
+      },
+      {
         "name": "data_type",
         "type": "str",
         "default": "UINT16"
@@ -1400,6 +1915,11 @@
         "name": "byte_order",
         "type": "str",
         "default": "ABCD"
+      },
+      {
+        "name": "protocol",
+        "type": "str",
+        "default": "TCP"
       }
     ],
     "methods": [],
@@ -1407,6 +1927,17 @@
     "tags": {
       "isa": [
         "Modbus"
+      ],
+      "byte_orders": [
+        "ABCD",
+        "DCBA",
+        "BADC",
+        "CDAB"
+      ],
+      "protocols": [
+        "TCP",
+        "RTU",
+        "ASCII"
       ]
     }
   },
@@ -1545,10 +2076,115 @@
         "name": "power_factor",
         "type": "num",
         "default": null
+      },
+      {
+        "name": "cost_per_unit",
+        "type": "num",
+        "default": null
       }
     ],
     "methods": [],
     "constraints": [],
     "tags": {}
+  },
+  "FirstPassYield": {
+    "name": "FirstPassYield",
+    "base": null,
+    "fields": [
+      {
+        "name": "good_units",
+        "type": "int",
+        "required": true
+      },
+      {
+        "name": "total_units",
+        "type": "int",
+        "required": true
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "formula": "fpy = good_units / total_units",
+      "isa": [
+        "KPI",
+        "ISO-22400"
+      ]
+    }
+  },
+  "DefectRate": {
+    "name": "DefectRate",
+    "base": null,
+    "fields": [
+      {
+        "name": "defects",
+        "type": "int",
+        "required": true
+      },
+      {
+        "name": "units_produced",
+        "type": "int",
+        "required": true
+      },
+      {
+        "name": "category",
+        "type": "str",
+        "default": "all"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "formula": "rate = defects / units_produced",
+      "categories": [
+        "scrap",
+        "rework",
+        "return",
+        "all"
+      ]
+    }
+  },
+  "Downtime": {
+    "name": "Downtime",
+    "base": null,
+    "fields": [
+      {
+        "name": "duration",
+        "type": "num",
+        "required": true
+      },
+      {
+        "name": "reason",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "planned",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "equipment",
+        "type": "str",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "KPI"
+      ],
+      "reasons": [
+        "Breakdown",
+        "Setup",
+        "Adjustment",
+        "Startup",
+        "Reduced Speed",
+        "Idling",
+        "Material",
+        "Planned"
+      ]
+    }
   }
 }
