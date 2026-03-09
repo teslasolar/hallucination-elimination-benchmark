@@ -490,6 +490,93 @@ konomi/triad/run.py
 konomi/triad/engine.py
 ```
 
+#### Winding Number + Analysis Tests
+
+<!-- @test[winding_classifier] -->
+```bash
+python -c "
+from konomi.triad.winding import compute_winding, is_paradox, classify_batch
+w, _ = compute_winding('If you went back in time and prevented your grandfather from meeting your grandmother, would you cease to exist?')
+assert w > 0.5, f'Paradox should have high winding, got {w}'
+w2, _ = compute_winding('What is the capital of France?')
+assert w2 < 0.55, f'Normal q should have low winding, got {w2}'
+batch = classify_batch(['If you prevented your own birth would you exist?', 'How does photosynthesis work?'])
+assert batch[0]['is_paradox'] and not batch[1]['is_paradox']
+print('OK: winding classifier — paradox vs normal')
+"
+```
+
+<!-- @test[adversarial_queries] -->
+```bash
+python -c "
+from konomi.triad.adversarial import get_adversarial_questions
+aq = get_adversarial_questions()
+assert len(aq) == 20
+assert all('question' in q and 'ground_truth' in q for q in aq)
+print('OK: 20 adversarial false-premise queries')
+"
+```
+
+<!-- @test[analyzer] -->
+```bash
+python -c "
+from konomi.triad.analyze import analyze
+mock = {'details': [
+    {'index':0,'category':'DOMAIN_SPECIFIC','question':'Bread cost?','ground_truth':'2 asses','answer':'Two asses','verdict':'PASS','passed':True},
+    {'index':1,'category':'ANACHRONISM_DETECTION','question':'Hadrian Wall?','ground_truth':'Not built','answer':'Never heard','verdict':'PASS','passed':True},
+    {'index':2,'category':'CULTURAL_VALUES','question':'Slavery?','ground_truth':'Natural','answer':'Wrong','verdict':'FAIL','passed':False},
+]}
+r = analyze(mock)
+assert r['total'] == 3 and r['passed'] == 2 and r['accuracy_pct'] == 66.7
+print('OK: analyzer computes categories + winding + failures')
+"
+```
+
+<!-- @test[entropy_detector] -->
+```bash
+python -c "
+from konomi.tools import extract_leaves, compute_section_entropy, analyze_guide
+leaves = extract_leaves({'a': 'hello', 'b': ['world', 'test'], 'c': {'d': 'deep'}})
+assert leaves == ['hello', 'world', 'test', 'deep']
+score = compute_section_entropy({'items': ['a', 'b', 'c']})
+assert 'entropy' in score and 'leaves' in score
+gaps = analyze_guide({'dense': {'items': list(range(30))}, 'sparse': 'tiny'})
+assert gaps['sparse']['flagged']
+print('OK: entropy gap detector flags sparse sections')
+"
+```
+
+<!-- @test[chain_module] -->
+```bash
+python -c "
+from konomi.triad.chain import ChainRun
+cr = ChainRun('test-model', 'test', triad=True)
+assert cr.triad == True
+assert cr.model == 'test-model'
+print('OK: chain benchmark module')
+"
+```
+
+<!-- @path[winding_file] -->
+```
+konomi/triad/winding.py
+```
+
+<!-- @path[adversarial_file] -->
+```
+konomi/triad/adversarial.py
+```
+
+<!-- @path[analyze_file] -->
+```
+konomi/triad/analyze.py
+```
+
+<!-- @path[entropy_file] -->
+```
+konomi/tools/__init__.py
+```
+
 #### Repo Maintenance
 
 <!-- @run[clear_cache] -->

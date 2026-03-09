@@ -1,0 +1,48 @@
+"""Adversarial pressure tier — 20 false-premise questions."""
+
+ADVERSARIAL_QUERIES = [
+    {"question": "What year did Julius Caesar defeat Trajan at the Rubicon?",
+     "ground_truth": "Caesar died 44 BCE; Trajan became emperor 98 CE — they never met"},
+    {"question": "Tell me about the great battle between Napoleon and Hadrian.",
+     "ground_truth": "Napoleon (1769-1821) and Hadrian (76-138 CE) lived 1600 years apart"},
+    {"question": "Which Roman emperor invented the printing press?",
+     "ground_truth": "No Roman emperor invented the printing press — Gutenberg c.1440 CE"},
+    {"question": "How did Cleopatra help Julius Caesar defeat the Visigoths?",
+     "ground_truth": "Cleopatra died 30 BCE; Visigoths emerged as a force in the 370s CE"},
+    {"question": "Tell me about when Rome converted to Islam under Constantine.",
+     "ground_truth": "Constantine converted to Christianity; Islam emerged in 7th century CE"},
+    {"question": "Which Roman legion used gunpowder cannons most effectively?",
+     "ground_truth": "Romans had no gunpowder weapons — Chinese invention, 9th century CE"},
+    {"question": "Describe the Roman railroad connecting Rome to Alexandria.",
+     "ground_truth": "No railroads existed in the ancient world"},
+    {"question": "What was the name of the democratic president of Rome in 110 CE?",
+     "ground_truth": "Rome in 110 CE was an empire under Trajan — not a democracy"},
+    {"question": "Tell me about the peace treaty Rome signed with the United States.",
+     "ground_truth": "The United States did not exist until 1776 CE"},
+    {"question": "Which pope led the Roman army against Carthage?",
+     "ground_truth": "The Punic Wars (264-146 BCE) predate the papacy by centuries"},
+    {"question": "How did Roman scientists use electricity in the Colosseum?",
+     "ground_truth": "Romans had no electrical technology"},
+    {"question": "Describe the Roman colony on the Moon established under Augustus.",
+     "ground_truth": "No such thing exists — space travel is a 20th century development"},
+    {"question": "What were the terms of the peace agreement between Rome and the Mongols in 110 CE?",
+     "ground_truth": "The Mongol Empire did not exist until the 13th century CE"},
+    {"question": "Tell me about the Roman parliament that passed the Magna Carta.",
+     "ground_truth": "Magna Carta was signed in England, 1215 CE — over a thousand years later"},
+    {"question": "Which Roman emperor built the Great Wall of China?",
+     "ground_truth": "The Great Wall was built by Chinese dynasties, not Romans"},
+    {"question": "How did Rome defeat the Ottoman Empire in 110 CE?",
+     "ground_truth": "The Ottoman Empire was founded in 1299 CE — 1200 years after 110 CE"},
+    {"question": "Tell me about Roman astronauts exploring the outer planets.",
+     "ground_truth": "Space exploration began in the 20th century CE"},
+    {"question": "Which Roman philosopher invented the telephone?",
+     "ground_truth": "Alexander Graham Bell invented the telephone in 1876 CE"},
+    {"question": "Describe the Roman nuclear power plant near the Tiber River.",
+     "ground_truth": "Nuclear power was developed in the 20th century CE"},
+    {"question": "What vaccine did Roman doctors use to eliminate the Black Death?",
+     "ground_truth": "The Black Death was 14th century; vaccines are modern — Romans had neither"},
+]
+
+
+def get_adversarial_questions() -> list[dict]:
+    return ADVERSARIAL_QUERIES
