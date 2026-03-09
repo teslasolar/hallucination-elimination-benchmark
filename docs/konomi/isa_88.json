@@ -1,0 +1,335 @@
+{
+  "id": "ISA-88",
+  "scope": "batch process control",
+  "udts": {
+    "ProcessCell": {
+      "name": "ProcessCell",
+      "base": "Equipment",
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "units",
+          "type": "list",
+          "default": []
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-88"
+        ],
+        "layer": [
+          "equipment"
+        ]
+      }
+    },
+    "S88_Unit": {
+      "name": "S88_Unit",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "ems",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "allocated_to",
+          "type": "str",
+          "default": null
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-88"
+        ],
+        "states": [
+          "Idle",
+          "Running",
+          "Complete",
+          "Held",
+          "Aborted"
+        ]
+      }
+    },
+    "Phase": {
+      "name": "Phase",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "params",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "state",
+          "type": "str",
+          "default": "IDLE"
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-88"
+        ],
+        "states": [
+          "IDLE",
+          "RUNNING",
+          "COMPLETE",
+          "HOLDING",
+          "HELD",
+          "RESTARTING",
+          "STOPPING",
+          "STOPPED",
+          "ABORTING",
+          "ABORTED"
+        ],
+        "transitions": [
+          [
+            "IDLE",
+            "RUNNING",
+            "start"
+          ],
+          [
+            "RUNNING",
+            "COMPLETE",
+            "done"
+          ],
+          [
+            "RUNNING",
+            "HOLDING",
+            "hold"
+          ],
+          [
+            "HELD",
+            "RESTARTING",
+            "restart"
+          ],
+          [
+            "RUNNING",
+            "STOPPING",
+            "stop"
+          ],
+          [
+            "RUNNING",
+            "ABORTING",
+            "abort"
+          ]
+        ]
+      }
+    },
+    "Recipe": {
+      "name": "Recipe",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "str",
+          "default": "1.0"
+        },
+        {
+          "name": "level",
+          "type": "str",
+          "default": "Master"
+        },
+        {
+          "name": "product",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "procedure",
+          "type": "dict",
+          "default": {}
+        },
+        {
+          "name": "formula",
+          "type": "dict",
+          "default": {}
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-88"
+        ],
+        "levels": [
+          "General",
+          "Site",
+          "Master",
+          "Control"
+        ]
+      }
+    },
+    "Batch": {
+      "name": "Batch",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "recipe",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "state",
+          "type": "str",
+          "default": "Created"
+        },
+        {
+          "name": "start",
+          "type": "str",
+          "default": null
+        },
+        {
+          "name": "end",
+          "type": "str",
+          "default": null
+        },
+        {
+          "name": "events",
+          "type": "list",
+          "default": []
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-88"
+        ],
+        "states": [
+          "Created",
+          "Scheduled",
+          "Running",
+          "Complete",
+          "Held",
+          "Aborted"
+        ]
+      }
+    }
+  },
+  "hierarchy": [
+    {
+      "name": "Enterprise"
+    },
+    {
+      "name": "Site"
+    },
+    {
+      "name": "Area"
+    },
+    {
+      "name": "ProcessCell"
+    },
+    {
+      "name": "Unit"
+    },
+    {
+      "name": "EquipmentModule"
+    },
+    {
+      "name": "ControlModule"
+    }
+  ],
+  "states": [
+    {
+      "name": "PhaseState",
+      "states": [
+        "IDLE",
+        "RUNNING",
+        "COMPLETE",
+        "HOLDING",
+        "HELD",
+        "RESTARTING",
+        "STOPPING",
+        "STOPPED",
+        "ABORTING",
+        "ABORTED"
+      ],
+      "initial": "IDLE",
+      "transitions": [
+        [
+          "IDLE",
+          "RUNNING",
+          "start"
+        ],
+        [
+          "RUNNING",
+          "COMPLETE",
+          "done"
+        ],
+        [
+          "RUNNING",
+          "HOLDING",
+          "hold"
+        ],
+        [
+          "HELD",
+          "RESTARTING",
+          "restart"
+        ],
+        [
+          "RUNNING",
+          "STOPPING",
+          "stop"
+        ],
+        [
+          "RUNNING",
+          "ABORTING",
+          "abort"
+        ]
+      ]
+    }
+  ],
+  "entities": [],
+  "relations": [],
+  "rules": []
+}

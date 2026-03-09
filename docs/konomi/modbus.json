@@ -1,0 +1,148 @@
+{
+  "id": "Modbus",
+  "scope": "simple field device communication",
+  "udts": {
+    "ModbusRegister": {
+      "name": "ModbusRegister",
+      "base": null,
+      "fields": [
+        {
+          "name": "addr",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "reg_type",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "access",
+          "type": "str",
+          "default": "RW"
+        },
+        {
+          "name": "data_type",
+          "type": "str",
+          "default": "UINT16"
+        },
+        {
+          "name": "fc_read",
+          "type": "int",
+          "default": 3
+        },
+        {
+          "name": "fc_write",
+          "type": "int",
+          "default": null
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "Modbus"
+        ],
+        "register_types": [
+          [
+            "Coil",
+            "RW",
+            "bit",
+            1,
+            5
+          ],
+          [
+            "DiscreteInput",
+            "RO",
+            "bit",
+            2,
+            null
+          ],
+          [
+            "HoldingReg",
+            "RW",
+            "uint16",
+            3,
+            6
+          ],
+          [
+            "InputReg",
+            "RO",
+            "uint16",
+            4,
+            null
+          ]
+        ],
+        "data_types": [
+          "BOOL",
+          "INT16",
+          "UINT16",
+          "INT32",
+          "UINT32",
+          "FLOAT32",
+          "INT64",
+          "FLOAT64",
+          "STRING"
+        ]
+      }
+    },
+    "ModbusMap": {
+      "name": "ModbusMap",
+      "base": null,
+      "fields": [
+        {
+          "name": "tag",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "unit_id",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "register_type",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "addr",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "data_type",
+          "type": "str",
+          "default": "UINT16"
+        },
+        {
+          "name": "scale",
+          "type": "num",
+          "default": 1
+        },
+        {
+          "name": "offset",
+          "type": "num",
+          "default": 0
+        },
+        {
+          "name": "byte_order",
+          "type": "str",
+          "default": "ABCD"
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "Modbus"
+        ]
+      }
+    }
+  },
+  "hierarchy": [],
+  "states": [],
+  "entities": [],
+  "relations": [],
+  "rules": []
+}

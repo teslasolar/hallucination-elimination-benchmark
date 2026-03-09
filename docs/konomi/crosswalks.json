@@ -1,0 +1,109 @@
+{
+  "crosswalks": [
+    {
+      "from_std": "ISA-95",
+      "to_std": "ISA-88",
+      "from_entity": "WorkCenter",
+      "to_entity": "ProcessCell",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "ISA-88",
+      "from_entity": "WorkUnit",
+      "to_entity": "S88_Unit",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "ISA-88",
+      "from_entity": "ProcessSegment",
+      "to_entity": "Operation",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "ISA-88",
+      "from_entity": "ProductionSchedule",
+      "to_entity": "Batch",
+      "mapping": "partial"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "OPC-UA",
+      "from_entity": "Equipment",
+      "to_entity": "OPC_Node",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "OPC-UA",
+      "from_entity": "Property",
+      "to_entity": "OPC_Variable",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "OPC-UA",
+      "from_entity": "Capability",
+      "to_entity": "OPC_Method",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PackML",
+      "from_entity": "RUNNING",
+      "to_entity": "EXECUTE",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PackML",
+      "from_entity": "HELD",
+      "to_entity": "HELD",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PackML",
+      "from_entity": "ABORTED",
+      "to_entity": "ABORTED",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-101",
+      "to_std": "ISA-18.2",
+      "from_entity": "AlarmIndicator",
+      "to_entity": "AlarmState",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-101",
+      "to_std": "ISA-18.2",
+      "from_entity": "ColorMeaning",
+      "to_entity": "Priority",
+      "mapping": "partial"
+    },
+    {
+      "from_std": "OPC-UA",
+      "to_std": "MQTT-Sparkplug",
+      "from_entity": "OPC_Variable",
+      "to_entity": "Metric",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "OPC-UA",
+      "to_std": "MQTT-Sparkplug",
+      "from_entity": "OPC_Subscription",
+      "to_entity": "NDATA/DDATA",
+      "mapping": "partial"
+    },
+    {
+      "from_std": "OPC-UA",
+      "to_std": "MQTT-Sparkplug",
+      "from_entity": "OPC_Method",
+      "to_entity": "NCMD/DCMD",
+      "mapping": "exact"
+    }
+  ]
+}

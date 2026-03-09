@@ -1,0 +1,144 @@
+{
+  "id": "MQTT-Sparkplug",
+  "scope": "lightweight pub/sub messaging",
+  "udts": {
+    "MQTT_Topic": {
+      "name": "MQTT_Topic",
+      "base": null,
+      "fields": [
+        {
+          "name": "namespace",
+          "type": "str",
+          "default": "spBv1.0"
+        },
+        {
+          "name": "group",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "edge",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "device",
+          "type": "str",
+          "default": null
+        },
+        {
+          "name": "verb",
+          "type": "str",
+          "default": "DDATA"
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "Sparkplug"
+        ],
+        "verbs": [
+          "NBIRTH",
+          "NDEATH",
+          "DBIRTH",
+          "DDEATH",
+          "NDATA",
+          "DDATA",
+          "NCMD",
+          "DCMD"
+        ]
+      }
+    },
+    "SparkplugPayload": {
+      "name": "SparkplugPayload",
+      "base": null,
+      "fields": [
+        {
+          "name": "timestamp",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "metrics",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "seq",
+          "type": "int",
+          "default": 0
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "Sparkplug"
+        ],
+        "data_types": [
+          "Int8",
+          "Int16",
+          "Int32",
+          "Int64",
+          "UInt8",
+          "UInt16",
+          "UInt32",
+          "UInt64",
+          "Float",
+          "Double",
+          "Boolean",
+          "String",
+          "DateTime",
+          "UUID",
+          "DataSet",
+          "Bytes"
+        ],
+        "qos": [
+          [
+            0,
+            "AtMostOnce"
+          ],
+          [
+            1,
+            "AtLeastOnce"
+          ],
+          [
+            2,
+            "ExactlyOnce"
+          ]
+        ]
+      }
+    }
+  },
+  "hierarchy": [],
+  "states": [],
+  "entities": [],
+  "relations": [],
+  "rules": [
+    {
+      "id": "R1",
+      "condition": "True",
+      "action": "NBIRTH before any NDATA",
+      "severity": "error"
+    },
+    {
+      "id": "R2",
+      "condition": "True",
+      "action": "seq increments 0-255 wrap",
+      "severity": "error"
+    },
+    {
+      "id": "R4",
+      "condition": "True",
+      "action": "alias for bandwidth optimization",
+      "severity": "error"
+    },
+    {
+      "id": "R5",
+      "condition": "True",
+      "action": "store-forward on disconnect",
+      "severity": "error"
+    }
+  ]
+}

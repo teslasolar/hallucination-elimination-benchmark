@@ -1,0 +1,1554 @@
+{
+  "Identifier": {
+    "name": "Identifier",
+    "base": null,
+    "fields": [
+      {
+        "name": "value",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "id_type",
+        "type": "str",
+        "default": "UUID"
+      },
+      {
+        "name": "scope",
+        "type": "str",
+        "default": "global"
+      },
+      {
+        "name": "format",
+        "type": "str",
+        "default": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {}
+  },
+  "Timestamp": {
+    "name": "Timestamp",
+    "base": null,
+    "fields": [
+      {
+        "name": "value",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "format",
+        "type": "str",
+        "default": "ISO8601"
+      },
+      {
+        "name": "resolution",
+        "type": "str",
+        "default": "ms"
+      },
+      {
+        "name": "timezone",
+        "type": "str",
+        "default": "UTC"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {}
+  },
+  "Quality": {
+    "name": "Quality",
+    "base": null,
+    "fields": [
+      {
+        "name": "value",
+        "type": "int",
+        "default": 192
+      },
+      {
+        "name": "good",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "bad",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "uncertain",
+        "type": "bool",
+        "default": false
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "code": [
+        [
+          "GOOD",
+          192
+        ],
+        [
+          "BAD",
+          0
+        ],
+        [
+          "UNCERTAIN",
+          64
+        ]
+      ]
+    }
+  },
+  "Value": {
+    "name": "Value",
+    "base": null,
+    "fields": [
+      {
+        "name": "v",
+        "type": "any",
+        "required": true
+      },
+      {
+        "name": "q",
+        "type": "Quality",
+        "default": null
+      },
+      {
+        "name": "t",
+        "type": "Timestamp",
+        "default": null
+      },
+      {
+        "name": "unit",
+        "type": "str",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {}
+  },
+  "Range": {
+    "name": "Range",
+    "base": null,
+    "fields": [
+      {
+        "name": "lo",
+        "type": "num",
+        "required": true
+      },
+      {
+        "name": "hi",
+        "type": "num",
+        "required": true
+      },
+      {
+        "name": "unit",
+        "type": "str",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {}
+  },
+  "Quantity": {
+    "name": "Quantity",
+    "base": null,
+    "fields": [
+      {
+        "name": "value",
+        "type": "num",
+        "required": true
+      },
+      {
+        "name": "unit",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "uncertainty",
+        "type": "num",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {}
+  },
+  "Duration": {
+    "name": "Duration",
+    "base": null,
+    "fields": [
+      {
+        "name": "value",
+        "type": "num",
+        "required": true
+      },
+      {
+        "name": "unit",
+        "type": "str",
+        "default": "s"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {}
+  },
+  "Status": {
+    "name": "Status",
+    "base": null,
+    "fields": [
+      {
+        "name": "code",
+        "type": "int",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "severity",
+        "type": "str",
+        "default": "info"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "severity": [
+        "info",
+        "warn",
+        "error",
+        "fatal"
+      ]
+    }
+  },
+  "PhysicalAsset": {
+    "name": "PhysicalAsset",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "path",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "level",
+        "type": "int",
+        "default": 0
+      },
+      {
+        "name": "parent",
+        "type": "str",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-95"
+      ],
+      "layer": [
+        "equipment"
+      ]
+    }
+  },
+  "Equipment": {
+    "name": "Equipment",
+    "base": "PhysicalAsset",
+    "fields": [
+      {
+        "name": "capability",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "state",
+        "type": "str",
+        "default": "Idle"
+      },
+      {
+        "name": "mode",
+        "type": "str",
+        "default": "Automatic"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "states": [
+        "Idle",
+        "Running",
+        "Faulted",
+        "Maintenance",
+        "Offline"
+      ],
+      "modes": [
+        "Production",
+        "Maintenance",
+        "Manual",
+        "Automatic",
+        "Semiauto"
+      ]
+    }
+  },
+  "Material": {
+    "name": "Material",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "lot",
+        "type": "str",
+        "default": null
+      },
+      {
+        "name": "props",
+        "type": "dict",
+        "default": {}
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-95"
+      ]
+    }
+  },
+  "Personnel": {
+    "name": "Personnel",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "role",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "qualifications",
+        "type": "list",
+        "default": []
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-95"
+      ]
+    }
+  },
+  "ProcessSegment": {
+    "name": "ProcessSegment",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "equipment",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "materials_in",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "materials_out",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "duration",
+        "type": "num",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-95"
+      ]
+    }
+  },
+  "ProcessCell": {
+    "name": "ProcessCell",
+    "base": "Equipment",
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "units",
+        "type": "list",
+        "default": []
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-88"
+      ],
+      "layer": [
+        "equipment"
+      ]
+    }
+  },
+  "S88_Unit": {
+    "name": "S88_Unit",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "ems",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "allocated_to",
+        "type": "str",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-88"
+      ],
+      "states": [
+        "Idle",
+        "Running",
+        "Complete",
+        "Held",
+        "Aborted"
+      ]
+    }
+  },
+  "Phase": {
+    "name": "Phase",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "params",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "state",
+        "type": "str",
+        "default": "IDLE"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-88"
+      ],
+      "states": [
+        "IDLE",
+        "RUNNING",
+        "COMPLETE",
+        "HOLDING",
+        "HELD",
+        "RESTARTING",
+        "STOPPING",
+        "STOPPED",
+        "ABORTING",
+        "ABORTED"
+      ],
+      "transitions": [
+        [
+          "IDLE",
+          "RUNNING",
+          "start"
+        ],
+        [
+          "RUNNING",
+          "COMPLETE",
+          "done"
+        ],
+        [
+          "RUNNING",
+          "HOLDING",
+          "hold"
+        ],
+        [
+          "HELD",
+          "RESTARTING",
+          "restart"
+        ],
+        [
+          "RUNNING",
+          "STOPPING",
+          "stop"
+        ],
+        [
+          "RUNNING",
+          "ABORTING",
+          "abort"
+        ]
+      ]
+    }
+  },
+  "Recipe": {
+    "name": "Recipe",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "version",
+        "type": "str",
+        "default": "1.0"
+      },
+      {
+        "name": "level",
+        "type": "str",
+        "default": "Master"
+      },
+      {
+        "name": "product",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "procedure",
+        "type": "dict",
+        "default": {}
+      },
+      {
+        "name": "formula",
+        "type": "dict",
+        "default": {}
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-88"
+      ],
+      "levels": [
+        "General",
+        "Site",
+        "Master",
+        "Control"
+      ]
+    }
+  },
+  "Batch": {
+    "name": "Batch",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "recipe",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "state",
+        "type": "str",
+        "default": "Created"
+      },
+      {
+        "name": "start",
+        "type": "str",
+        "default": null
+      },
+      {
+        "name": "end",
+        "type": "str",
+        "default": null
+      },
+      {
+        "name": "events",
+        "type": "list",
+        "default": []
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-88"
+      ],
+      "states": [
+        "Created",
+        "Scheduled",
+        "Running",
+        "Complete",
+        "Held",
+        "Aborted"
+      ]
+    }
+  },
+  "HMI_Layer": {
+    "name": "HMI_Layer",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "int",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "scope",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "info",
+        "type": "str",
+        "default": ""
+      },
+      {
+        "name": "nav",
+        "type": "str",
+        "default": ""
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-101"
+      ],
+      "layers": [
+        [
+          1,
+          "Overview",
+          "Plant/Site",
+          "KPIs,Status,Alarms"
+        ],
+        [
+          2,
+          "Area",
+          "Process Area",
+          "Flows,States,Trends"
+        ],
+        [
+          3,
+          "Unit",
+          "Equipment",
+          "Faceplate,Control"
+        ],
+        [
+          4,
+          "Detail",
+          "Diagnostic",
+          "Config,Tuning"
+        ],
+        [
+          5,
+          "Support",
+          "Maintenance",
+          "Calibration,History"
+        ]
+      ]
+    }
+  },
+  "ColorMeaning": {
+    "name": "ColorMeaning",
+    "base": null,
+    "fields": [
+      {
+        "name": "state",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "color",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "hex",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "usage",
+        "type": "str",
+        "default": ""
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-101"
+      ],
+      "palette": [
+        [
+          "Normal",
+          "Gray",
+          "#808080"
+        ],
+        [
+          "Running",
+          "Green",
+          "#00AA00"
+        ],
+        [
+          "Warning",
+          "Yellow",
+          "#FFCC00"
+        ],
+        [
+          "Alarm",
+          "Red",
+          "#CC0000"
+        ],
+        [
+          "Maint",
+          "Blue",
+          "#0066CC"
+        ],
+        [
+          "Manual",
+          "Orange",
+          "#FF6600"
+        ],
+        [
+          "Transition",
+          "Cyan",
+          "#00CCCC"
+        ]
+      ]
+    }
+  },
+  "Faceplate": {
+    "name": "Faceplate",
+    "base": null,
+    "fields": [
+      {
+        "name": "equipment",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "title",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "pv_display",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "sp_input",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "commands",
+        "type": "list",
+        "default": []
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-101"
+      ]
+    }
+  },
+  "AlarmPriority": {
+    "name": "AlarmPriority",
+    "base": null,
+    "fields": [
+      {
+        "name": "level",
+        "type": "int",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "response",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "time",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "color",
+        "type": "str",
+        "required": true
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-18.2"
+      ],
+      "priorities": [
+        [
+          1,
+          "Emergency",
+          "Immediate",
+          "<1min",
+          "Red"
+        ],
+        [
+          2,
+          "High",
+          "Prompt",
+          "<10min",
+          "Orange"
+        ],
+        [
+          3,
+          "Medium",
+          "Timely",
+          "<1hr",
+          "Yellow"
+        ],
+        [
+          4,
+          "Low",
+          "Awareness",
+          "Shift",
+          "Cyan"
+        ]
+      ]
+    }
+  },
+  "Alarm": {
+    "name": "Alarm",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "tag",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "type",
+        "type": "str",
+        "default": "HI"
+      },
+      {
+        "name": "priority",
+        "type": "int",
+        "default": 3
+      },
+      {
+        "name": "state",
+        "type": "str",
+        "default": "NORM"
+      },
+      {
+        "name": "setpoint",
+        "type": "num",
+        "default": null
+      },
+      {
+        "name": "deadband",
+        "type": "num",
+        "default": 0
+      },
+      {
+        "name": "message",
+        "type": "str",
+        "default": ""
+      },
+      {
+        "name": "consequence",
+        "type": "str",
+        "default": ""
+      },
+      {
+        "name": "response",
+        "type": "str",
+        "default": ""
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "ISA-18.2"
+      ],
+      "types": [
+        "HI",
+        "HIHI",
+        "LO",
+        "LOLO",
+        "DEV",
+        "ROG",
+        "DISC"
+      ],
+      "states": [
+        "NORM",
+        "UNACK",
+        "ACKED",
+        "RTN_UNACK",
+        "SHELVED",
+        "OUT_OF_SERVICE"
+      ],
+      "transitions": [
+        [
+          "NORM",
+          "UNACK",
+          "condition"
+        ],
+        [
+          "UNACK",
+          "ACKED",
+          "ack"
+        ],
+        [
+          "ACKED",
+          "NORM",
+          "clear"
+        ],
+        [
+          "UNACK",
+          "RTN_UNACK",
+          "clear"
+        ],
+        [
+          "RTN_UNACK",
+          "NORM",
+          "ack"
+        ]
+      ]
+    }
+  },
+  "OPC_Node": {
+    "name": "OPC_Node",
+    "base": null,
+    "fields": [
+      {
+        "name": "node_id",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "browse_name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "display_name",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "node_class",
+        "type": "str",
+        "default": "Variable"
+      },
+      {
+        "name": "parent",
+        "type": "str",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "OPC-UA"
+      ],
+      "node_classes": [
+        "Object",
+        "ObjectType",
+        "Variable",
+        "VariableType",
+        "Method",
+        "View",
+        "DataType",
+        "ReferenceType"
+      ]
+    }
+  },
+  "OPC_Variable": {
+    "name": "OPC_Variable",
+    "base": "OPC_Node",
+    "fields": [
+      {
+        "name": "data_type",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "value",
+        "type": "any",
+        "default": null
+      },
+      {
+        "name": "access",
+        "type": "str",
+        "default": "RO"
+      },
+      {
+        "name": "historizing",
+        "type": "bool",
+        "default": false
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "OPC-UA"
+      ]
+    }
+  },
+  "OPC_Method": {
+    "name": "OPC_Method",
+    "base": "OPC_Node",
+    "fields": [
+      {
+        "name": "input_args",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "output_args",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "executable",
+        "type": "bool",
+        "default": true
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "OPC-UA"
+      ]
+    }
+  },
+  "OPC_Subscription": {
+    "name": "OPC_Subscription",
+    "base": null,
+    "fields": [
+      {
+        "name": "id",
+        "type": "int",
+        "required": true
+      },
+      {
+        "name": "publishing_interval",
+        "type": "num",
+        "default": 1000
+      },
+      {
+        "name": "enabled",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "monitored_items",
+        "type": "list",
+        "default": []
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "OPC-UA"
+      ]
+    }
+  },
+  "MQTT_Topic": {
+    "name": "MQTT_Topic",
+    "base": null,
+    "fields": [
+      {
+        "name": "namespace",
+        "type": "str",
+        "default": "spBv1.0"
+      },
+      {
+        "name": "group",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "edge",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "device",
+        "type": "str",
+        "default": null
+      },
+      {
+        "name": "verb",
+        "type": "str",
+        "default": "DDATA"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "Sparkplug"
+      ],
+      "verbs": [
+        "NBIRTH",
+        "NDEATH",
+        "DBIRTH",
+        "DDEATH",
+        "NDATA",
+        "DDATA",
+        "NCMD",
+        "DCMD"
+      ]
+    }
+  },
+  "SparkplugPayload": {
+    "name": "SparkplugPayload",
+    "base": null,
+    "fields": [
+      {
+        "name": "timestamp",
+        "type": "int",
+        "required": true
+      },
+      {
+        "name": "metrics",
+        "type": "list",
+        "default": []
+      },
+      {
+        "name": "seq",
+        "type": "int",
+        "default": 0
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "Sparkplug"
+      ],
+      "data_types": [
+        "Int8",
+        "Int16",
+        "Int32",
+        "Int64",
+        "UInt8",
+        "UInt16",
+        "UInt32",
+        "UInt64",
+        "Float",
+        "Double",
+        "Boolean",
+        "String",
+        "DateTime",
+        "UUID",
+        "DataSet",
+        "Bytes"
+      ],
+      "qos": [
+        [
+          0,
+          "AtMostOnce"
+        ],
+        [
+          1,
+          "AtLeastOnce"
+        ],
+        [
+          2,
+          "ExactlyOnce"
+        ]
+      ]
+    }
+  },
+  "ModbusRegister": {
+    "name": "ModbusRegister",
+    "base": null,
+    "fields": [
+      {
+        "name": "addr",
+        "type": "int",
+        "required": true
+      },
+      {
+        "name": "reg_type",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "access",
+        "type": "str",
+        "default": "RW"
+      },
+      {
+        "name": "data_type",
+        "type": "str",
+        "default": "UINT16"
+      },
+      {
+        "name": "fc_read",
+        "type": "int",
+        "default": 3
+      },
+      {
+        "name": "fc_write",
+        "type": "int",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "Modbus"
+      ],
+      "register_types": [
+        [
+          "Coil",
+          "RW",
+          "bit",
+          1,
+          5
+        ],
+        [
+          "DiscreteInput",
+          "RO",
+          "bit",
+          2,
+          null
+        ],
+        [
+          "HoldingReg",
+          "RW",
+          "uint16",
+          3,
+          6
+        ],
+        [
+          "InputReg",
+          "RO",
+          "uint16",
+          4,
+          null
+        ]
+      ],
+      "data_types": [
+        "BOOL",
+        "INT16",
+        "UINT16",
+        "INT32",
+        "UINT32",
+        "FLOAT32",
+        "INT64",
+        "FLOAT64",
+        "STRING"
+      ]
+    }
+  },
+  "ModbusMap": {
+    "name": "ModbusMap",
+    "base": null,
+    "fields": [
+      {
+        "name": "tag",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "unit_id",
+        "type": "int",
+        "required": true
+      },
+      {
+        "name": "register_type",
+        "type": "str",
+        "required": true
+      },
+      {
+        "name": "addr",
+        "type": "int",
+        "required": true
+      },
+      {
+        "name": "data_type",
+        "type": "str",
+        "default": "UINT16"
+      },
+      {
+        "name": "scale",
+        "type": "num",
+        "default": 1
+      },
+      {
+        "name": "offset",
+        "type": "num",
+        "default": 0
+      },
+      {
+        "name": "byte_order",
+        "type": "str",
+        "default": "ABCD"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "Modbus"
+      ]
+    }
+  },
+  "OEE": {
+    "name": "OEE",
+    "base": null,
+    "fields": [
+      {
+        "name": "availability",
+        "type": "num",
+        "required": true
+      },
+      {
+        "name": "performance",
+        "type": "num",
+        "required": true
+      },
+      {
+        "name": "quality",
+        "type": "num",
+        "required": true
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "isa": [
+        "KPI"
+      ],
+      "formula": "oee = availability * performance * quality",
+      "targets": {
+        "availability": 0.9,
+        "performance": 0.95,
+        "quality": 0.99,
+        "oee": 0.85
+      }
+    }
+  },
+  "MTBF": {
+    "name": "MTBF",
+    "base": null,
+    "fields": [
+      {
+        "name": "total_uptime",
+        "type": "num",
+        "required": true
+      },
+      {
+        "name": "failure_count",
+        "type": "int",
+        "required": true
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "formula": "mtbf = total_uptime / failure_count"
+    }
+  },
+  "MTTR": {
+    "name": "MTTR",
+    "base": null,
+    "fields": [
+      {
+        "name": "total_downtime",
+        "type": "num",
+        "required": true
+      },
+      {
+        "name": "failure_count",
+        "type": "int",
+        "required": true
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "formula": "mttr = total_downtime / failure_count"
+    }
+  },
+  "CycleTime": {
+    "name": "CycleTime",
+    "base": null,
+    "fields": [
+      {
+        "name": "ideal",
+        "type": "num",
+        "required": true
+      },
+      {
+        "name": "actual",
+        "type": "num",
+        "required": true
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {
+      "formula": "efficiency = ideal / actual"
+    }
+  },
+  "Throughput": {
+    "name": "Throughput",
+    "base": null,
+    "fields": [
+      {
+        "name": "value",
+        "type": "num",
+        "required": true
+      },
+      {
+        "name": "unit",
+        "type": "str",
+        "default": "units/hour"
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {}
+  },
+  "EnergyKPI": {
+    "name": "EnergyKPI",
+    "base": null,
+    "fields": [
+      {
+        "name": "kwh_per_unit",
+        "type": "num",
+        "required": true
+      },
+      {
+        "name": "peak_demand",
+        "type": "num",
+        "default": null
+      },
+      {
+        "name": "power_factor",
+        "type": "num",
+        "default": null
+      }
+    ],
+    "methods": [],
+    "constraints": [],
+    "tags": {}
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "id": "ISA-95",
+  "scope": "enterprise to control integration",
+  "udts": {
+    "PhysicalAsset": {
+      "name": "PhysicalAsset",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "path",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "level",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "parent",
+          "type": "str",
+          "default": null
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-95"
+        ],
+        "layer": [
+          "equipment"
+        ]
+      }
+    },
+    "Equipment": {
+      "name": "Equipment",
+      "base": "PhysicalAsset",
+      "fields": [
+        {
+          "name": "capability",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "state",
+          "type": "str",
+          "default": "Idle"
+        },
+        {
+          "name": "mode",
+          "type": "str",
+          "default": "Automatic"
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "states": [
+          "Idle",
+          "Running",
+          "Faulted",
+          "Maintenance",
+          "Offline"
+        ],
+        "modes": [
+          "Production",
+          "Maintenance",
+          "Manual",
+          "Automatic",
+          "Semiauto"
+        ]
+      }
+    },
+    "Material": {
+      "name": "Material",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "lot",
+          "type": "str",
+          "default": null
+        },
+        {
+          "name": "props",
+          "type": "dict",
+          "default": {}
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-95"
+        ]
+      }
+    },
+    "Personnel": {
+      "name": "Personnel",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "role",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "qualifications",
+          "type": "list",
+          "default": []
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-95"
+        ]
+      }
+    },
+    "ProcessSegment": {
+      "name": "ProcessSegment",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "equipment",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "materials_in",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "materials_out",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "duration",
+          "type": "num",
+          "default": null
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-95"
+        ]
+      }
+    }
+  },
+  "hierarchy": [
+    {
+      "name": "Enterprise",
+      "card": "1"
+    },
+    {
+      "name": "Site",
+      "card": "N"
+    },
+    {
+      "name": "Area",
+      "card": "N"
+    },
+    {
+      "name": "WorkCenter",
+      "card": "N"
+    },
+    {
+      "name": "WorkUnit",
+      "card": "N"
+    },
+    {
+      "name": "Equipment",
+      "card": "N"
+    }
+  ],
+  "states": [],
+  "entities": [
+    {
+      "name": "Equipment",
+      "udt": "Equipment"
+    }
+  ],
+  "relations": [
+    {
+      "type": "contains",
+      "from": "Site",
+      "to": "Area",
+      "cardinality": "1:N"
+    }
+  ],
+  "rules": []
+}

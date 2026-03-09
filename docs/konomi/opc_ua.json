@@ -1,0 +1,166 @@
+{
+  "id": "OPC-UA",
+  "scope": "industrial interoperability",
+  "udts": {
+    "OPC_Node": {
+      "name": "OPC_Node",
+      "base": null,
+      "fields": [
+        {
+          "name": "node_id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "browse_name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "display_name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "node_class",
+          "type": "str",
+          "default": "Variable"
+        },
+        {
+          "name": "parent",
+          "type": "str",
+          "default": null
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "OPC-UA"
+        ],
+        "node_classes": [
+          "Object",
+          "ObjectType",
+          "Variable",
+          "VariableType",
+          "Method",
+          "View",
+          "DataType",
+          "ReferenceType"
+        ]
+      }
+    },
+    "OPC_Variable": {
+      "name": "OPC_Variable",
+      "base": "OPC_Node",
+      "fields": [
+        {
+          "name": "data_type",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "any",
+          "default": null
+        },
+        {
+          "name": "access",
+          "type": "str",
+          "default": "RO"
+        },
+        {
+          "name": "historizing",
+          "type": "bool",
+          "default": false
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "OPC-UA"
+        ]
+      }
+    },
+    "OPC_Method": {
+      "name": "OPC_Method",
+      "base": "OPC_Node",
+      "fields": [
+        {
+          "name": "input_args",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "output_args",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "executable",
+          "type": "bool",
+          "default": true
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "OPC-UA"
+        ]
+      }
+    },
+    "OPC_Subscription": {
+      "name": "OPC_Subscription",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "publishing_interval",
+          "type": "num",
+          "default": 1000
+        },
+        {
+          "name": "enabled",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "monitored_items",
+          "type": "list",
+          "default": []
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "OPC-UA"
+        ]
+      }
+    }
+  },
+  "hierarchy": [
+    {
+      "name": "Root"
+    },
+    {
+      "name": "Objects"
+    },
+    {
+      "name": "Types"
+    },
+    {
+      "name": "Views"
+    }
+  ],
+  "states": [],
+  "entities": [],
+  "relations": [],
+  "rules": []
+}

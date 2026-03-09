@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KONOMI Standard — Industrial Standards Compression v1.0</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0e17;--card:#111827;--border:#1e293b;--text:#e2e8f0;--dim:#64748b;
+--accent:#3b82f6;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--cyan:#06b6d4;--orange:#f97316}
+body{font-family:'SF Mono',Monaco,'Cascadia Code',monospace;background:var(--bg);color:var(--text);padding:20px;line-height:1.5}
+h1{color:var(--cyan);font-size:1.4rem;margin-bottom:4px}
+h2{color:var(--accent);font-size:1.1rem;margin:16px 0 8px;border-bottom:1px solid var(--border);padding-bottom:4px}
+h3{color:var(--green);font-size:.95rem;margin:12px 0 4px}
+.header{text-align:center;padding:20px 0;border-bottom:2px solid var(--accent)}
+.subtitle{color:var(--dim);font-size:.85rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin:16px 0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;cursor:pointer;transition:border-color .2s}
+.card:hover{border-color:var(--accent)}
+.card-title{color:var(--cyan);font-weight:bold;font-size:1rem;margin-bottom:4px}
+.card-scope{color:var(--dim);font-size:.8rem;margin-bottom:8px}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.7rem;margin:2px;background:var(--border);color:var(--text)}
+.badge.udt{background:#1e3a5f;color:var(--cyan)}
+.badge.state{background:#1e3a2f;color:var(--green)}
+.badge.rule{background:#3a2f1e;color:var(--yellow)}
+.tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:.65rem;margin:1px;background:#1a1a2e;color:var(--accent);border:1px solid var(--border)}
+.detail{display:none;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px;margin:16px 0}
+.detail.active{display:block}
+table{width:100%;border-collapse:collapse;font-size:.8rem;margin:8px 0}
+th{text-align:left;padding:6px 8px;background:var(--card);color:var(--accent);border-bottom:2px solid var(--border)}
+td{padding:4px 8px;border-bottom:1px solid var(--border);color:var(--text)}
+.field-type{color:var(--yellow)}
+.field-req{color:var(--red);font-weight:bold}
+.crosswalk-arrow{color:var(--orange);font-weight:bold}
+.demo-banner{background:#1e3a2f;border:1px solid var(--green);border-radius:8px;padding:8px 16px;text-align:center;margin:12px 0;color:var(--green);font-size:.8rem}
+pre{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;overflow-x:auto;font-size:.75rem;margin:8px 0}
+code{color:var(--cyan)}
+.nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+.nav-btn{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 14px;color:var(--text);cursor:pointer;font-family:inherit;font-size:.8rem;transition:all .2s}
+.nav-btn:hover,.nav-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.meta{color:var(--dim);font-size:.75rem;text-align:center;margin-top:20px}
+.state-flow{background:var(--card);border-radius:6px;padding:12px;margin:8px 0;font-size:.75rem;color:var(--green)}
+.state-flow .arrow{color:var(--orange)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>KONOMI Standard</h1>
+  <div class="subtitle">Self-Defining Industrial Standards Compression v1.0</div>
+  <div class="subtitle">UDTs defining UDTs — Tags driving behaviors — Sub-callable standards</div>
+</div>
+
+<div class="demo-banner" id="demoBanner" style="display:none">
+  DEMO MODE — All validations pass, API returns synthetic data
+</div>
+
+<div class="nav" id="nav"></div>
+<div id="content"></div>
+<div class="meta">KONOMI Standard v1.0 — Layer 0 is self-describing — <a href="standards.json" style="color:var(--accent)">Raw JSON</a></div>
+
+<script>
+const BASE = '';
+const STD_MAP = {
+  'ISA-95':  {layer:2, icon:'🏗️', desc:'Enterprise↔Control Integration'},
+  'ISA-88':  {layer:3, icon:'🧪', desc:'Batch Process Control'},
+  'ISA-101': {layer:4, icon:'🖥️', desc:'HMI Design Standards'},
+  'ISA-18.2':{layer:5, icon:'🚨', desc:'Alarm Management Lifecycle'},
+  'OPC-UA':  {layer:6, icon:'📡', desc:'Industrial Interoperability'},
+  'MQTT-Sparkplug':{layer:7, icon:'📨', desc:'Lightweight Pub/Sub'},
+  'Modbus':  {layer:8, icon:'🔧', desc:'Field Device Communication'},
+  'KPI':     {layer:9, icon:'📊', desc:'Performance Metrics'},
+};
+
+let DATA = {};
+let UDTS = {};
+let CROSSWALKS = [];
+
+async function load() {
+  const [stds, udts, cw] = await Promise.all([
+    fetch(BASE+'standards.json').then(r=>r.json()),
+    fetch(BASE+'udts.json').then(r=>r.json()),
+    fetch(BASE+'crosswalks.json').then(r=>r.json()),
+  ]);
+  UDTS = udts;
+  CROSSWALKS = cw.crosswalks;
+  for (const sid of stds.standards) {
+    const safe = sid.toLowerCase().replace(/-/g,'_').replace(/\./g,'_');
+    DATA[sid] = await fetch(BASE+safe+'.json').then(r=>r.json());
+  }
+  buildNav(stds.standards);
+  showOverview();
+}
+
+function buildNav(standards) {
+  const nav = document.getElementById('nav');
+  let html = '<button class="nav-btn active" onclick="showOverview()">Overview</button>';
+  for (const s of standards) {
+    const m = STD_MAP[s]||{icon:'📄'};
+    html += `<button class="nav-btn" onclick="showStandard('${s}')">${m.icon} ${s}</button>`;
+  }
+  html += '<button class="nav-btn" onclick="showCrosswalks()">🔀 Crosswalks</button>';
+  html += '<button class="nav-btn" onclick="showUDTs()">🧬 All UDTs</button>';
+  nav.innerHTML = html;
+}
+
+function setActive(label) {
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.includes(label));
+  });
+}
+
+function showOverview() {
+  setActive('Overview');
+  const c = document.getElementById('content');
+  let html = '<h2>Layer Architecture</h2><div class="grid">';
+  html += `<div class="card"><div class="card-title">🧬 Layer 0: Meta-Standard</div>
+    <div class="card-scope">How standards define themselves</div>
+    <span class="badge udt">STD</span><span class="badge udt">UDT</span>
+    <span class="badge udt">LEVEL</span><span class="badge udt">STATE_MACHINE</span>
+    <span class="badge udt">ENTITY</span><span class="badge udt">RULE</span>
+    <span class="badge udt">CROSSWALK</span></div>`;
+  html += `<div class="card"><div class="card-title">🔷 Layer 1: Base UDTs</div>
+    <div class="card-scope">Primitives all standards share</div>
+    <span class="badge udt">Identifier</span><span class="badge udt">Timestamp</span>
+    <span class="badge udt">Quality</span><span class="badge udt">Value</span>
+    <span class="badge udt">Range</span><span class="badge udt">Quantity</span>
+    <span class="badge udt">Duration</span><span class="badge udt">Status</span></div>`;
+  for (const [sid, meta] of Object.entries(STD_MAP)) {
+    const d = DATA[sid];
+    if (!d) continue;
+    const udtCount = Object.keys(d.udts||{}).length;
+    const stateCount = (d.states||[]).length;
+    const ruleCount = (d.rules||[]).length;
+    html += `<div class="card" onclick="showStandard('${sid}')">
+      <div class="card-title">${meta.icon} Layer ${meta.layer}: ${sid}</div>
+      <div class="card-scope">${meta.desc}</div>
+      <span class="badge udt">${udtCount} UDTs</span>`;
+    if (stateCount) html += `<span class="badge state">${stateCount} States</span>`;
+    if (ruleCount) html += `<span class="badge rule">${ruleCount} Rules</span>`;
+    // Show UDT names as tags
+    for (const u of Object.keys(d.udts||{})) {
+      html += `<span class="tag">${u}</span>`;
+    }
+    html += '</div>';
+  }
+  html += '</div>';
+  // Quick stats
+  html += `<h2>System Stats</h2>
+    <table><tr><th>Metric</th><th>Count</th></tr>
+    <tr><td>Standards Loaded</td><td>${Object.keys(DATA).length}</td></tr>
+    <tr><td>Total UDTs</td><td>${Object.keys(UDTS).length}</td></tr>
+    <tr><td>Crosswalk Mappings</td><td>${CROSSWALKS.length}</td></tr>
+    <tr><td>Layers</td><td>0–9 (Meta→KPI)</td></tr>
+    </table>`;
+  c.innerHTML = html;
+}
+
+function showStandard(sid) {
+  setActive(sid);
+  const d = DATA[sid];
+  const meta = STD_MAP[sid]||{icon:'📄',layer:'?',desc:sid};
+  const c = document.getElementById('content');
+  let html = `<h2>${meta.icon} ${sid} — ${meta.desc}</h2>`;
+  html += `<div class="card-scope">Layer ${meta.layer} | Scope: ${d.scope}</div>`;
+
+  // Hierarchy
+  if (d.hierarchy && d.hierarchy.length) {
+    html += '<h3>Hierarchy</h3><div class="state-flow">';
+    html += d.hierarchy.map(h => h.name).join(' <span class="arrow">→</span> ');
+    html += '</div>';
+  }
+
+  // State machines
+  if (d.states && d.states.length) {
+    for (const sm of d.states) {
+      html += `<h3>State Machine: ${sm.name}</h3><div class="state-flow">`;
+      html += `Initial: <code>${sm.initial}</code><br>`;
+      html += `States: ${sm.states.map(s=>`<code>${s}</code>`).join(', ')}<br>`;
+      if (sm.transitions) {
+        html += '<br>';
+        for (const t of sm.transitions) {
+          const [from, to, trigger] = Array.isArray(t) ? t : [t.from, t.to, t.trigger];
+          html += `<code>${from}</code> <span class="arrow">—[${trigger}]→</span> <code>${to}</code><br>`;
+        }
+      }
+      html += '</div>';
+    }
+  }
+
+  // UDTs
+  html += '<h3>User-Defined Types</h3>';
+  for (const [name, udt] of Object.entries(d.udts||{})) {
+    html += `<h3 style="color:var(--cyan)">${name}`;
+    if (udt.base) html += ` <span style="color:var(--dim)">extends ${udt.base}</span>`;
+    html += '</h3>';
+    // Tags
+    if (udt.tags && Object.keys(udt.tags).length) {
+      for (const [cat, vals] of Object.entries(udt.tags)) {
+        if (Array.isArray(vals)) {
+          html += `<div style="margin:4px 0"><span class="badge">${cat}</span> `;
+          for (const v of vals) {
+            const label = Array.isArray(v) ? v.join(':') : v;
+            html += `<span class="tag">${label}</span>`;
+          }
+          html += '</div>';
+        }
+      }
+    }
+    // Fields table
+    if (udt.fields && udt.fields.length) {
+      html += '<table><tr><th>Field</th><th>Type</th><th>Default</th><th>Req</th></tr>';
+      for (const f of udt.fields) {
+        const req = f.required ? '<span class="field-req">✓</span>' : '';
+        html += `<tr><td>${f.name}</td><td class="field-type">${f.type||'any'}</td>
+          <td>${f.default !== undefined && f.default !== null ? f.default : '—'}</td><td>${req}</td></tr>`;
+      }
+      html += '</table>';
+    }
+  }
+
+  // Rules
+  if (d.rules && d.rules.length) {
+    html += '<h3>Rules</h3><table><tr><th>ID</th><th>Action</th><th>Severity</th></tr>';
+    for (const r of d.rules) {
+      html += `<tr><td>${r.id}</td><td>${r.action}</td><td>${r.severity}</td></tr>`;
+    }
+    html += '</table>';
+  }
+
+  c.innerHTML = html;
+}
+
+function showCrosswalks() {
+  setActive('Crosswalks');
+  const c = document.getElementById('content');
+  let html = '<h2>🔀 Crosswalk Mappings</h2>';
+  html += '<table><tr><th>From Std</th><th>From Entity</th><th></th><th>To Std</th><th>To Entity</th><th>Mapping</th></tr>';
+  for (const cw of CROSSWALKS) {
+    html += `<tr><td>${cw.from_std}</td><td>${cw.from_entity}</td>
+      <td class="crosswalk-arrow">→</td>
+      <td>${cw.to_std}</td><td>${cw.to_entity}</td>
+      <td><span class="badge ${cw.mapping==='exact'?'state':'rule'}">${cw.mapping}</span></td></tr>`;
+  }
+  html += '</table>';
+  c.innerHTML = html;
+}
+
+function showUDTs() {
+  setActive('All UDTs');
+  const c = document.getElementById('content');
+  let html = '<h2>🧬 All Registered UDTs</h2>';
+  html += '<div class="grid">';
+  for (const [name, udt] of Object.entries(UDTS)) {
+    html += `<div class="card">
+      <div class="card-title">${name}</div>`;
+    if (udt.base) html += `<div class="card-scope">extends ${udt.base}</div>`;
+    html += `<div class="card-scope">${(udt.fields||[]).length} fields</div>`;
+    for (const f of (udt.fields||[])) {
+      html += `<span class="tag">${f.name}:${f.type||'any'}</span>`;
+    }
+    if (udt.tags) {
+      for (const [cat, vals] of Object.entries(udt.tags)) {
+        if (Array.isArray(vals) && vals.length <= 8) {
+          html += `<div style="margin-top:4px"><span class="badge">${cat}</span></div>`;
+        }
+      }
+    }
+    html += '</div>';
+  }
+  html += '</div>';
+  c.innerHTML = html;
+}
+
+// URL params: ?demo=1
+if (new URLSearchParams(location.search).get('demo') === '1') {
+  document.getElementById('demoBanner').style.display = 'block';
+}
+
+load();
+</script>
+</body>
+</html>

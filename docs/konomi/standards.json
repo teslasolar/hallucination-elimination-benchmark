@@ -1,0 +1,12 @@
+{
+  "standards": [
+    "ISA-95",
+    "ISA-88",
+    "ISA-101",
+    "ISA-18.2",
+    "OPC-UA",
+    "MQTT-Sparkplug",
+    "Modbus",
+    "KPI"
+  ]
+}

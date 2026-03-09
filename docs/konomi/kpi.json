@@ -1,0 +1,152 @@
+{
+  "id": "KPI",
+  "scope": "operational performance metrics",
+  "udts": {
+    "OEE": {
+      "name": "OEE",
+      "base": null,
+      "fields": [
+        {
+          "name": "availability",
+          "type": "num",
+          "required": true
+        },
+        {
+          "name": "performance",
+          "type": "num",
+          "required": true
+        },
+        {
+          "name": "quality",
+          "type": "num",
+          "required": true
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "KPI"
+        ],
+        "formula": "oee = availability * performance * quality",
+        "targets": {
+          "availability": 0.9,
+          "performance": 0.95,
+          "quality": 0.99,
+          "oee": 0.85
+        }
+      }
+    },
+    "MTBF": {
+      "name": "MTBF",
+      "base": null,
+      "fields": [
+        {
+          "name": "total_uptime",
+          "type": "num",
+          "required": true
+        },
+        {
+          "name": "failure_count",
+          "type": "int",
+          "required": true
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "formula": "mtbf = total_uptime / failure_count"
+      }
+    },
+    "MTTR": {
+      "name": "MTTR",
+      "base": null,
+      "fields": [
+        {
+          "name": "total_downtime",
+          "type": "num",
+          "required": true
+        },
+        {
+          "name": "failure_count",
+          "type": "int",
+          "required": true
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "formula": "mttr = total_downtime / failure_count"
+      }
+    },
+    "CycleTime": {
+      "name": "CycleTime",
+      "base": null,
+      "fields": [
+        {
+          "name": "ideal",
+          "type": "num",
+          "required": true
+        },
+        {
+          "name": "actual",
+          "type": "num",
+          "required": true
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "formula": "efficiency = ideal / actual"
+      }
+    },
+    "Throughput": {
+      "name": "Throughput",
+      "base": null,
+      "fields": [
+        {
+          "name": "value",
+          "type": "num",
+          "required": true
+        },
+        {
+          "name": "unit",
+          "type": "str",
+          "default": "units/hour"
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {}
+    },
+    "EnergyKPI": {
+      "name": "EnergyKPI",
+      "base": null,
+      "fields": [
+        {
+          "name": "kwh_per_unit",
+          "type": "num",
+          "required": true
+        },
+        {
+          "name": "peak_demand",
+          "type": "num",
+          "default": null
+        },
+        {
+          "name": "power_factor",
+          "type": "num",
+          "default": null
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {}
+    }
+  },
+  "hierarchy": [],
+  "states": [],
+  "entities": [],
+  "relations": [],
+  "rules": []
+}

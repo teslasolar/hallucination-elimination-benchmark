@@ -1,0 +1,245 @@
+{
+  "id": "ISA-18.2",
+  "scope": "alarm management lifecycle",
+  "udts": {
+    "AlarmPriority": {
+      "name": "AlarmPriority",
+      "base": null,
+      "fields": [
+        {
+          "name": "level",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "response",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "time",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "color",
+          "type": "str",
+          "required": true
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-18.2"
+        ],
+        "priorities": [
+          [
+            1,
+            "Emergency",
+            "Immediate",
+            "<1min",
+            "Red"
+          ],
+          [
+            2,
+            "High",
+            "Prompt",
+            "<10min",
+            "Orange"
+          ],
+          [
+            3,
+            "Medium",
+            "Timely",
+            "<1hr",
+            "Yellow"
+          ],
+          [
+            4,
+            "Low",
+            "Awareness",
+            "Shift",
+            "Cyan"
+          ]
+        ]
+      }
+    },
+    "Alarm": {
+      "name": "Alarm",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "tag",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "type",
+          "type": "str",
+          "default": "HI"
+        },
+        {
+          "name": "priority",
+          "type": "int",
+          "default": 3
+        },
+        {
+          "name": "state",
+          "type": "str",
+          "default": "NORM"
+        },
+        {
+          "name": "setpoint",
+          "type": "num",
+          "default": null
+        },
+        {
+          "name": "deadband",
+          "type": "num",
+          "default": 0
+        },
+        {
+          "name": "message",
+          "type": "str",
+          "default": ""
+        },
+        {
+          "name": "consequence",
+          "type": "str",
+          "default": ""
+        },
+        {
+          "name": "response",
+          "type": "str",
+          "default": ""
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-18.2"
+        ],
+        "types": [
+          "HI",
+          "HIHI",
+          "LO",
+          "LOLO",
+          "DEV",
+          "ROG",
+          "DISC"
+        ],
+        "states": [
+          "NORM",
+          "UNACK",
+          "ACKED",
+          "RTN_UNACK",
+          "SHELVED",
+          "OUT_OF_SERVICE"
+        ],
+        "transitions": [
+          [
+            "NORM",
+            "UNACK",
+            "condition"
+          ],
+          [
+            "UNACK",
+            "ACKED",
+            "ack"
+          ],
+          [
+            "ACKED",
+            "NORM",
+            "clear"
+          ],
+          [
+            "UNACK",
+            "RTN_UNACK",
+            "clear"
+          ],
+          [
+            "RTN_UNACK",
+            "NORM",
+            "ack"
+          ]
+        ]
+      }
+    }
+  },
+  "hierarchy": [],
+  "states": [
+    {
+      "name": "AlarmLifecycle",
+      "states": [
+        "NORM",
+        "UNACK",
+        "ACKED",
+        "RTN_UNACK",
+        "SHELVED",
+        "OUT_OF_SERVICE"
+      ],
+      "initial": "NORM",
+      "transitions": [
+        [
+          "NORM",
+          "UNACK",
+          "condition"
+        ],
+        [
+          "UNACK",
+          "ACKED",
+          "ack"
+        ],
+        [
+          "ACKED",
+          "NORM",
+          "clear"
+        ],
+        [
+          "UNACK",
+          "RTN_UNACK",
+          "clear"
+        ],
+        [
+          "RTN_UNACK",
+          "NORM",
+          "ack"
+        ]
+      ]
+    }
+  ],
+  "entities": [],
+  "relations": [],
+  "rules": [
+    {
+      "id": "R1",
+      "condition": "True",
+      "action": "every alarm must be documented",
+      "severity": "error"
+    },
+    {
+      "id": "R3",
+      "condition": "True",
+      "action": "every alarm must be actionable",
+      "severity": "error"
+    },
+    {
+      "id": "R6",
+      "condition": "True",
+      "action": "review frequency annual minimum",
+      "severity": "error"
+    }
+  ]
+}

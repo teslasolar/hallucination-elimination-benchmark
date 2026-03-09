@@ -1,0 +1,214 @@
+{
+  "id": "ISA-101",
+  "scope": "human machine interface design",
+  "udts": {
+    "HMI_Layer": {
+      "name": "HMI_Layer",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "scope",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "info",
+          "type": "str",
+          "default": ""
+        },
+        {
+          "name": "nav",
+          "type": "str",
+          "default": ""
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-101"
+        ],
+        "layers": [
+          [
+            1,
+            "Overview",
+            "Plant/Site",
+            "KPIs,Status,Alarms"
+          ],
+          [
+            2,
+            "Area",
+            "Process Area",
+            "Flows,States,Trends"
+          ],
+          [
+            3,
+            "Unit",
+            "Equipment",
+            "Faceplate,Control"
+          ],
+          [
+            4,
+            "Detail",
+            "Diagnostic",
+            "Config,Tuning"
+          ],
+          [
+            5,
+            "Support",
+            "Maintenance",
+            "Calibration,History"
+          ]
+        ]
+      }
+    },
+    "ColorMeaning": {
+      "name": "ColorMeaning",
+      "base": null,
+      "fields": [
+        {
+          "name": "state",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "color",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "hex",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "usage",
+          "type": "str",
+          "default": ""
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-101"
+        ],
+        "palette": [
+          [
+            "Normal",
+            "Gray",
+            "#808080"
+          ],
+          [
+            "Running",
+            "Green",
+            "#00AA00"
+          ],
+          [
+            "Warning",
+            "Yellow",
+            "#FFCC00"
+          ],
+          [
+            "Alarm",
+            "Red",
+            "#CC0000"
+          ],
+          [
+            "Maint",
+            "Blue",
+            "#0066CC"
+          ],
+          [
+            "Manual",
+            "Orange",
+            "#FF6600"
+          ],
+          [
+            "Transition",
+            "Cyan",
+            "#00CCCC"
+          ]
+        ]
+      }
+    },
+    "Faceplate": {
+      "name": "Faceplate",
+      "base": null,
+      "fields": [
+        {
+          "name": "equipment",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "pv_display",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "sp_input",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "commands",
+          "type": "list",
+          "default": []
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-101"
+        ]
+      }
+    }
+  },
+  "hierarchy": [],
+  "states": [],
+  "entities": [],
+  "relations": [],
+  "rules": [
+    {
+      "id": "R1",
+      "condition": "True",
+      "action": "no hardcoded values in graphics",
+      "severity": "error"
+    },
+    {
+      "id": "R2",
+      "condition": "True",
+      "action": "bind to tag path not direct address",
+      "severity": "error"
+    },
+    {
+      "id": "R6",
+      "condition": "True",
+      "action": "navigation consistent predictable",
+      "severity": "error"
+    },
+    {
+      "id": "R8",
+      "condition": "True",
+      "action": "confirmation for critical commands",
+      "severity": "error"
+    }
+  ]
+}
