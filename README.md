@@ -119,7 +119,7 @@ hallucination-elimination-benchmark/
 │   ├── run_benchmark.py             # Benchmark runner
 │   └── analyze_results.py           # Category breakdown + failure modes
 │
-├── konomi/                          # KONOMI Standard system
+├── konomi/                          # KONOMI Standard + Triad Engine
 │   ├── core.py                      # Layer 0: Meta-UDT (UDTs define UDTs)
 │   ├── readme_exec.py               # README executor — runs UDT tags
 │   ├── standards/                   # Layers 1-9 (<520 tokens each)
@@ -132,6 +132,17 @@ hallucination-elimination-benchmark/
 │   │   ├── mqtt_sparkplug.py        # Layer 7: MQTT/Sparkplug B
 │   │   ├── modbus.py                # Layer 8: Modbus
 │   │   └── kpi.py                   # Layer 9: KPIs (OEE, MTBF, MTTR)
+│   ├── triad/                       # Refactored Triad Engine
+│   │   ├── engine.py                # Prompt construction + question wrapping
+│   │   ├── judge.py                 # Gemini judge (independent evaluator)
+│   │   ├── lifecycle.py             # ISA-88 Batch state machine lifecycle
+│   │   ├── run.py                   # Unified CLI (replaces 5 runner scripts)
+│   │   └── providers/               # Thin API adapters
+│   │       ├── anthropic.py         # Claude (all versions)
+│   │       ├── openai.py            # GPT-4o, GPT-5.2
+│   │       ├── gemini.py            # Gemini 2.0/2.5
+│   │       ├── ollama.py            # Local models (Mistral, Bielik, etc.)
+│   │       └── perplexity.py        # Sonar, Sonar-Pro
 │   ├── crosswalks/
 │   │   └── engine.py                # Inter-standard mapping engine
 │   └── api/
@@ -428,6 +439,57 @@ Alarm
 OEE
 ```
 
+#### Triad Engine Tests
+
+<!-- @test[triad_engine] -->
+```bash
+python -c "
+from konomi.triad.engine import TriadEngine
+engine = TriadEngine(cultural_guide=None, char_map={})
+raw = engine.build_system(triad=False)
+assert 'Roman citizen' in raw
+w = engine.wrap_question('Hadrian Wall?', 'ANACHRONISM_DETECTION')
+assert 'does this thing exist' in w
+print('OK: TriadEngine prompts work')
+"
+```
+
+<!-- @test[triad_providers] -->
+```bash
+python -c "
+from konomi.triad.providers import list_providers
+p = list_providers()
+assert 'anthropic' in p and 'ollama' in p and 'gemini' in p
+assert len(p) == 5
+print('OK: 5 providers registered:', p)
+"
+```
+
+<!-- @test[triad_lifecycle] -->
+```bash
+python -c "
+from konomi.triad.lifecycle import BenchmarkRun, BATCH_STATES
+assert BATCH_STATES == ['Created','Scheduled','Running','Complete','Held','Aborted']
+from konomi.triad.engine import TriadEngine
+batch = BenchmarkRun('test', 'test', engine=TriadEngine())
+assert batch.state == 'Created'
+batch._transition('Scheduled')
+assert batch.state == 'Scheduled'
+assert len(batch.events) == 1
+print('OK: ISA-88 batch lifecycle works')
+"
+```
+
+<!-- @path[triad_run] -->
+```
+konomi/triad/run.py
+```
+
+<!-- @path[triad_engine_file] -->
+```
+konomi/triad/engine.py
+```
+
 #### Repo Maintenance
 
 <!-- @run[clear_cache] -->
@@ -469,28 +531,43 @@ python -m konomi.api.generate_pages
 
 ## Quick Start — Reproduce Any Result
 
+### Unified Runner (recommended)
+
 ```bash
 pip install requests anthropic openai
 
-# Run Claude Haiku (cheapest)
-export ANTHROPIC_API_KEY="your-key"
+# Any provider, any model — one command
 export GEMINI_API_KEY="your-key"   # free judge: aistudio.google.com/app/apikey
-python runners/run_anthropic.py --model claude-haiku-4-5-20251001 --triad
 
-# Run GPT-4o mini
+# Claude
+export ANTHROPIC_API_KEY="your-key"
+python -m konomi.triad.run --provider anthropic --model claude-haiku-4-5-20251001 --triad
+
+# GPT
 export OPENAI_API_KEY="your-key"
-python runners/run_openai.py --model gpt-4o-mini --triad
+python -m konomi.triad.run --provider openai --model gpt-4o-mini --triad
 
-# Run Mistral 7B locally (free, requires Ollama)
+# Gemini
+python -m konomi.triad.run --provider gemini --model gemini-2.5-pro --triad
+
+# Local Ollama (free)
 ollama pull mistral:instruct
-python runners/run_ollama.py --model mistral:instruct --triad
+python -m konomi.triad.run --provider ollama --model mistral:instruct --triad
 
-# Run Bielik 11B locally (open-source Polish LLM)
-ollama pull SpeakLeash/bielik-11b-v2.3-instruct:Q4_K_M
-python runners/run_ollama.py --model SpeakLeash/bielik-11b-v2.3-instruct:Q4_K_M --triad
+# Filter categories, list providers
+python -m konomi.triad.run --provider ollama --model mistral:instruct --triad --categories DOMAIN_SPECIFIC
+python -m konomi.triad.run --list-providers
 ```
 
-All runners save after every question and resume automatically if interrupted. Results go to `results/benchmark_{model}_{mode}.json`.
+### Legacy Runners (still work)
+
+```bash
+python runners/run_anthropic.py --model claude-haiku-4-5-20251001 --triad
+python runners/run_openai.py --model gpt-4o-mini --triad
+python runners/run_ollama.py --model mistral:instruct --triad
+```
+
+All runners save after every question and resume automatically if interrupted. Results go to `results/benchmark_{model}_{mode}.json`. The ISA-88 batch lifecycle tracks state transitions (Created → Scheduled → Running → Complete | Held | Aborted) in the result JSON.
 
 ---
 
