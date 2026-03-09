@@ -12,11 +12,6 @@ CROSSWALK_TABLE = {
         "Property": {"to": "OPC_Variable", "mapping": "exact"},
         "Capability": {"to": "OPC_Method", "mapping": "exact"},
     },
-    ("ISA-88", "PackML"): {
-        "RUNNING": {"to": "EXECUTE", "mapping": "exact"},
-        "HELD": {"to": "HELD", "mapping": "exact"},
-        "ABORTED": {"to": "ABORTED", "mapping": "exact"},
-    },
     ("ISA-101", "ISA-18.2"): {
         "AlarmIndicator": {"to": "AlarmState", "mapping": "exact", "note": "visual"},
         "ColorMeaning": {"to": "Priority", "mapping": "partial", "note": "color code"},
@@ -25,6 +20,32 @@ CROSSWALK_TABLE = {
         "OPC_Variable": {"to": "Metric", "mapping": "exact"},
         "OPC_Subscription": {"to": "NDATA/DDATA", "mapping": "partial"},
         "OPC_Method": {"to": "NCMD/DCMD", "mapping": "exact"},
+    },
+    ("ISA-88", "PackML"): {
+        "ProcessCell": {"to": "Machine", "mapping": "exact"},
+        "Unit": {"to": "Unit", "mapping": "exact"},
+        "Phase": {"to": "ActingState", "mapping": "partial", "note": "state subset"},
+        "IDLE": {"to": "STOPPED", "mapping": "exact"},
+        "RUNNING": {"to": "EXECUTE", "mapping": "exact"},
+        "HELD": {"to": "HELD", "mapping": "exact"},
+        "ABORTED": {"to": "ABORTED", "mapping": "exact"},
+        "COMPLETE": {"to": "COMPLETE", "mapping": "exact"},
+        "STOPPING": {"to": "STOPPING", "mapping": "exact"},
+        "RESETTING": {"to": "RESETTING", "mapping": "exact"},
+    },
+    ("ISA-95", "MDIS"): {
+        "Equipment": {"to": "MDISObject", "mapping": "exact", "note": "field device"},
+        "ProcessSegment": {"to": "ServiceProcedure", "mapping": "partial"},
+        "Material": {"to": "Fluid", "mapping": "partial", "note": "process fluid"},
+        "Property": {"to": "ProcessVariable", "mapping": "exact"},
+    },
+    ("ISA-88", "PLCopen"): {
+        "Phase": {"to": "FunctionBlock", "mapping": "partial", "note": "control logic"},
+        "IDLE": {"to": "STANDSTILL", "mapping": "exact"},
+        "RUNNING": {"to": "CONTINUOUS_MOTION", "mapping": "partial"},
+        "HELD": {"to": "SYNCHRONIZED_MOTION", "mapping": "partial"},
+        "ABORTED": {"to": "ERRORSTOP", "mapping": "exact"},
+        "Recipe": {"to": "Program", "mapping": "partial", "note": "IEC 61131-3"},
     },
 }
 

@@ -50,27 +50,6 @@
       "mapping": "exact"
     },
     {
-      "from_std": "ISA-88",
-      "to_std": "PackML",
-      "from_entity": "RUNNING",
-      "to_entity": "EXECUTE",
-      "mapping": "exact"
-    },
-    {
-      "from_std": "ISA-88",
-      "to_std": "PackML",
-      "from_entity": "HELD",
-      "to_entity": "HELD",
-      "mapping": "exact"
-    },
-    {
-      "from_std": "ISA-88",
-      "to_std": "PackML",
-      "from_entity": "ABORTED",
-      "to_entity": "ABORTED",
-      "mapping": "exact"
-    },
-    {
       "from_std": "ISA-101",
       "to_std": "ISA-18.2",
       "from_entity": "AlarmIndicator",
@@ -104,6 +83,146 @@
       "from_entity": "OPC_Method",
       "to_entity": "NCMD/DCMD",
       "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PackML",
+      "from_entity": "ProcessCell",
+      "to_entity": "Machine",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PackML",
+      "from_entity": "Unit",
+      "to_entity": "Unit",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PackML",
+      "from_entity": "Phase",
+      "to_entity": "ActingState",
+      "mapping": "partial"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PackML",
+      "from_entity": "IDLE",
+      "to_entity": "STOPPED",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PackML",
+      "from_entity": "RUNNING",
+      "to_entity": "EXECUTE",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PackML",
+      "from_entity": "HELD",
+      "to_entity": "HELD",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PackML",
+      "from_entity": "ABORTED",
+      "to_entity": "ABORTED",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PackML",
+      "from_entity": "COMPLETE",
+      "to_entity": "COMPLETE",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PackML",
+      "from_entity": "STOPPING",
+      "to_entity": "STOPPING",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PackML",
+      "from_entity": "RESETTING",
+      "to_entity": "RESETTING",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "MDIS",
+      "from_entity": "Equipment",
+      "to_entity": "MDISObject",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "MDIS",
+      "from_entity": "ProcessSegment",
+      "to_entity": "ServiceProcedure",
+      "mapping": "partial"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "MDIS",
+      "from_entity": "Material",
+      "to_entity": "Fluid",
+      "mapping": "partial"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "MDIS",
+      "from_entity": "Property",
+      "to_entity": "ProcessVariable",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PLCopen",
+      "from_entity": "Phase",
+      "to_entity": "FunctionBlock",
+      "mapping": "partial"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PLCopen",
+      "from_entity": "IDLE",
+      "to_entity": "STANDSTILL",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PLCopen",
+      "from_entity": "RUNNING",
+      "to_entity": "CONTINUOUS_MOTION",
+      "mapping": "partial"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PLCopen",
+      "from_entity": "HELD",
+      "to_entity": "SYNCHRONIZED_MOTION",
+      "mapping": "partial"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PLCopen",
+      "from_entity": "ABORTED",
+      "to_entity": "ERRORSTOP",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "PLCopen",
+      "from_entity": "Recipe",
+      "to_entity": "Program",
+      "mapping": "partial"
     }
   ]
 }

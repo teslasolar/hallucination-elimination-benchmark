@@ -1,0 +1,60 @@
+name: Executable README Tests
+
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches: [main, master]
+
+jobs:
+  readme-exec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install numpy google-generativeai anthropic openai
+
+      - name: Run executable README (path + structure tags)
+        run: python -m konomi.readme_exec --tag path
+
+      - name: Run executable README (test tags)
+        run: python -m konomi.readme_exec --tag test
+        env:
+          KONOMI_DEMO: "1"
+
+      - name: Run executable README (UDT tags)
+        run: python -m konomi.readme_exec --tag udt
+        env:
+          KONOMI_DEMO: "1"
+
+      - name: Run executable README (validate tags)
+        run: python -m konomi.readme_exec --tag validate
+        env:
+          KONOMI_DEMO: "1"
+
+      - name: Run executable README (crosswalk tags)
+        run: python -m konomi.readme_exec --tag crosswalk
+        env:
+          KONOMI_DEMO: "1"
+
+      - name: Run executable README (state tags)
+        run: python -m konomi.readme_exec --tag state
+        env:
+          KONOMI_DEMO: "1"
+
+      - name: Regenerate Pages JSON
+        run: python -m konomi.api.generate_pages
+
+      - name: Sync docs/benchmark mirror
+        run: bash scripts/sync_docs_benchmark.sh
+
+      - name: Check for uncommitted changes
+        run: |
+          if [ -n "$(git diff --name-only docs/)" ]; then
+            echo "::warning::docs/ is out of date — run 'python -m konomi.api.generate_pages && bash scripts/sync_docs_benchmark.sh' and commit"
+          fi

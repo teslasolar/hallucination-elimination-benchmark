@@ -72,7 +72,4 @@ TOTAL: 36/36 PASSING
 ### Next Steps
 - [ ] Wire real API keys (ANTHROPIC/GEMINI/OPENAI) via GitHub secrets
 - [ ] Run full 222q benchmark through unified runner
-- [ ] Add CI/CD that runs `python -m konomi.readme_exec` on PR
-- [ ] Deduplicate docs/benchmark/ mirror (symlink or build step)
 - [ ] Consider removing legacy runners/ once unified runner proven
-- [ ] Add more crosswalk mappings (PackML, MDIS, PLCopen)

@@ -11,7 +11,7 @@ a{color:#00e5ff}
 .hub{display:flex;flex-direction:column;align-items:center;gap:20px;max-width:600px;padding:20px}
 h1{color:#00e5ff;font-size:1.4rem}
 .subtitle{color:#64748b;font-size:.8rem}
-.nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
+.nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:900px}
 .nav-card{background:#111827;border:1px solid #1e293b;border-radius:8px;padding:16px;text-decoration:none;color:#e2e8f0;transition:border-color .2s}
 .nav-card:hover{border-color:#3b82f6}
 .nav-card h3{color:#06b6d4;font-size:.9rem;margin-bottom:4px}
@@ -45,6 +45,14 @@ h1{color:#00e5ff;font-size:1.4rem}
     <a class="nav-card" href="PAPER/Domain_Grounding_Hallucination_Elimination_Benchmark.pdf">
       <h3>Research Paper</h3>
       <p>Domain Grounding Hallucination Elimination (PDF)</p>
+    </a>
+    <a class="nav-card" href="docs/benchmark/README.md">
+      <h3>Benchmark Docs</h3>
+      <p>Methodology, case studies, chaining, cultural guide schema</p>
+    </a>
+    <a class="nav-card" href="https://github.com/teslasolar/hallucination-elimination-benchmark/actions">
+      <h3>CI/CD Status</h3>
+      <p>Executable README tests, Pages sync, build status</p>
     </a>
   </div>
 

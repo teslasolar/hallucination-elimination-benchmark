@@ -37,7 +37,7 @@ konomi/api/generate_pages.py → docs/konomi/*.json
 /docs/konomi/?demo=1     → demo mode (all validations pass)
 ```
 
-### TODO
-- [ ] Deduplicate benchmark/ mirror (build step or symlinks)
-- [ ] Add konomi/ link to main dashboard nav
-- [ ] Auto-regenerate JSON on commit (CI)
+### Notes
+- benchmark/ mirror synced via `scripts/sync_docs_benchmark.sh`
+- Hub nav (root index.html) links: Dashboard, KONOMI, Demo, Paper, Benchmark Docs, CI/CD
+- JSON auto-regenerated in CI via `.github/workflows/readme-exec.yml`

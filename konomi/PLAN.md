@@ -22,7 +22,7 @@ standards/                LAYERS 1-9 (all <520 tokens)
 
 crosswalks/
   __init__.py        51B
-  engine.py         2.4K  ISA-95↔88, 95↔OPC-UA, 88↔PackML, 101↔18.2, OPC↔Sparkplug
+  engine.py         3.2K  ISA-95↔88, 95↔OPC-UA, 88↔PackML, 101↔18.2, OPC↔Sparkplug, 95↔MDIS, 88↔PLCopen
 
 api/
   __init__.py        48B
