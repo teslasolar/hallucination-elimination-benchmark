@@ -31,11 +31,17 @@ Alarm = UDT("Alarm", [
 ], tags={
     "isa": ["ISA-18.2"],
     "types": ["HI", "HIHI", "LO", "LOLO", "DEV", "ROG", "DISC"],
-    "states": ["NORM", "UNACK", "ACKED", "RTN_UNACK", "SHELVED", "OUT_OF_SERVICE"],
+    "states": ["NORM", "UNACK", "ACKED", "RTN_UNACK",
+               "SUPPRESSED_COND", "SUPPRESSED_DESIGN",
+               "SHELVED", "OUT_OF_SERVICE"],
     "transitions": [
         ("NORM", "UNACK", "condition"), ("UNACK", "ACKED", "ack"),
         ("ACKED", "NORM", "clear"), ("UNACK", "RTN_UNACK", "clear"),
         ("RTN_UNACK", "NORM", "ack"),
+        ("NORM", "SHELVED", "shelve"), ("SHELVED", "NORM", "unshelve"),
+        ("NORM", "OUT_OF_SERVICE", "disable"), ("OUT_OF_SERVICE", "NORM", "enable"),
+        ("UNACK", "SUPPRESSED_COND", "suppress"), ("SUPPRESSED_COND", "NORM", "clear"),
+        ("NORM", "SUPPRESSED_DESIGN", "design_suppress"),
     ],
 })
 
@@ -55,7 +61,7 @@ METRICS = {
 
 
 def build():
-    return Standard("ISA-18.2", "alarm management lifecycle",
+    return Standard("ISA-18.2", "alarm management lifecycle (ANSI/ISA-18.2)",
         udts=[AlarmPriority, Alarm], rules=RULES,
         states=[{"name": "AlarmLifecycle", "states": Alarm.tags["states"],
                  "initial": "NORM", "transitions": Alarm.tags["transitions"]}])

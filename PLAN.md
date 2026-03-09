@@ -1,6 +1,6 @@
 # PLAN.md — Root
 ## Hallucination Elimination Benchmark + KONOMI Standard
-STATUS:refactored|TAGS:36/36|LAYERS:0-9|PROVIDERS:5|QUESTIONS:222
+STATUS:refactored|TAGS:36/36|UDTS:52|CROSSWALKS:10×48|LAYERS:0-9|PROVIDERS:5|QUESTIONS:222
 
 ### Architecture
 ```

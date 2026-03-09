@@ -283,6 +283,74 @@
         ]
       }
     },
+    "Operation": {
+      "name": "Operation",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "phases",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "state",
+          "type": "str",
+          "default": "IDLE"
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-88"
+        ],
+        "note": "ordered set of phases within a unit procedure"
+      }
+    },
+    "UnitProcedure": {
+      "name": "UnitProcedure",
+      "base": null,
+      "fields": [
+        {
+          "name": "id",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "required": true
+        },
+        {
+          "name": "operations",
+          "type": "list",
+          "default": []
+        },
+        {
+          "name": "unit",
+          "type": "str",
+          "required": true
+        }
+      ],
+      "methods": [],
+      "constraints": [],
+      "tags": {
+        "isa": [
+          "ISA-88"
+        ],
+        "note": "contiguous production within a single unit"
+      }
+    },
     "Recipe": {
       "name": "Recipe",
       "base": null,

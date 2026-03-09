@@ -52,6 +52,20 @@ Phase = UDT("Phase", [
     ],
 })
 
+Operation = UDT("Operation", [
+    {"name": "id", "type": "str", "required": True},
+    {"name": "name", "type": "str", "required": True},
+    {"name": "phases", "type": "list", "default": []},
+    {"name": "state", "type": "str", "default": "IDLE"},
+], tags={"isa": ["ISA-88"], "note": "ordered set of phases within a unit procedure"})
+
+UnitProcedure = UDT("UnitProcedure", [
+    {"name": "id", "type": "str", "required": True},
+    {"name": "name", "type": "str", "required": True},
+    {"name": "operations", "type": "list", "default": []},
+    {"name": "unit", "type": "str", "required": True},
+], tags={"isa": ["ISA-88"], "note": "contiguous production within a single unit"})
+
 Recipe = UDT("Recipe", [
     {"name": "id", "type": "str", "required": True},
     {"name": "name", "type": "str", "required": True},
@@ -87,7 +101,8 @@ HIERARCHY = [
 
 def build():
     return Standard("ISA-88", "batch process control (IEC 61512)",
-        udts=[ProcessCell, Unit, EquipmentModule, ControlModule, Phase, Recipe, Batch],
+        udts=[ProcessCell, Unit, EquipmentModule, ControlModule,
+              Phase, Operation, UnitProcedure, Recipe, Batch],
         hierarchy=HIERARCHY,
         states=[{"name": "PhaseState", "states": Phase.tags["states"],
                  "initial": "IDLE", "transitions": Phase.tags["transitions"]}])

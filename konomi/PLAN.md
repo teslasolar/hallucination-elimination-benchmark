@@ -1,6 +1,6 @@
 # PLAN.md — konomi/
 ## KONOMI Standard + Triad Engine
-STATUS:active|FILES:30|SIZE:70K|TESTS:36/36
+STATUS:active|FILES:30|SIZE:80K|UDTS:52|CROSSWALKS:10×48|TESTS:36/36
 
 ### Module Map
 ```
@@ -10,19 +10,19 @@ readme_exec.py      7.2K  executable README parser (@path/@test/@run/@udt/@valid
 
 standards/                LAYERS 1-9 (all <520 tokens)
   __init__.py        63B
-  base_udts.py      2.1K  L1: Identifier,Timestamp,Quality,Value,Range,Quantity,Duration,Status
-  isa_95.py         3.3K  L2: PhysicalAsset,Equipment,Material,Personnel,ProcessSegment
-  isa_88.py         2.8K  L3: ProcessCell,Unit,Phase,Recipe,Batch (state machines)
+  base_udts.py      2.8K  L1: Identifier,Timestamp,Quality,Value,Range,Quantity,Duration,Status,ErrorInfo,Measurement,Enumeration
+  isa_95.py         4.1K  L2: PhysicalAsset,Equipment,Material,Personnel,ProcessSegment,OperationsSchedule,ProductionCapability
+  isa_88.py         4.2K  L3: ProcessCell,Unit,EquipmentModule,ControlModule,Phase,Operation,UnitProcedure,Recipe,Batch
   isa_101.py        2.1K  L4: HMI_Layer,ColorMeaning,Faceplate
-  isa_18_2.py       2.4K  L5: AlarmPriority,Alarm (lifecycle states)
-  opc_ua.py         2.1K  L6: OPC_Node,OPC_Variable,OPC_Method,OPC_Subscription
-  mqtt_sparkplug.py 1.5K  L7: MQTT_Topic,SparkplugPayload
-  modbus.py         1.8K  L8: ModbusRegister,ModbusMap
-  kpi.py            1.8K  L9: OEE,MTBF,MTTR,CycleTime,Throughput,EnergyKPI
+  isa_18_2.py       2.8K  L5: AlarmPriority,Alarm (lifecycle+suppression states)
+  opc_ua.py         3.2K  L6: OPC_Node,OPC_Variable,OPC_Method,OPC_Subscription,OPC_DataType,OPC_SecurityPolicy
+  mqtt_sparkplug.py 2.4K  L7: MQTT_Topic,SparkplugPayload,SparkplugMetric
+  modbus.py         2.4K  L8: ModbusRegister,ModbusMap (TCP/RTU/ASCII,multi-register)
+  kpi.py            2.8K  L9: OEE,MTBF,MTTR,CycleTime,Throughput,EnergyKPI,FirstPassYield,DefectRate,Downtime
 
 crosswalks/
   __init__.py        51B
-  engine.py         3.2K  ISA-95↔88, 95↔OPC-UA, 88↔PackML, 101↔18.2, OPC↔Sparkplug, 95↔MDIS, 88↔PLCopen
+  engine.py         4.0K  10 pairs: 95↔88, 95↔OPC, 101↔18.2, OPC↔Spark, 88↔PackML, 95↔MDIS, 88↔PLC, 95↔101, 88↔101, 18.2↔OPC
 
 api/
   __init__.py        48B
@@ -82,7 +82,7 @@ python -m konomi.readme_exec [--dry-run] [--tag TAG]
 ```
 GET  /api/standards          list all 8 standards
 GET  /api/standards/{id}     expand one standard
-GET  /api/udts               list all 36 UDTs
+GET  /api/udts               list all 52 UDTs
 GET  /api/expand/{id}        full expansion with hierarchy
 GET  /api/crosswalks         all inter-standard mappings
 GET  /api/generate/{udt}     generate Python class from UDT

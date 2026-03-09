@@ -1,6 +1,6 @@
 {
   "id": "ISA-18.2",
-  "scope": "alarm management lifecycle",
+  "scope": "alarm management lifecycle (ANSI/ISA-18.2)",
   "udts": {
     "AlarmPriority": {
       "name": "AlarmPriority",
@@ -145,6 +145,8 @@
           "UNACK",
           "ACKED",
           "RTN_UNACK",
+          "SUPPRESSED_COND",
+          "SUPPRESSED_DESIGN",
           "SHELVED",
           "OUT_OF_SERVICE"
         ],
@@ -173,6 +175,41 @@
             "RTN_UNACK",
             "NORM",
             "ack"
+          ],
+          [
+            "NORM",
+            "SHELVED",
+            "shelve"
+          ],
+          [
+            "SHELVED",
+            "NORM",
+            "unshelve"
+          ],
+          [
+            "NORM",
+            "OUT_OF_SERVICE",
+            "disable"
+          ],
+          [
+            "OUT_OF_SERVICE",
+            "NORM",
+            "enable"
+          ],
+          [
+            "UNACK",
+            "SUPPRESSED_COND",
+            "suppress"
+          ],
+          [
+            "SUPPRESSED_COND",
+            "NORM",
+            "clear"
+          ],
+          [
+            "NORM",
+            "SUPPRESSED_DESIGN",
+            "design_suppress"
           ]
         ]
       }
@@ -187,6 +224,8 @@
         "UNACK",
         "ACKED",
         "RTN_UNACK",
+        "SUPPRESSED_COND",
+        "SUPPRESSED_DESIGN",
         "SHELVED",
         "OUT_OF_SERVICE"
       ],
@@ -216,6 +255,41 @@
           "RTN_UNACK",
           "NORM",
           "ack"
+        ],
+        [
+          "NORM",
+          "SHELVED",
+          "shelve"
+        ],
+        [
+          "SHELVED",
+          "NORM",
+          "unshelve"
+        ],
+        [
+          "NORM",
+          "OUT_OF_SERVICE",
+          "disable"
+        ],
+        [
+          "OUT_OF_SERVICE",
+          "NORM",
+          "enable"
+        ],
+        [
+          "UNACK",
+          "SUPPRESSED_COND",
+          "suppress"
+        ],
+        [
+          "SUPPRESSED_COND",
+          "NORM",
+          "clear"
+        ],
+        [
+          "NORM",
+          "SUPPRESSED_DESIGN",
+          "design_suppress"
         ]
       ]
     }

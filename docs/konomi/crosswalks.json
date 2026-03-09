@@ -183,6 +183,118 @@
       "mapping": "exact"
     },
     {
+      "from_std": "ISA-95",
+      "to_std": "ISA-101",
+      "from_entity": "Equipment",
+      "to_entity": "Faceplate",
+      "mapping": "partial"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "ISA-101",
+      "from_entity": "Idle",
+      "to_entity": "Gray",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "ISA-101",
+      "from_entity": "Running",
+      "to_entity": "Green",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "ISA-101",
+      "from_entity": "Faulted",
+      "to_entity": "Red",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-95",
+      "to_std": "ISA-101",
+      "from_entity": "Maintenance",
+      "to_entity": "Blue",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "ISA-101",
+      "from_entity": "IDLE",
+      "to_entity": "Gray",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "ISA-101",
+      "from_entity": "RUNNING",
+      "to_entity": "Green",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "ISA-101",
+      "from_entity": "COMPLETE",
+      "to_entity": "Gray",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "ISA-101",
+      "from_entity": "HELD",
+      "to_entity": "Yellow",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "ISA-101",
+      "from_entity": "ABORTED",
+      "to_entity": "Red",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-88",
+      "to_std": "ISA-101",
+      "from_entity": "Phase",
+      "to_entity": "Faceplate",
+      "mapping": "partial"
+    },
+    {
+      "from_std": "ISA-18.2",
+      "to_std": "OPC-UA",
+      "from_entity": "Alarm",
+      "to_entity": "OPC_Node",
+      "mapping": "partial"
+    },
+    {
+      "from_std": "ISA-18.2",
+      "to_std": "OPC-UA",
+      "from_entity": "AlarmPriority",
+      "to_entity": "OPC_Variable",
+      "mapping": "partial"
+    },
+    {
+      "from_std": "ISA-18.2",
+      "to_std": "OPC-UA",
+      "from_entity": "UNACK",
+      "to_entity": "Active",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-18.2",
+      "to_std": "OPC-UA",
+      "from_entity": "ACKED",
+      "to_entity": "Acknowledged",
+      "mapping": "exact"
+    },
+    {
+      "from_std": "ISA-18.2",
+      "to_std": "OPC-UA",
+      "from_entity": "NORM",
+      "to_entity": "Inactive",
+      "mapping": "exact"
+    },
+    {
       "from_std": "ISA-88",
       "to_std": "PLCopen",
       "from_entity": "Phase",

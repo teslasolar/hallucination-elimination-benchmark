@@ -39,6 +39,28 @@ CROSSWALK_TABLE = {
         "Material": {"to": "Fluid", "mapping": "partial", "note": "process fluid"},
         "Property": {"to": "ProcessVariable", "mapping": "exact"},
     },
+    ("ISA-95", "ISA-101"): {
+        "Equipment": {"to": "Faceplate", "mapping": "partial", "note": "equipment→HMI display"},
+        "Idle": {"to": "Gray", "mapping": "exact", "note": "state→color"},
+        "Running": {"to": "Green", "mapping": "exact"},
+        "Faulted": {"to": "Red", "mapping": "exact"},
+        "Maintenance": {"to": "Blue", "mapping": "exact"},
+    },
+    ("ISA-88", "ISA-101"): {
+        "IDLE": {"to": "Gray", "mapping": "exact"},
+        "RUNNING": {"to": "Green", "mapping": "exact"},
+        "COMPLETE": {"to": "Gray", "mapping": "exact"},
+        "HELD": {"to": "Yellow", "mapping": "exact"},
+        "ABORTED": {"to": "Red", "mapping": "exact"},
+        "Phase": {"to": "Faceplate", "mapping": "partial", "note": "phase→unit display"},
+    },
+    ("ISA-18.2", "OPC-UA"): {
+        "Alarm": {"to": "OPC_Node", "mapping": "partial", "note": "alarm→condition node"},
+        "AlarmPriority": {"to": "OPC_Variable", "mapping": "partial", "note": "priority→severity"},
+        "UNACK": {"to": "Active", "mapping": "exact", "note": "OPC alarm state"},
+        "ACKED": {"to": "Acknowledged", "mapping": "exact"},
+        "NORM": {"to": "Inactive", "mapping": "exact"},
+    },
     ("ISA-88", "PLCopen"): {
         "Phase": {"to": "FunctionBlock", "mapping": "partial", "note": "control logic"},
         "IDLE": {"to": "STANDSTILL", "mapping": "exact"},
