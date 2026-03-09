@@ -121,13 +121,18 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:8px;height
 <button class="tb" onclick="Q.setManifold('cell600')">600-CELL<span class="sub">4D regular polytope &bull; 120 vertices</span></button>
 <button class="tb" onclick="Q.setManifold('trefoil')">TREFOIL KNOT<span class="sub">Minimal crossing knot</span></button>
 
-<div class="sec">WEBLLM MODELS</div>
-<button class="tb" onclick="BENCH.selectModel('SmolLM2-135M-Instruct-q0f16-MLC')">SmolLM2-135M<span class="sub">135M params &bull; fastest</span></button>
-<button class="tb" onclick="BENCH.selectModel('SmolLM2-360M-Instruct-q4f16_1-MLC')">SmolLM2-360M<span class="sub">360M params &bull; fast</span></button>
-<button class="tb" onclick="BENCH.selectModel('TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC-1k')">TinyLlama-1.1B<span class="sub">1.1B params &bull; balanced</span></button>
-<button class="tb" onclick="BENCH.selectModel('Llama-3.2-1B-Instruct-q4f16_1-MLC')">Llama-3.2-1B<span class="sub">1B params &bull; Meta</span></button>
-<button class="tb" onclick="BENCH.selectModel('Qwen2.5-0.5B-Instruct-q4f16_1-MLC')">Qwen2.5-0.5B<span class="sub">0.5B params &bull; Alibaba</span></button>
-<button class="tb" onclick="BENCH.selectModel('Phi-3.5-mini-instruct-q4f16_1-MLC')">Phi-3.5-mini<span class="sub">3.8B params &bull; Microsoft</span></button>
+<div class="sec">WEBLLM MODELS — SMALL</div>
+<button class="tb" onclick="BENCH.selectModel('SmolLM2-135M-Instruct-q0f16-MLC')">SmolLM2-135M<span class="sub">135M params &bull; fastest &bull; ~70MB</span></button>
+<button class="tb" onclick="BENCH.selectModel('SmolLM2-360M-Instruct-q4f16_1-MLC')">SmolLM2-360M<span class="sub">360M params &bull; fast &bull; ~200MB</span></button>
+<button class="tb" onclick="BENCH.selectModel('Qwen2.5-0.5B-Instruct-q4f16_1-MLC')">Qwen2.5-0.5B<span class="sub">0.5B params &bull; Alibaba &bull; ~350MB</span></button>
+<div class="sec">WEBLLM MODELS — MEDIUM</div>
+<button class="tb" onclick="BENCH.selectModel('TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC-1k')">TinyLlama-1.1B<span class="sub">1.1B params &bull; balanced &bull; ~700MB</span></button>
+<button class="tb" onclick="BENCH.selectModel('Llama-3.2-1B-Instruct-q4f16_1-MLC')">Llama-3.2-1B<span class="sub">1B params &bull; Meta &bull; ~700MB</span></button>
+<button class="tb" onclick="BENCH.selectModel('Qwen2.5-1.5B-Instruct-q4f16_1-MLC')">Qwen2.5-1.5B<span class="sub">1.5B params &bull; Alibaba &bull; ~1GB</span></button>
+<div class="sec">WEBLLM MODELS — LARGE</div>
+<button class="tb" onclick="BENCH.selectModel('Phi-3.5-mini-instruct-q4f16_1-MLC')">Phi-3.5-mini<span class="sub">3.8B params &bull; Microsoft &bull; ~2.4GB</span></button>
+<button class="tb" onclick="BENCH.selectModel('Llama-3.2-3B-Instruct-q4f16_1-MLC')">Llama-3.2-3B<span class="sub">3B params &bull; Meta &bull; ~2GB</span></button>
+<button class="tb" onclick="BENCH.selectModel('Qwen2.5-3B-Instruct-q4f16_1-MLC')">Qwen2.5-3B<span class="sub">3B params &bull; Alibaba &bull; ~2GB</span></button>
 
 <div class="sec">CONTROLS</div>
 <div class="srow"><div class="slbl"><span>ROTATION SPEED</span><span id="rv">0.50</span></div><input type="range" min="0" max="2" step="0.01" value="0.5" oninput="Q.cfg.speed=+this.value;rv.textContent=this.value"></div>
@@ -267,18 +272,33 @@ const PUBDATA = {
   chaining: {rawOverall:79.2,triadOverall:79.2,rawFault:71.4,triadFault:100,rawCross:100,triadCross:50}
 };
 
-// Sample questions for WebLLM testing
+// Sample questions for WebLLM testing (20 questions, 4 per category)
 const SAMPLE_Q = [
-  {q:"In 110 CE Rome, what material are most common drinking vessels made of?",expected:"ceramic/pottery",cat:"DOMAIN_SPECIFIC"},
+  // ANACHRONISM_DETECTION (4)
   {q:"Does Emperor Trajan use a pocket watch to time gladiatorial bouts?",expected:"No - pocket watches don't exist in 110 CE",cat:"ANACHRONISM_DETECTION"},
-  {q:"What is the primary language of official Roman Senate proceedings in 110 CE?",expected:"Latin",cat:"CULTURAL_VALUES"},
   {q:"Is Marcus, a Roman centurion in 110 CE, checking his smartphone for orders?",expected:"No - smartphones don't exist in 110 CE",cat:"ANACHRONISM_DETECTION"},
-  {q:"What type of armor does a Roman legionary wear in 110 CE?",expected:"Lorica segmentata (segmented plate armor)",cat:"DOMAIN_SPECIFIC"},
   {q:"In 110 CE Rome, do citizens travel between cities by airplane?",expected:"No - airplanes don't exist in 110 CE",cat:"ANACHRONISM_DETECTION"},
+  {q:"In 110 CE, does the Roman army use gunpowder weapons in battle?",expected:"No - gunpowder not known in Rome in 110 CE",cat:"ANACHRONISM_DETECTION"},
+  // DOMAIN_SPECIFIC (4)
+  {q:"In 110 CE Rome, what material are most common drinking vessels made of?",expected:"ceramic/pottery",cat:"DOMAIN_SPECIFIC"},
+  {q:"What type of armor does a Roman legionary wear in 110 CE?",expected:"Lorica segmentata (segmented plate armor)",cat:"DOMAIN_SPECIFIC"},
   {q:"What is the main fuel source for heating Roman baths in 110 CE?",expected:"Wood/charcoal",cat:"DOMAIN_SPECIFIC"},
-  {q:"Does a Roman merchant in 110 CE use paper money for transactions?",expected:"No - paper money doesn't exist in Roman Empire",cat:"ANACHRONISM_DETECTION"},
+  {q:"What currency does a Roman merchant use for daily transactions in 110 CE?",expected:"denarii/sestertii/Roman coins",cat:"DOMAIN_SPECIFIC"},
+  // CULTURAL_VALUES (4)
+  {q:"What is the primary language of official Roman Senate proceedings in 110 CE?",expected:"Latin",cat:"CULTURAL_VALUES"},
   {q:"What writing surface do Roman scholars primarily use in 110 CE?",expected:"Papyrus scrolls or wax tablets",cat:"CULTURAL_VALUES"},
-  {q:"In 110 CE, does the Roman army use gunpowder weapons in battle?",expected:"No - gunpowder not known in Rome in 110 CE",cat:"ANACHRONISM_DETECTION"}
+  {q:"In 110 CE Rome, what role do the Vestal Virgins serve?",expected:"Tend the sacred flame of Vesta/guardians of the hearth",cat:"CULTURAL_VALUES"},
+  {q:"What is the social status of actors and gladiators in 110 CE Rome?",expected:"Infamis/low social status despite fame",cat:"CULTURAL_VALUES"},
+  // CHARACTER_IDENTITY (4)
+  {q:"Who is the current Emperor of Rome in 110 CE?",expected:"Trajan",cat:"CHARACTER_IDENTITY"},
+  {q:"Is Julius Caesar alive and ruling Rome in 110 CE?",expected:"No - Caesar was assassinated in 44 BCE",cat:"CHARACTER_IDENTITY"},
+  {q:"Does a Roman patrician in 110 CE consider himself equal to a plebeian?",expected:"No - strict social hierarchy",cat:"CHARACTER_IDENTITY"},
+  {q:"Who commands the Praetorian Guard in Trajan's Rome?",expected:"Praetorian Prefect/appointed commander",cat:"CHARACTER_IDENTITY"},
+  // COMPLEX_SCENARIOS (4)
+  {q:"A merchant from Parthia arrives in Rome in 110 CE. What diplomatic tensions might he face?",expected:"Rome-Parthia rivalry/trade tensions/suspicion as potential spy",cat:"COMPLEX_SCENARIOS"},
+  {q:"Does a Roman merchant in 110 CE use paper money for transactions?",expected:"No - paper money doesn't exist in Roman Empire",cat:"COMPLEX_SCENARIOS"},
+  {q:"A Roman citizen wants to send a message to a relative in Britannia in 110 CE. How?",expected:"Cursus publicus/messenger/letter carried by traveler",cat:"COMPLEX_SCENARIOS"},
+  {q:"If a slave in 110 CE Rome saves enough money, can they buy their freedom?",expected:"Yes - manumission was common/peculium savings",cat:"COMPLEX_SCENARIOS"}
 ];
 
 // ============================================================
@@ -475,10 +495,23 @@ const BENCH = {
       status.style.color=pct>70?'var(--c2)':pct>40?'var(--c3)':'var(--c1)';
       info.textContent=pass+'/'+SAMPLE_Q.length+' passed — '+this.selectedModel;
       CON.log('WebLLM Benchmark complete: '+pct+'% ('+pass+'/'+SAMPLE_Q.length+')','s');
+      // Per-category breakdown
+      const cats={};
+      this.results.forEach(r=>{if(!cats[r.cat])cats[r.cat]={pass:0,total:0};cats[r.cat].total++;if(r.correct)cats[r.cat].pass++});
+      const catColors={ANACHRONISM_DETECTION:'var(--c0)',DOMAIN_SPECIFIC:'var(--c2)',CULTURAL_VALUES:'var(--c3)',CHARACTER_IDENTITY:'var(--c4)',COMPLEX_SCENARIOS:'var(--c1)'};
+      res.innerHTML+='<div class="isa-box" style="margin-top:6px"><div class="isa-title">PER-CATEGORY BREAKDOWN</div>'+
+        Object.entries(cats).map(([cat,s])=>{const cpct=(s.pass/s.total*100).toFixed(0);return '<div class="bbar"><div class="bbar-fill" style="width:'+cpct+'%;background:'+(catColors[cat]||'var(--c0)')+';opacity:.4"></div><div class="bbar-label">'+cat.substring(0,12)+'</div><div class="bbar-val">'+s.pass+'/'+s.total+' ('+cpct+'%)</div></div>'}).join('')+'</div>';
       // Add comparison bar
       res.innerHTML+='<div class="isa-box" style="margin-top:6px"><div class="isa-title">COMPARISON vs PUBLISHED</div>'+
         PUBDATA.models.map(m=>'<div class="bbar"><div class="bbar-fill" style="width:'+m.rawPct+'%;background:'+m.color+';opacity:.5"></div><div class="bbar-fill" style="width:'+m.triadPct+'%;background:'+m.color+';opacity:.15"></div><div class="bbar-label">'+m.name+'</div><div class="bbar-val">'+m.rawPct+'→'+m.triadPct+'%</div></div>').join('')+
         '<div class="bbar"><div class="bbar-fill" style="width:'+pct+'%;background:var(--c0)"></div><div class="bbar-label">WebLLM ('+this.selectedModel.split('-')[0]+')</div><div class="bbar-val">'+pct+'%</div></div></div>';
+      // Store result for multi-model comparison
+      if(!this.allResults)this.allResults=[];
+      this.allResults.push({model:this.selectedModel,pct:parseFloat(pct),pass,total:SAMPLE_Q.length,cats:{...cats}});
+      if(this.allResults.length>1){
+        res.innerHTML+='<div class="isa-box" style="margin-top:6px"><div class="isa-title">MULTI-MODEL COMPARISON ('+this.allResults.length+' runs)</div>'+
+          this.allResults.map(r=>'<div class="bbar"><div class="bbar-fill" style="width:'+r.pct+'%;background:var(--c0);opacity:.4"></div><div class="bbar-label">'+r.model.split('-')[0]+' '+r.model.match(/\d+[BM]/i)?.[0]+'</div><div class="bbar-val">'+r.pct+'%</div></div>').join('')+'</div>';
+      }
       // Trigger quantum collapse visualization
       QOPS.collapse(pass/SAMPLE_Q.length);
     }catch(e){

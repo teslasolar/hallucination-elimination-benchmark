@@ -47,6 +47,11 @@ jobs:
         env:
           KONOMI_DEMO: "1"
 
+      - name: Dry-run benchmark (pipeline test, no API keys)
+        run: |
+          python -m konomi.triad.run --dry-run --model ci-small --triad --pass-rate 0.55 --no-resume --categories ANACHRONISM_DETECTION
+          python -m konomi.triad.run --dry-run --model ci-large --triad --pass-rate 0.85 --no-resume --categories ANACHRONISM_DETECTION
+
       - name: Regenerate Pages JSON
         run: python -m konomi.api.generate_pages
 
