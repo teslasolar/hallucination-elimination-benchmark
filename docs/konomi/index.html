@@ -56,7 +56,15 @@ code{color:var(--cyan)}
 </div>
 
 <div class="nav" id="nav"></div>
+<div class="nav">
+  <button class="nav-btn" onclick="KUTIL.clearCache()">CLEAR CACHE</button>
+  <button class="nav-btn" onclick="KUTIL.hardReload()">HARD RELOAD</button>
+  <button class="nav-btn" onclick="KUTIL.exportJSON()">EXPORT JSON</button>
+  <button class="nav-btn" onclick="KUTIL.showStorageInfo()">STORAGE INFO</button>
+  <button class="nav-btn" onclick="location.href='../index.html'">BENCHMARK</button>
+</div>
 <div id="content"></div>
+<div id="util-output" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin:12px 0;font-size:.8rem"></div>
 <div class="meta">KONOMI Standard v1.0 — Layer 0 is self-describing — <a href="standards.json" style="color:var(--accent)">Raw JSON</a></div>
 
 <script>
@@ -271,6 +279,44 @@ function showUDTs() {
   html += '</div>';
   c.innerHTML = html;
 }
+
+// ── UTILITIES ──────────────────────────────────────────────
+const KUTIL = {
+  async clearCache(){
+    try{
+      const names=await caches.keys();let n=0;
+      for(const name of names){await caches.delete(name);n++}
+      const dbs=await indexedDB.databases?.()??[];
+      for(const db of dbs){indexedDB.deleteDatabase(db.name);n++}
+      this._show('Cleared '+n+' caches and IndexedDB stores. Reload to re-fetch data.');
+    }catch(e){this._show('Error: '+e.message)}
+  },
+  hardReload(){location.reload(true)},
+  exportJSON(){
+    const data={standards:DATA,udts:UDTS,crosswalks:CROSSWALKS,exported:new Date().toISOString()};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download='konomi-standards-'+new Date().toISOString().split('T')[0]+'.json';a.click();
+  },
+  async showStorageInfo(){
+    let info=[];
+    if(navigator.storage&&navigator.storage.estimate){
+      const est=await navigator.storage.estimate();
+      info.push('Storage: '+((est.usage||0)/1024/1024).toFixed(1)+'MB / '+((est.quota||0)/1024/1024).toFixed(0)+'MB');
+    }
+    try{const names=await caches.keys();info.push('Cache API: '+names.length+' stores')}catch(e){}
+    try{const dbs=await indexedDB.databases?.()??[];info.push('IndexedDB: '+dbs.length+' databases')}catch(e){}
+    info.push('Standards loaded: '+Object.keys(DATA).length);
+    info.push('UDTs loaded: '+Object.keys(UDTS).length);
+    info.push('Crosswalks loaded: '+CROSSWALKS.length);
+    this._show(info.join('<br>'));
+  },
+  _show(html){
+    const el=document.getElementById('util-output');
+    el.style.display='block';el.innerHTML=html;
+    setTimeout(()=>{el.style.display='none'},8000);
+  }
+};
 
 // URL params: ?demo=1
 if (new URLSearchParams(location.search).get('demo') === '1') {

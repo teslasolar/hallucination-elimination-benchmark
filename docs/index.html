@@ -94,6 +94,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:8px;height
 <button class="hbtn" onclick="Q.toggleAuto()">AUTO</button>
 <button class="hbtn green" onclick="BENCH.exportHTML()">EXPORT</button>
 <button class="hbtn pink" onclick="BENCH.runWebLLM()">RUN WEBLLM</button>
+<button class="hbtn pink" onclick="BENCH.runAllModels()" title="Run all WebLLM models sequentially">RUN ALL</button>
+<button class="hbtn" onclick="UTIL.clearCache()" title="Clear WebLLM model cache &amp; stored data">CLEAR CACHE</button>
+<button class="hbtn" onclick="UTIL.resetAll()" title="Reset all results &amp; UI state">RESET</button>
+<button class="hbtn" onclick="UTIL.togglePerf()" title="Show/hide performance metrics">PERF</button>
 </div>
 </div>
 
@@ -133,6 +137,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:8px;height
 <button class="tb" onclick="BENCH.selectModel('Phi-3.5-mini-instruct-q4f16_1-MLC')">Phi-3.5-mini<span class="sub">3.8B params &bull; Microsoft &bull; ~2.4GB</span></button>
 <button class="tb" onclick="BENCH.selectModel('Llama-3.2-3B-Instruct-q4f16_1-MLC')">Llama-3.2-3B<span class="sub">3B params &bull; Meta &bull; ~2GB</span></button>
 <button class="tb" onclick="BENCH.selectModel('Qwen2.5-3B-Instruct-q4f16_1-MLC')">Qwen2.5-3B<span class="sub">3B params &bull; Alibaba &bull; ~2GB</span></button>
+
+<div class="sec">TOOLS</div>
+<button class="tb" onclick="UTIL.clearCache()">CLEAR MODEL CACHE<span class="sub">Remove downloaded WebLLM models</span></button>
+<button class="tb" onclick="UTIL.clearResults()">CLEAR RESULTS<span class="sub">Reset benchmark run data</span></button>
+<button class="tb" onclick="UTIL.hardReload()">HARD RELOAD<span class="sub">Force refresh &bull; bypass browser cache</span></button>
+<button class="tb" onclick="UTIL.showStorageInfo()">STORAGE INFO<span class="sub">Cache size &bull; IndexedDB &bull; localStorage</span></button>
+<button class="tb" onclick="UTIL.exportResults()">EXPORT ALL RESULTS<span class="sub">Download JSON of all WebLLM runs</span></button>
+<button class="tb" onclick="UTIL.togglePerf()">PERFORMANCE MONITOR<span class="sub">FPS &bull; memory &bull; GPU usage</span></button>
 
 <div class="sec">CONTROLS</div>
 <div class="srow"><div class="slbl"><span>ROTATION SPEED</span><span id="rv">0.50</span></div><input type="range" min="0" max="2" step="0.01" value="0.5" oninput="Q.cfg.speed=+this.value;rv.textContent=this.value"></div>
@@ -309,13 +321,18 @@ const CON={
   init(){this.el=document.getElementById('cout');this.log('LIGHTBRINGER ISA FACTORY MODEL v1.0','c');this.log('All 10 result files verified OK','s');this.log('Judge discrepancy detected: Gemini vs Opus','w');this.log('ISA-95/88/18.2/101/5.1 modules loaded','i');this.log('Type "help" for commands','i')},
   log(m,t='i'){const d=document.createElement('div');d.className='ll '+t;const ts=new Date().toLocaleTimeString('en',{hour12:false});d.innerHTML='<span class="lts">'+ts+'</span>'+m;this.el.appendChild(d);this.el.scrollTop=this.el.scrollHeight},
   exec(v){document.getElementById('cin').value='';if(!v)return;this.log('> '+v,'c');
-    if(v==='help'){this.log('Commands: verify, isa95, isa88, alarm, export, webllm, topo [name], clear','i')}
+    if(v==='help'){this.log('Commands: verify, isa95, isa88, alarm, export, webllm, runall, cache, storage, perf, reset, topo [name], clear','i')}
     else if(v==='verify'){this.log('All 10 files verified. Judge discrepancy: Gemini=45% vs Opus=14.9% for Claude raw','s')}
     else if(v==='isa95'){ISA.switchTab(document.querySelector('.tab-btn'),'isa95');this.log('ISA-95 view activated','i')}
     else if(v==='isa88'){ISA.switchTab(document.querySelector('.tab-btn'),'isa88');this.log('ISA-88 batch view activated','i')}
     else if(v==='alarm'){ISA.switchTab(document.querySelector('.tab-btn'),'alarm');this.log('ISA-18.2 alarm view activated','i')}
     else if(v==='export'){BENCH.exportHTML();this.log('HTML report exported','s')}
     else if(v==='webllm'){BENCH.runWebLLM();this.log('WebLLM benchmark started','i')}
+    else if(v==='runall'){BENCH.runAllModels();this.log('Multi-model benchmark started','i')}
+    else if(v==='cache'){UTIL.clearCache()}
+    else if(v==='storage'){UTIL.showStorageInfo()}
+    else if(v==='perf'){UTIL.togglePerf()}
+    else if(v==='reset'){UTIL.resetAll()}
     else if(v.startsWith('topo ')){Q.setManifold(v.split(' ')[1]);this.log('Manifold: '+v.split(' ')[1],'i')}
     else if(v==='clear'){this.el.innerHTML='';this.log('Console cleared','i')}
     else{this.log('Unknown command: '+v,'e')}
@@ -446,6 +463,45 @@ const ISA = {
   }
 };
 // ============================================================
+// WEBLLM JUDGE — keyword-based answer evaluation
+// ============================================================
+function judgeAnswer(answer, expected, category) {
+  const ans = answer.toLowerCase();
+  const exp = expected.toLowerCase();
+
+  // ANACHRONISM_DETECTION: expected starts with "no" — model must reject the anachronism
+  if (exp.startsWith('no')) {
+    // Fail if model says "yes" or affirms the anachronism
+    if (/^yes\b|absolutely|of course|certainly|indeed/.test(ans)) return false;
+    // Pass if model rejects: "no", "did not exist", "wouldn't", "not available", "anachronism"
+    if (/\bno\b|not exist|didn't exist|don't exist|wouldn't|would not|cannot|can't|impossible|anachronis|historically|inaccurate|not available|not invented|not yet/.test(ans)) return true;
+    // If answer is long and doesn't affirm, lean pass (model likely explained why not)
+    return ans.length > 50 && !/\byes\b/.test(ans);
+  }
+
+  // For positive-knowledge questions, check if key terms from expected appear in answer
+  const keywords = exp.split(/[\/,;()|&]+/).map(k => k.trim().toLowerCase()).filter(k => k.length > 3);
+  let matches = 0;
+  for (const kw of keywords) {
+    // Check both exact and partial (first 4+ chars) matching
+    if (ans.includes(kw) || (kw.length >= 5 && ans.includes(kw.substring(0, 5)))) {
+      matches++;
+    }
+  }
+  // Pass if at least one keyword matches
+  if (matches > 0) return true;
+
+  // Category-specific fallbacks
+  if (category === 'CHARACTER_IDENTITY') {
+    // Check for key names
+    if (exp.includes('trajan') && ans.includes('trajan')) return true;
+    if (exp.includes('caesar') && ans.includes('caesar') && ans.includes('assassin')) return true;
+  }
+
+  return false;
+}
+
+// ============================================================
 // BENCHMARK & WEBLLM
 // ============================================================
 const BENCH = {
@@ -479,7 +535,7 @@ const BENCH = {
             max_tokens:150,temperature:0.3
           });
           const ans=reply.choices[0].message.content;
-          const correct=!ans.toLowerCase().includes('yes')&&(sq.expected.toLowerCase().includes('no')||ans.toLowerCase().includes(sq.expected.split('/')[0].toLowerCase().substring(0,4)));
+          const correct=judgeAnswer(ans,sq.expected,sq.cat);
           if(correct)pass++;
           this.results.push({q:sq.q,answer:ans,expected:sq.expected,correct,cat:sq.cat});
           CON.log('Q'+(i+1)+': '+(correct?'PASS':'FAIL')+' ['+sq.cat+']',correct?'s':'e');
@@ -533,6 +589,160 @@ const BENCH = {
     const blob=new Blob([html],{type:'text/html'});
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='lightbringer-isa-report.html';a.click();
     CON.log('Report exported as HTML','s');
+  },
+
+  ALL_MODELS: [
+    'SmolLM2-135M-Instruct-q0f16-MLC',
+    'SmolLM2-360M-Instruct-q4f16_1-MLC',
+    'Qwen2.5-0.5B-Instruct-q4f16_1-MLC',
+    'TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC-1k',
+    'Llama-3.2-1B-Instruct-q4f16_1-MLC'
+  ],
+
+  async runAllModels(){
+    CON.log('Starting multi-model benchmark ('+this.ALL_MODELS.length+' models)...','i');
+    if(!this.allResults)this.allResults=[];
+    for(const modelId of this.ALL_MODELS){
+      CON.log('Loading model: '+modelId,'i');
+      this.selectedModel=modelId;
+      this.engine=null; // Force reload
+      try{await this.runWebLLM()}catch(e){CON.log('Model '+modelId+' failed: '+e.message,'e')}
+    }
+    CON.log('Multi-model benchmark complete: '+this.allResults.length+' models tested','s');
+  }
+};
+
+// ============================================================
+// UTILITIES — cache, storage, performance, reset
+// ============================================================
+const UTIL = {
+  perfVisible: false,
+  perfInterval: null,
+
+  async clearCache(){
+    CON.log('Clearing WebLLM model cache...','i');
+    try{
+      // Clear Cache API
+      const names=await caches.keys();
+      let cleared=0;
+      for(const name of names){await caches.delete(name);cleared++}
+      // Clear IndexedDB (WebLLM stores models here)
+      const dbs=await indexedDB.databases?.()??[];
+      for(const db of dbs){indexedDB.deleteDatabase(db.name);cleared++}
+      // Clear WebLLM engine reference
+      if(BENCH.engine){BENCH.engine=null}
+      CON.log('Cleared '+cleared+' caches + IndexedDB stores','s');
+      document.getElementById('webllm-status').textContent='CACHE CLEARED';
+      document.getElementById('webllm-info').textContent='Models must be re-downloaded on next run';
+    }catch(e){CON.log('Cache clear error: '+e.message,'e')}
+  },
+
+  clearResults(){
+    BENCH.results=[];
+    BENCH.allResults=[];
+    const res=document.getElementById('webllm-results');
+    if(res)res.innerHTML='';
+    document.getElementById('webllm-status').textContent='READY';
+    document.getElementById('webllm-info').textContent='Results cleared — select model & run';
+    localStorage.removeItem('lightbringer-results');
+    CON.log('All benchmark results cleared','s');
+  },
+
+  resetAll(){
+    this.clearResults();
+    this.clearCache();
+    // Reset UI state
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('act'));
+    document.querySelector('.tab-btn').classList.add('act');
+    ISA.switchTab(document.querySelector('.tab-btn'),'verify');
+    CON.log('Full reset complete','s');
+  },
+
+  hardReload(){
+    CON.log('Hard reloading page (bypass cache)...','w');
+    location.reload(true);
+  },
+
+  async showStorageInfo(){
+    CON.log('Checking storage usage...','i');
+    let info=[];
+    // Storage estimate
+    if(navigator.storage&&navigator.storage.estimate){
+      const est=await navigator.storage.estimate();
+      const used=((est.usage||0)/1024/1024).toFixed(1);
+      const quota=((est.quota||0)/1024/1024).toFixed(0);
+      info.push('Storage: '+used+'MB / '+quota+'MB');
+    }
+    // Cache API
+    try{
+      const names=await caches.keys();
+      info.push('Cache API: '+names.length+' store'+(names.length!==1?'s':''));
+      for(const name of names){
+        const cache=await caches.open(name);
+        const keys=await cache.keys();
+        info.push('  '+name+': '+keys.length+' entries');
+      }
+    }catch(e){info.push('Cache API: unavailable')}
+    // IndexedDB
+    try{
+      const dbs=await indexedDB.databases?.()??[];
+      info.push('IndexedDB: '+dbs.length+' database'+(dbs.length!==1?'s':''));
+      dbs.forEach(db=>info.push('  '+db.name+' (v'+db.version+')'));
+    }catch(e){info.push('IndexedDB: cannot enumerate')}
+    // localStorage
+    let lsSize=0;
+    for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);lsSize+=localStorage.getItem(k).length}
+    info.push('localStorage: '+localStorage.length+' keys ('+(lsSize/1024).toFixed(1)+'KB)');
+    // WebGPU
+    if(navigator.gpu){
+      try{const adapter=await navigator.gpu.requestAdapter();info.push('WebGPU: '+(adapter?'available':'not available'))}
+      catch(e){info.push('WebGPU: error checking')}
+    }else{info.push('WebGPU: not supported')}
+    info.forEach(l=>CON.log(l,'i'));
+    // Show in webllm tab too
+    ISA.switchTab(null,'webllm');
+    const res=document.getElementById('webllm-results');
+    if(res)res.innerHTML='<div class="isa-box"><div class="isa-title">STORAGE INFO</div>'+info.map(l=>'<div class="isa-row">'+l+'</div>').join('')+'</div>';
+  },
+
+  exportResults(){
+    const data={
+      timestamp:new Date().toISOString(),
+      published:PUBDATA,
+      webllmRuns:BENCH.allResults||[],
+      lastRun:BENCH.results||[]
+    };
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download='lightbringer-results-'+new Date().toISOString().split('T')[0]+'.json';a.click();
+    CON.log('Results exported as JSON','s');
+  },
+
+  togglePerf(){
+    this.perfVisible=!this.perfVisible;
+    let el=document.getElementById('perf-hud');
+    if(!el){
+      el=document.createElement('div');el.id='perf-hud';
+      el.style.cssText='position:fixed;top:52px;right:8px;z-index:10000;font-size:7px;font-family:Space Mono,monospace;color:var(--c0);opacity:.7;pointer-events:none;text-align:right;line-height:1.6';
+      document.body.appendChild(el);
+    }
+    if(this.perfVisible){
+      el.style.display='block';
+      let frames=0,lastTime=performance.now();
+      this.perfInterval=setInterval(()=>{
+        const now=performance.now();const dt=now-lastTime;
+        const fps=Math.round(frames*1000/dt);frames=0;lastTime=now;
+        const mem=performance.memory?((performance.memory.usedJSHeapSize/1024/1024).toFixed(0)+'MB'):'N/A';
+        el.innerHTML='FPS: '+fps+'<br>MEM: '+mem+'<br>MODELS: '+(BENCH.allResults?.length||0)+'<br>GPU: '+(navigator.gpu?'YES':'NO');
+      },1000);
+      const tick=()=>{if(this.perfVisible){frames++;requestAnimationFrame(tick)}};
+      requestAnimationFrame(tick);
+      CON.log('Performance monitor ON','i');
+    }else{
+      el.style.display='none';
+      if(this.perfInterval){clearInterval(this.perfInterval);this.perfInterval=null}
+      CON.log('Performance monitor OFF','i');
+    }
   }
 };
 
